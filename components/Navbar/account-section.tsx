@@ -27,10 +27,10 @@ async function AccountSection() {
 
   return (
     <>
-      <Button className="text-blue-500 border-blue-500 border bg-transparent font-black uppercase hover:bg-blue-300 hover:text-white hover:border-blue-300 text-md">
+      <Button className="font-black uppercase  text-md" variant={'outline'}>
         Sign in
       </Button>
-      <Button className="text-white bg-blue-500 font-black uppercase hover:bg-blue-300 text-md hover:border-blue-300">
+      <Button className="font-black uppercase text-md" variant={'default'}>
         Sign up
       </Button>
     </>

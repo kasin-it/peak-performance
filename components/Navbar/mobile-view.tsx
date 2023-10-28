@@ -4,7 +4,7 @@ import HamburgerMenu from './hamburger-menu';
 
 function MobileView() {
   return (
-    <div className="flex md:hidden justify-between items-center w-full">
+    <div className="flex lg:hidden justify-between items-center w-full px-2">
       <HamburgerMenu />
       <Link href={'/'} className="font-black text-orange-500 text-2xl italic">
         PEAK<span className="text-blue-500">PERFORMANCE</span>

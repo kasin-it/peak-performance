@@ -3,7 +3,7 @@ import AccountSection from './account-section';
 
 function DesktopView() {
   return (
-    <div className="max-w-[1920px] justify-between px-4 w-full items-center hidden md:flex">
+    <div className="max-w-[1920px] justify-between px-10 w-full items-center hidden lg:flex">
       <div className="flex space-x-10">
         <Link href={'/'} className="font-black text-orange-500 text-2xl italic">
           PEAK<span className="text-blue-500">PERFORMANCE</span>
