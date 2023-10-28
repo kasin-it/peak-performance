@@ -1,23 +1,18 @@
 'use client';
 
 import { ChevronRight, Menu } from 'lucide-react';
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import Link from 'next/link';
+import SearchBar from '../ui/search-bar';
 
-function HamburgerMenu() {
+function HamburgerMenuSheet() {
   return (
     <Sheet>
       <SheetTrigger className="bg-transparent hover:bg-transparent hover:text-blue-500 text-blue-300">
         <Menu className="h-8 w-8" strokeWidth={'3px'} />
       </SheetTrigger>
       <SheetContent side={'left'}>
+        <SearchBar className={'w-full mt-16'} />
         <ul className="flex flex-col items-center text-blue-300 font-extrabold italic text-left text-xl mt-10">
           {/* <li>SHOP</li> */}
           <li className="w-full border-y border-blue-500 pl-10">
@@ -52,4 +47,4 @@ function HamburgerMenu() {
     </Sheet>
   );
 }
-export default HamburgerMenu;
+export default HamburgerMenuSheet;

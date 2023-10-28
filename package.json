@@ -9,8 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.2",
     "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-tooltip": "^1.0.7",
     "@supabase/auth-helpers-nextjs": "^0.8.3",
     "@supabase/supabase-js": "^2.38.4",
     "class-variance-authority": "^0.7.0",
@@ -19,8 +22,10 @@
     "next": "14.0.0",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7.47.0",
     "tailwind-merge": "^1.14.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "^20",

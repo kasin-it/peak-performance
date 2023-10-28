@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import AccountSection from './account-section';
+import SearchBar from '../ui/search-bar';
+import SearchSheet from './search-sheet';
 
 function DesktopView() {
   return (
@@ -37,6 +39,12 @@ function DesktopView() {
         </ul>
       </div>
       <div className="flex space-x-2">
+        <div className="hidden xl:block">
+          <SearchBar className="w-[400px]" />
+        </div>
+        <div className="xl:hidden">
+          <SearchSheet />
+        </div>
         <AccountSection />
       </div>
     </div>

@@ -27,12 +27,16 @@ async function AccountSection() {
 
   return (
     <>
-      <Button className="font-black uppercase  text-md" variant={'outline'}>
-        Sign in
-      </Button>
-      <Button className="font-black uppercase text-md" variant={'default'}>
-        Sign up
-      </Button>
+      <Link href={'/auth/sign-in'}>
+        <Button className="font-black uppercase  text-md" variant={'outline'}>
+          Sign in
+        </Button>
+      </Link>
+      <Link href={'/auth/sign-up'}>
+        <Button className="font-black uppercase text-md" variant={'default'}>
+          Sign up
+        </Button>
+      </Link>
     </>
   );
 }
