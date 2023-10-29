@@ -82,10 +82,11 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
 
         const updateUsernameResponse = await supabase
             .from("profiles")
-            .update({ username: formData.username })
+            .update({
+                id: signUpResponse.data.user?.id,
+                username: formData.username,
+            })
             .eq("id", signUpResponse.data.user!.id)
-
-        console.log(updateUsernameResponse)
 
         if (updateUsernameResponse.error) {
             console.error(
@@ -94,8 +95,6 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
             )
             return
         }
-
-        // toast.success("Account successfully created!")
 
         toast.custom((t) => (
             <div
