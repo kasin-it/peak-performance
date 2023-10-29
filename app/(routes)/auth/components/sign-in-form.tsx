@@ -1,41 +1,42 @@
-'use client';
+"use client"
 
-import * as React from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { AlertCircle, Loader2 } from 'lucide-react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { z } from 'zod';
+import * as React from "react"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { AlertCircle, Loader2 } from "lucide-react"
+import { SubmitHandler, useForm } from "react-hook-form"
+import toast from "react-hot-toast"
+import { z } from "zod"
 
-import { Database } from '@/types/database';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Database } from "@/types/database"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-} from '@/components/ui/tooltip';
+} from "@/components/ui/tooltip"
 
 interface SignInFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-type FormData = z.infer<typeof formSchema>;
+type FormData = z.infer<typeof formSchema>
 
 const formSchema = z.object({
-    email: z.string().min(1, 'Email is required.').email('Email is invalid.'),
+    email: z.string().min(1, "Email is required.").email("Email is invalid."),
     password: z
         .string()
-        .min(1, 'Password is required.')
-        .min(8, 'Password must be at least 8 characters.'),
-});
+        .min(1, "Password is required.")
+        .min(8, "Password must be at least 8 characters."),
+})
 
 export function SignInForm({ className, ...props }: SignInFormProps) {
-    const supabase = createClientComponentClient<Database>();
-    const router = useRouter();
+    const supabase = createClientComponentClient<Database>()
+    const router = useRouter()
     const {
         register,
         handleSubmit,
@@ -43,27 +44,29 @@ export function SignInForm({ className, ...props }: SignInFormProps) {
         formState: { errors, isSubmitting },
     } = useForm<FormData>({
         resolver: zodResolver(formSchema),
-        mode: 'onSubmit',
-        reValidateMode: 'onSubmit',
-    });
+        mode: "onSubmit",
+        reValidateMode: "onSubmit",
+    })
     const onSubmit: SubmitHandler<FormData> = async (formData: FormData) => {
         const { data: _, error } = await supabase.auth.signInWithPassword({
             email: formData.email,
             password: formData.password,
-        });
+        })
         if (error) {
-            setError('email', { message: error.message });
-            setError('password', { message: error.message });
-            return;
+            setError("email", { message: error.message })
+            setError("password", { message: error.message })
+            return
         }
-        router.refresh();
-    };
+        toast.success("Login has been successfull!")
+
+        router.refresh()
+    }
 
     return (
         <div
             className={cn(
-                'flex flex-col w-full px-4 sm:px-0 sm:w-[400px]',
-                className,
+                "flex w-full flex-col px-4 sm:w-[400px] sm:px-0",
+                className
             )}
             {...props}
         >
@@ -85,11 +88,11 @@ export function SignInForm({ className, ...props }: SignInFormProps) {
                             autoComplete="email"
                             autoCorrect="off"
                             disabled={isSubmitting}
-                            {...register('email')}
+                            {...register("email")}
                             className={`${
                                 errors.email
-                                    ? 'border border-red-500 pr-10'
-                                    : ''
+                                    ? "border border-red-500 pr-10"
+                                    : ""
                             }`}
                         />
                         {errors.email && (
@@ -121,11 +124,11 @@ export function SignInForm({ className, ...props }: SignInFormProps) {
                             autoComplete="new-password"
                             autoCorrect="off"
                             disabled={isSubmitting}
-                            {...register('password')}
+                            {...register("password")}
                             className={`${
                                 errors.password
-                                    ? 'border border-red-500 pr-10'
-                                    : ''
+                                    ? "border border-red-500 pr-10"
+                                    : ""
                             }`}
                         />
                         {errors.password && (
@@ -152,7 +155,7 @@ export function SignInForm({ className, ...props }: SignInFormProps) {
                         <p className="px-5">Sign in</p>
                     </Button>
                     <p className="text-center text-sm text-muted-foreground ">
-                        or{' '}
+                        or{" "}
                     </p>
                     <Link
                         href="/auth/sign-up"
@@ -169,12 +172,12 @@ export function SignInForm({ className, ...props }: SignInFormProps) {
                         Back to home
                     </Link>
                 </p>
-                <div className="text-left w-full text-muted-foreground absolute -right-10 top-2">
+                <div className="absolute -right-10 top-2 w-full text-left text-muted-foreground">
                     <p>Demo Account:</p>
-                    <p className="pl-5">Email: mail@mail.com</p>
-                    <p className="pl-5">Password: sup3rs3cur3</p>
+                    <p className="pl-5">Email: andrew@mail.com</p>
+                    <p className="pl-5">Password: andrewspassword</p>
                 </div>
             </form>
         </div>
-    );
+    )
 }

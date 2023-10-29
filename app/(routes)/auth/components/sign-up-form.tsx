@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { AlertCircle, Loader2 } from "lucide-react"
 import { SubmitHandler, useForm } from "react-hook-form"
-import toast from "react-hot-toast/headless"
+import toast from "react-hot-toast"
 import { z } from "zod"
 
 import { Database } from "@/types/database"
@@ -70,7 +70,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
             email: formData.email,
             password: formData.password,
             options: {
-                emailRedirectTo: `${location.origin}/api/auth/callback`,
+                emailRedirectTo: `${location.origin}/auth/callback`,
             },
         })
 
@@ -85,6 +85,8 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
             .update({ username: formData.username })
             .eq("id", signUpResponse.data.user!.id)
 
+        console.log(updateUsernameResponse)
+
         if (updateUsernameResponse.error) {
             console.error(
                 "Error inserting into profiles:",
@@ -93,7 +95,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
             return
         }
 
-        toast.success("Account successfully created!")
+        // toast.success("Account successfully created!")
 
         toast.custom((t) => (
             <div
@@ -105,7 +107,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
                     <div className="flex items-start">
                         <div className="ml-3 flex-1">
                             <p className="mt-1 text-sm text-gray-500">
-                                Check you email for confirmation link.
+                                Check your email for confirmation link.
                             </p>
                         </div>
                     </div>
@@ -121,7 +123,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
             </div>
         ))
 
-        router.push("/")
+        router.refresh()
     }
 
     return (
