@@ -148,11 +148,15 @@ export function SignInForm({ className, ...props }: SignInFormProps) {
                     </div>
                 </div>
                 <div className="flex items-center space-x-3">
-                    <Button className="w-[160px]" disabled={isSubmitting}>
+                    <Button
+                        className="w-[160px]"
+                        disabled={isSubmitting}
+                        variant={"secondary"}
+                    >
                         {isSubmitting && (
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         )}
-                        <p className="px-5">Sign in</p>
+                        <p className="px-5">SIGN IN</p>
                     </Button>
                     <p className="text-center text-sm text-muted-foreground ">
                         or{" "}

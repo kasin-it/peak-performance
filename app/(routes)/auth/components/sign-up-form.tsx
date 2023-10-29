@@ -293,7 +293,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
                         {isSubmitting && (
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         )}
-                        <p className="px-5">Sign up</p>
+                        <p className="px-5">SIGN UP</p>
                     </Button>
                     <p className="text-center text-sm text-muted-foreground ">
                         or{" "}

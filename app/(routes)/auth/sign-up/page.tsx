@@ -1,13 +1,18 @@
-import { cn } from '@/lib/utils';
-import { SignUpForm } from '../components/sign-up-form';
+import { cn } from "@/lib/utils"
+
+import { SignUpForm } from "../components/sign-up-form"
 
 export default function SignUpPage() {
     return (
-        <div className="flex flex-col w-full h-full justify-start pt-36 items-center">
-            <h1 className={cn('text-2xl font-semibold tracking-tight')}>
-                Sign up
+        <div className="flex h-full w-full flex-col items-center justify-start pt-36">
+            <h1
+                className={cn(
+                    "text-2xl font-black italic tracking-tight text-blue-500"
+                )}
+            >
+                SIGN UP
             </h1>
             <SignUpForm />
         </div>
-    );
+    )
 }
