@@ -1,39 +1,42 @@
 "use client"
 
 import * as React from "react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { useEffect } from "react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-import { AlertCircle, Loader2 } from "lucide-react"
-import { SubmitHandler, useForm } from "react-hook-form"
-import toast from "react-hot-toast"
-import { z } from "zod"
 
 import { Database } from "@/types/database"
 
-export default async function SignUpForm() {
-    const supabase = createClientComponentClient<Database>()
+export default function SignUpForm() {
+    const getData = async () => {
+        const supabase = createClientComponentClient<Database>()
 
-    const updateUsernameResponse = await supabase
-        .from("profiles")
-        .update({ username: "marek" })
-        .eq("id", "5add0c2a-d05a-42ab-b943-c82b976449f6")
-        .select()
+        const { data } = await supabase.auth.getUser()
 
-    console.log(updateUsernameResponse)
+        const updateUsernameResponse = await supabase
+            .from("profiles")
+            .update({
+                // id: data.user?.id,
+                username: "judasz",
+            })
+            .eq("id", data.user!.id)
+            .select()
 
-    if (updateUsernameResponse.error) {
-        console.error(
-            "Error inserting into profiles:",
-            updateUsernameResponse.error
-        )
-        return
+        console.log(updateUsernameResponse)
+
+        // console.log(data.user?.id)
+
+        if (updateUsernameResponse.error) {
+            console.error(
+                "Error inserting into profiles:",
+                updateUsernameResponse.error
+            )
+            return
+        }
     }
 
-    return (
-        <div className="text-black">
-            {JSON.stringify(updateUsernameResponse)}
-        </div>
-    )
+    useEffect(() => {
+        getData()
+    })
+
+    return <div className="text-black">siema</div>
 }
