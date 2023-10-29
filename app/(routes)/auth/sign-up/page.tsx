@@ -1,13 +1,13 @@
 import { cn } from '@/lib/utils';
-import { SignInForm } from '../components/sign-in-form';
+import { SignUpForm } from '../components/sign-up-form';
 
-export default function SignInPage() {
+export default function SignUpPage() {
     return (
         <div className="flex flex-col w-full h-full justify-start pt-36 items-center">
             <h1 className={cn('text-2xl font-semibold tracking-tight')}>
-                Sign in
+                Sign up
             </h1>
-            <SignInForm />
+            <SignUpForm />
         </div>
     );
 }
