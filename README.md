@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Neatreads
 
-## Getting Started
+This project employs Next.js and Contentful to build a high-performance web app. Next.js's app router ensures efficient navigation, and Contentful simplifies content management, making this application dynamic and user-friendly.
 
-First, run the development server:
+### 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+-   💬 **Comments**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+-   📁 **Favorites**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+-   👤 **User Profiles**
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+-   📱 **Responsive Design**
 
-## Learn More
+-   🔍 **Search**
 
-To learn more about Next.js, take a look at the following resources:
+-   📅 **Workout Planning**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+-   💬💼 **Forum**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Local setup
 
-## Deploy on Vercel
+### Prerequisites
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+-   Ensure you have Docker installed and running in the background.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Setup Instructions
+
+1. Install project dependencies:
+
+    ```bash
+    npm i
+    ```
+
+2. Start Supabase:
+
+    ```bash
+    supabase start
+    ```
+
+3. Run the project in preview mode:
+
+    ```bash
+    npm run dev
+    ```
+
+4. Access the application locally at [http://localhost:3000](http://localhost:3000). (default)\*
+
+## License
+
+Licensed under the [MIT license](https://github.com/shadcn/ui/blob/main/LICENSE.md).
