@@ -6,9 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "codegen": "contentful-typescript-codegen --output @types/generated/contentful.d.ts"
   },
   "dependencies": {
+    "@contentful/rich-text-html-renderer": "^16.3.0",
+    "@contentful/rich-text-react-renderer": "^15.19.0",
     "@hookform/resolvers": "^3.3.2",
     "@ianvs/prettier-plugin-sort-imports": "^4.1.1",
     "@radix-ui/react-dialog": "^1.0.5",
@@ -21,6 +24,8 @@
     "@supabase/supabase-js": "^2.38.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
+    "contentful": "^10.6.5",
+    "contentful-ts-type-generator": "github:arimkevi/contentful-ts-type-generator",
     "lucide-react": "^0.290.0",
     "next": "14.0.0",
     "react": "^18",
@@ -36,6 +41,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10",
+    "dotenv": "^16.3.1",
     "eslint": "^8",
     "eslint-config-next": "14.0.0",
     "postcss": "^8",
