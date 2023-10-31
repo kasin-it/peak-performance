@@ -1,4 +1,4 @@
-# Neatreads
+# PEAK-PERFORMANCE
 
 This project employs Next.js and Contentful to build a high-performance web app. Next.js's app router ensures efficient navigation, and Contentful simplifies content management, making this application dynamic and user-friendly.
 
