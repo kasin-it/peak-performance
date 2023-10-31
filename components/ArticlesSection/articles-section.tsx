@@ -18,7 +18,7 @@ async function ArticlesSection() {
 
     return (
         <section className="flex w-full flex-col items-center py-16">
-            <p className="pb-10 text-7xl font-black text-orange-500">
+            <p className="w-full max-w-[1500px] px-10 pb-10 text-center text-7xl font-black text-blue-500/50 2xl:text-left">
                 FEATURED ARTICLES
             </p>
             <div className="grid max-w-[1500px] grid-cols-1 2xl:grid-cols-2 2xl:gap-x-10">

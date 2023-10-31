@@ -1,11 +1,10 @@
 import Image from "next/image"
 import Link from "next/link"
-import documentToReactComponents from "@contentful/rich-text-html-renderer"
 import { createClient } from "contentful"
-import { render } from "react-dom"
 
 import ArticleNotFound from "@/components/ArticlesSection/article-not-found"
 import ArticleRichText from "@/components/ArticlesSection/article-rich-text"
+import CommentsSection from "@/components/CommentsSection/comments-section"
 
 async function ArticlePage({ params }: { params: { articleId: string } }) {
     const accessToken = process.env.CONTENTFUL_ACCESS_KEY
@@ -63,6 +62,8 @@ async function ArticlePage({ params }: { params: { articleId: string } }) {
                 <main className=" text-black/80">
                     <ArticleRichText document={article.fields.content} />
                 </main>
+
+                <CommentsSection articleId={params.articleId} />
             </article>
         </section>
     )
