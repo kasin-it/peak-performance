@@ -7,7 +7,7 @@ import {
 } from "@contentful/rich-text-types"
 
 type RichTextProps = {
-    document: RichTextDocument | null
+    document: any
 }
 
 function ArticleRichText({ document }: RichTextProps) {
