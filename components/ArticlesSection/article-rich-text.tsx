@@ -1,4 +1,3 @@
-import Link from "next/link"
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import {
     BLOCKS,
@@ -31,13 +30,19 @@ function ArticleRichText({ document }: RichTextProps) {
                 <p className="max-w-[900px] py-4 text-xl">{children}</p>
             ),
             [BLOCKS.HEADING_1]: (node: any, children: any) => (
-                <h1 className="py-4 text-2xl lg:text-5xl">{children}</h1>
+                <h1 className="py-4 text-2xl sm:text-3xl lg:text-5xl">
+                    {children}
+                </h1>
             ),
             [BLOCKS.HEADING_2]: (node: any, children: any) => (
-                <h2 className="py-4 text-xl lg:text-3xl">{children}</h2>
+                <h2 className="py-4 text-xl sm:text-2xl lg:text-3xl">
+                    {children}
+                </h2>
             ),
             [BLOCKS.HEADING_3]: (node: any, children: any) => (
-                <h3 className="py-4 text-lg lg:text-2xl">{children}</h3>
+                <h3 className="sm:text-1xl py-4 text-lg lg:text-2xl">
+                    {children}
+                </h3>
             ),
             [BLOCKS.UL_LIST]: (node: any, children: any) => (
                 <ul className=" list-disc pl-10">{children}</ul>

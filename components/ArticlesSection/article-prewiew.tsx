@@ -23,7 +23,6 @@ function ArticlePreview(article: any) {
                     </h1>
                     <p className="max-w-[550px] text-lg text-muted-foreground">
                         {article.article.fields.shortDesc}
-                        {article.article.fields.shortDesc}
                     </p>
                 </article>
                 <Link

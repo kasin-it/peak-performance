@@ -23,9 +23,7 @@ async function ArticlesSection() {
             </p>
             <div className="grid max-w-[1500px] grid-cols-1 2xl:grid-cols-2 2xl:gap-x-0">
                 {res.items.map((article, index) => (
-                    <>
-                        <ArticlePreview article={article} key={index} />
-                    </>
+                    <ArticlePreview article={article} key={index} />
                 ))}
             </div>
         </section>

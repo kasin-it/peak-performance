@@ -83,15 +83,14 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
         const updateUsernameResponse = await supabase
             .from("profiles")
             .update({
-                id: signUpResponse.data.user?.id,
                 username: formData.username,
             })
             .eq("id", signUpResponse.data.user!.id)
 
         if (updateUsernameResponse.error) {
             console.error(
-                "Error inserting into profiles:",
-                updateUsernameResponse.error
+                "Error updating profiles:",
+                JSON.stringify(updateUsernameResponse.error)
             )
             return
         }

@@ -38,7 +38,6 @@ async function ArticlePage({ params }: { params: { articleId: string } }) {
 
     const article = res.items[0]
 
-    console.log(article.fields.content)
     return (
         <section className="flex w-full justify-center pt-36">
             <article className="w-full max-w-[1500px] space-y-10 px-7">
