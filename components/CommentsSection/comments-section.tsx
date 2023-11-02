@@ -68,7 +68,10 @@ function CommentsSection({ articleId }: { articleId: string }) {
     }, [articleId, supabase])
 
     return (
-        <section className="flex w-full max-w-[1500px] flex-col justify-center space-y-6 border-y px-5 py-8">
+        <section
+            className="flex w-full max-w-[1500px] flex-col justify-center space-y-6 border-y px-5 py-8"
+            id="comments"
+        >
             <h2 className="w-full text-center text-xl font-bold tracking-widest text-blue-500 lg:text-left">
                 COMMENTS
             </h2>
