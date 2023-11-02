@@ -1,6 +1,9 @@
+import { count, error } from "console"
 import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Heart, Trash } from "lucide-react"
+import toast from "react-hot-toast"
 
 import { Database } from "@/types/database"
 import { Comment as CommentType } from "@/types/types"
@@ -17,8 +20,10 @@ import {
 } from "@/components/ui/alert-dialog"
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogDescription,
+    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -26,6 +31,8 @@ import {
 
 import { Avatar } from "../ui/avatar"
 import { Button } from "../ui/button"
+import { Input } from "../ui/input"
+import { Textarea } from "../ui/textarea"
 
 interface CommentProps {
     comment: CommentType
@@ -35,9 +42,38 @@ interface CommentProps {
 function Comment({ comment, currentUser }: CommentProps) {
     const supabase = createClientComponentClient<Database>()
 
+    const router = useRouter()
+
     const [username, setUsername] = useState<any>(null)
 
-    const handleRemove = async (commentId: string) => {}
+    const handleRemove = async (commentId: string) => {
+        const { data, error } = await supabase
+            .from("comments")
+            .delete()
+            .eq("id", commentId)
+            .eq("user_id", comment.user_id)
+        if (error) {
+            console.log(error)
+            toast.error("Something went wrong.")
+        } else {
+            toast.success("Comment removed.")
+            router.refresh()
+        }
+    }
+    const handleUpdate = async (commentId: string) => {
+        const { data, error } = await supabase
+            .from("comments")
+            .delete()
+            .eq("id", commentId)
+            .eq("user_id", comment.user_id)
+        if (error) {
+            console.log(error)
+            toast.error("Something went wrong.")
+        } else {
+            toast.success("Comment removed.")
+            router.refresh()
+        }
+    }
 
     useEffect(() => {
         const getUsername = async () => {
@@ -92,9 +128,7 @@ function Comment({ comment, currentUser }: CommentProps) {
                                     Are you absolutely sure?
                                 </AlertDialogTitle>
                                 <AlertDialogDescription>
-                                    This action cannot be undone. This will
-                                    permanently delete your account and remove
-                                    your data from our servers.
+                                    This action cannot be undone.
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
@@ -110,17 +144,28 @@ function Comment({ comment, currentUser }: CommentProps) {
 
                     <Dialog>
                         <DialogTrigger>Edit</DialogTrigger>
-                        <DialogContent>
+                        <DialogContent className="sm:max-w-md">
                             <DialogHeader>
-                                <DialogTitle>
-                                    Are you sure absolutely sure?
-                                </DialogTitle>
+                                <DialogTitle>Share link</DialogTitle>
                                 <DialogDescription>
-                                    This action cannot be undone. This will
-                                    permanently delete your account and remove
-                                    your data from our servers.
+                                    Anyone who has this link will be able to
+                                    view this.
                                 </DialogDescription>
                             </DialogHeader>
+                            <Textarea
+                                id="link"
+                                defaultValue={comment.comment}
+                            />
+                            <DialogFooter className="sm:justify-end">
+                                <Button variant={"secondaryOutline"}>
+                                    Confirm
+                                </Button>
+                                <DialogClose asChild>
+                                    <Button type="button" variant="secondary">
+                                        Close
+                                    </Button>
+                                </DialogClose>
+                            </DialogFooter>
                         </DialogContent>
                     </Dialog>
                 </div>

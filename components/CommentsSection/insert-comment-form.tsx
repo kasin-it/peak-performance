@@ -99,6 +99,7 @@ export function InsertCommentForm({
                                             ? "border border-red-500 pr-10"
                                             : ""
                                     }`}
+                                    rows={10}
                                 />
                                 {errors.comment && (
                                     <div className="-translate-y-2/5 absolute right-3 top-1/4 text-red-500">

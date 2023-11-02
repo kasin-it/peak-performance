@@ -72,7 +72,7 @@ function CommentsSection({ articleId }: { articleId: string }) {
             <h2 className="w-full text-center text-xl font-bold tracking-widest text-blue-500 lg:text-left">
                 COMMENTS
             </h2>
-            <section className="lg:justify-left  flex flex-col items-center space-x-16 lg:flex-row lg:items-start">
+            <section className="lg:justify-left  flex flex-col items-center space-x-0 space-y-10 lg:flex-row lg:items-start lg:space-x-10 lg:space-y-0">
                 <section className="flex w-full flex-col items-center lg:items-start lg:justify-start">
                     {isLoading ? (
                         Array.from({ length: 4 }, (value, index) => (
