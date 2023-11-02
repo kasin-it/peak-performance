@@ -3,7 +3,7 @@ import Link from "next/link"
 
 function ArticlePreview(article: any) {
     return (
-        <article className="flex max-w-[1200px] flex-col items-start space-y-5 border-y px-5 py-12 lg:flex-row lg:space-x-5 lg:space-y-0">
+        <article className="flex max-w-[1200px] flex-col items-start space-y-5 border-t px-5 py-12 lg:flex-row lg:space-x-5 lg:space-y-0">
             <Image
                 src={"http:" + article.article.fields.miniImage.fields.file.url}
                 width={690}
@@ -22,7 +22,6 @@ function ArticlePreview(article: any) {
                         {article.article.fields.title}
                     </h1>
                     <p className="max-w-[550px] text-lg text-muted-foreground">
-                        {article.article.fields.shortDesc}
                         {article.article.fields.shortDesc}
                     </p>
                 </article>

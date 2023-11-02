@@ -6,15 +6,27 @@ import ArticleNotFound from "@/components/ArticlesSection/article-not-found"
 import ArticleRichText from "@/components/ArticlesSection/article-rich-text"
 import CommentsSection from "@/components/CommentsSection/comments-section"
 
-async function ArticlePage({ params }: { params: { articleId: string } }) {
-    const accessToken = process.env.CONTENTFUL_ACCESS_KEY
-    const space = process.env.CONTENTFUL_SPACE_ID
+const accessToken = process.env.CONTENTFUL_ACCESS_KEY
+const space = process.env.CONTENTFUL_SPACE_ID
 
-    const contentfulClient = createClient({
-        accessToken: accessToken ? accessToken : "",
-        space: space ? space : "",
+const contentfulClient = createClient({
+    accessToken: accessToken ? accessToken : "",
+    space: space ? space : "",
+})
+
+export const revalidate = 600
+
+export async function generateStaticParams() {
+    const res = await contentfulClient.getEntries({
+        content_type: "article",
     })
 
+    return res.items.map((item: any) => ({
+        slug: item.fields.slug,
+    }))
+}
+
+async function ArticlePage({ params }: { params: { articleId: string } }) {
     const res = await contentfulClient.getEntries({
         content_type: "article",
         "fields.slug": params.articleId,
@@ -26,7 +38,6 @@ async function ArticlePage({ params }: { params: { articleId: string } }) {
 
     const article = res.items[0]
 
-    console.log(article.fields.content)
     return (
         <section className="flex w-full justify-center pt-36">
             <article className="w-full max-w-[1500px] space-y-10 px-7">
@@ -51,7 +62,8 @@ async function ArticlePage({ params }: { params: { articleId: string } }) {
                     </Link>
                 </article>
                 <Image
-                    src={"http:" + article.fields?.mainImage?.fields?.file.url}
+                    // @ts-expect-error
+                    src={"http:" + article.fields?.mainImage!.fields?.file.url}
                     width={690}
                     height={0}
                     alt={"dsf"}
