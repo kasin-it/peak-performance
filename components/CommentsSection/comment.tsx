@@ -67,6 +67,8 @@ function Comment({ comment, currentUser }: CommentProps) {
         } catch (error) {
             handleSupabaseError(error)
         }
+
+        window.location.reload()
     }
 
     useEffect(() => {

@@ -61,7 +61,7 @@ export function InsertCommentForm({
             setError("comment", { message: error.message })
             return
         }
-        router.refresh()
+        window.location.reload()
     }
 
     return (
@@ -69,7 +69,7 @@ export function InsertCommentForm({
             {currentUser ? (
                 <div
                     className={cn(
-                        "flex w-full flex-col px-4 sm:w-[600px] sm:px-0 ",
+                        "flex w-full flex-col rounded-xl p-4 shadow-md sm:w-[600px] ",
                         className
                     )}
                     {...props}

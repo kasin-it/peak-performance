@@ -1,6 +1,5 @@
 "use client"
 
-import { useRef } from "react"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
@@ -9,7 +8,6 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
 import { Database } from "@/types/database"
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import {
@@ -45,7 +43,7 @@ export function UpdateCommentForm({
     ...props
 }: UpdateCommentFormProps) {
     const supabase = createClientComponentClient<Database>()
-    const formRef = useRef<HTMLFormElement | null>(null)
+    const router = useRouter()
 
     const {
         register,
@@ -69,6 +67,8 @@ export function UpdateCommentForm({
             setError("comment", { message: error.message })
             return
         }
+
+        window.location.reload()
     }
 
     return (
@@ -77,7 +77,6 @@ export function UpdateCommentForm({
                 onSubmit={handleSubmit(onSubmit)}
                 noValidate
                 className="space-y-3"
-                ref={formRef}
             >
                 <div>
                     <Label className="text-muted-foreground" htmlFor="comment">
