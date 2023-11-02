@@ -22,6 +22,7 @@ import { Textarea } from "../ui/textarea"
 
 interface InsertCommentFormProps extends React.HTMLAttributes<HTMLDivElement> {
     articleId: string
+    currentUser: boolean
 }
 
 type FormData = z.infer<typeof formSchema>
@@ -36,6 +37,7 @@ const formSchema = z.object({
 export function InsertCommentForm({
     className,
     articleId,
+    currentUser,
     ...props
 }: InsertCommentFormProps) {
     const supabase = createClientComponentClient<Database>()
@@ -63,64 +65,75 @@ export function InsertCommentForm({
     }
 
     return (
-        <div
-            className={cn(
-                "flex w-full flex-col px-4 sm:w-[400px] sm:px-0",
-                className
-            )}
-            {...props}
-        >
-            <form
-                onSubmit={handleSubmit(onSubmit)}
-                noValidate
-                className="space-y-3"
-            >
-                <div>
-                    <Label className="text-muted-foreground" htmlFor="comment">
-                        Comment
-                    </Label>
-                    <div className="relative">
-                        <Textarea
-                            id="comment"
-                            placeholder="andrew@mail.com"
-                            autoCapitalize="none"
-                            autoCorrect="off"
-                            disabled={isSubmitting}
-                            {...register("comment")}
-                            className={`${
-                                errors.comment
-                                    ? "border border-red-500 pr-10"
-                                    : ""
-                            }`}
-                        />
-                        {errors.comment && (
-                            <div className="-translate-y-2/5 absolute right-3 top-1/4 text-red-500">
-                                <TooltipProvider delayDuration={100}>
-                                    <Tooltip>
-                                        <TooltipTrigger>
-                                            <AlertCircle size={18} />
-                                        </TooltipTrigger>
-                                        <TooltipContent>
-                                            <p>{errors.comment.message}</p>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
-                            </div>
-                        )}
-                    </div>
-                </div>
-
-                <Button
-                    className="w-[160px]"
-                    disabled={isSubmitting}
-                    variant={"secondary"}
-                >
-                    {isSubmitting && (
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+        <>
+            {currentUser ? (
+                <div
+                    className={cn(
+                        "flex w-full flex-col px-4 sm:w-[600px] sm:px-0 ",
+                        className
                     )}
-                    <p className="px-5">Comment</p>
-                </Button>
-            </form>
-        </div>
+                    {...props}
+                >
+                    <form
+                        onSubmit={handleSubmit(onSubmit)}
+                        noValidate
+                        className="space-y-3"
+                    >
+                        <div>
+                            <Label
+                                className="text-muted-foreground"
+                                htmlFor="comment"
+                            >
+                                Comment
+                            </Label>
+                            <div className="relative">
+                                <Textarea
+                                    id="comment"
+                                    placeholder="andrew@mail.com"
+                                    autoCapitalize="none"
+                                    autoCorrect="off"
+                                    disabled={isSubmitting}
+                                    {...register("comment")}
+                                    className={`${
+                                        errors.comment
+                                            ? "border border-red-500 pr-10"
+                                            : ""
+                                    }`}
+                                />
+                                {errors.comment && (
+                                    <div className="-translate-y-2/5 absolute right-3 top-1/4 text-red-500">
+                                        <TooltipProvider delayDuration={100}>
+                                            <Tooltip>
+                                                <TooltipTrigger>
+                                                    <AlertCircle size={18} />
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                    <p>
+                                                        {errors.comment.message}
+                                                    </p>
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        <Button
+                            className="w-[160px]"
+                            disabled={isSubmitting}
+                            variant={"secondary"}
+                        >
+                            {isSubmitting && (
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            )}
+                            <p className="px-5">Comment</p>
+                        </Button>
+                    </form>
+                </div>
+            ) : (
+                "login"
+            )}
+        </>
     )
 }

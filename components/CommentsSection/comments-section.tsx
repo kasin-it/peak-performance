@@ -2,21 +2,43 @@
 
 import { useEffect, useState } from "react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-import { Heart } from "lucide-react"
+import { Heart, Trash } from "lucide-react"
 
 import { Database } from "@/types/database"
-import { Comment } from "@/types/types"
+import { Comment as CommentType } from "@/types/types"
 
 import { Avatar } from "../ui/avatar"
 import { Skeleton } from "../ui/skeleton"
+import Comment from "./comment"
 import { InsertCommentForm } from "./insert-comment-form"
 
 function CommentsSection({ articleId }: { articleId: string }) {
     const supabase = createClientComponentClient<Database>()
     const [comments, setComments] = useState<any | null>(null)
     const [isLoading, setLoading] = useState(true)
+    const [currentUser, setCurrentUser] = useState<any | null>(null)
+
+    // const handleDelete =() => {
+    //     const {data, error} = await
+    // }
 
     useEffect(() => {
+        const getUser = async () => {
+            try {
+                const { data, error } = await supabase.auth.getUser()
+
+                if (error) {
+                    console.log(error)
+                }
+
+                if (data.user) {
+                    setCurrentUser(data.user)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
         const getComments = async () => {
             try {
                 const { data, error } = await supabase
@@ -42,15 +64,16 @@ function CommentsSection({ articleId }: { articleId: string }) {
         }
 
         getComments()
+        getUser()
     }, [articleId, supabase])
 
     return (
         <section className="flex w-full max-w-[1500px] flex-col justify-center space-y-6 border-y px-5 py-8">
-            <h2 className="text-xl font-bold tracking-widest text-blue-500">
+            <h2 className="w-full text-center text-xl font-bold tracking-widest text-blue-500 lg:text-left">
                 COMMENTS
             </h2>
-            <section className="justify-left flex items-start space-x-16">
-                <section className="flex flex-col">
+            <section className="lg:justify-left  flex flex-col items-center space-x-16 lg:flex-row lg:items-start">
+                <section className="flex w-full flex-col items-center lg:items-start lg:justify-start">
                     {isLoading ? (
                         Array.from({ length: 4 }, (value, index) => (
                             <article
@@ -61,31 +84,17 @@ function CommentsSection({ articleId }: { articleId: string }) {
                             </article>
                         ))
                     ) : (
-                        <div>
+                        <div className="w-full">
                             {comments === "error" ? (
                                 <p>Error fetching comments</p>
                             ) : (
-                                <div>
+                                <div className="w-full  space-y-6">
                                     {comments.length > 0 ? (
-                                        comments.map((comment: Comment) => (
-                                            <article
-                                                className="flex w-full max-w-[600px] space-x-5 rounded-sm border-t px-5 py-5"
-                                                key={comment.id}
-                                            >
-                                                <Avatar>
-                                                    <div className="h-[50px] w-[50px] bg-blue-50" />
-                                                </Avatar>
-                                                <div className="flex flex-col flex-wrap space-y-2">
-                                                    <h1 className="font-bold">
-                                                        {comment.user_id}
-                                                    </h1>
-                                                    <p className=" max-w-[450px] break-words">
-                                                        {comment.comment}
-                                                    </p>
-                                                </div>
-                                                <Heart />
-                                                {"13"}
-                                            </article>
+                                        comments.map((comment: CommentType) => (
+                                            <Comment
+                                                comment={comment}
+                                                currentUser={currentUser}
+                                            />
                                         ))
                                     ) : (
                                         <div>ther is not comments</div>
@@ -95,7 +104,10 @@ function CommentsSection({ articleId }: { articleId: string }) {
                         </div>
                     )}
                 </section>
-                <InsertCommentForm articleId={articleId} />
+                <InsertCommentForm
+                    articleId={articleId}
+                    currentUser={currentUser}
+                />
             </section>
         </section>
     )
