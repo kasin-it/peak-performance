@@ -69,7 +69,7 @@ export function InsertCommentForm({
             {currentUser ? (
                 <div
                     className={cn(
-                        "flex w-full flex-col rounded-xl p-4 shadow-md sm:w-[600px] ",
+                        "flex w-full flex-col rounded-xl border-t border-gray-100 p-4 shadow-md sm:w-[600px]",
                         className
                     )}
                     {...props}
@@ -133,7 +133,9 @@ export function InsertCommentForm({
                     </form>
                 </div>
             ) : (
-                "login"
+                <div className="rounded-xl border-t border-gray-100 p-5 shadow-lg">
+                    <h1>Sign in to comment</h1>
+                </div>
             )}
         </>
     )

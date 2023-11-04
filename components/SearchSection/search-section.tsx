@@ -8,15 +8,8 @@ import full_body_image from "@/public/body-part-full-body.png"
 import legs_image from "@/public/body-part-legs.png"
 import shoulders_image from "@/public/body-part-shoulders.png"
 
-import { Button } from "../ui/button"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "../ui/select"
 import { Separator } from "../ui/separator"
+import SearchForm from "./search-form"
 
 function SearchSection() {
     const routes = [
@@ -84,46 +77,7 @@ function SearchSection() {
                     ))}
                 </section>
                 <Separator className="bg-blue-300" />
-                <form className="justify-left flex w-full flex-col flex-wrap items-center space-y-5 py-6 lg:flex-row lg:space-x-5 lg:space-y-0">
-                    <Select>
-                        <SelectTrigger className="sm:w-[500px] lg:w-[280px]">
-                            <SelectValue placeholder="Skill Level" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">All</SelectItem>
-                            <SelectItem value="advenced">Advenced</SelectItem>
-                            <SelectItem value="intermediate">
-                                Intermediate
-                            </SelectItem>
-                            <SelectItem value="beginner">Beginner</SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <Select>
-                        <SelectTrigger className="sm:w-[500px] lg:w-[380px]">
-                            <SelectValue placeholder="Exercise Type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">All</SelectItem>
-                            <SelectItem value="bodyweight">
-                                Bodyweight
-                            </SelectItem>
-                            <SelectItem value="power">Power</SelectItem>
-                            <SelectItem value="strength-training">
-                                Strength Training
-                            </SelectItem>
-                            <SelectItem value="Cardio">Cardio</SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <Button className="px-16" variant={"secondary"}>
-                        SEARCH
-                    </Button>
-                    <Link
-                        href={"/workouts/all"}
-                        className="text-muted-foreground underline hover:cursor-pointer hover:text-blue-500"
-                    >
-                        View All Exercises
-                    </Link>
-                </form>
+                <SearchForm />
             </article>
         </section>
     )
