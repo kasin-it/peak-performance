@@ -27,7 +27,7 @@ interface SignInFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 type FormData = z.infer<typeof formSchema>
 
 const formSchema = z.object({
-    email: z.string().min(1, "Email is required.").email("Email is invalid."),
+    email: z.string(),
     password: z
         .string()
         .min(1, "Password is required.")

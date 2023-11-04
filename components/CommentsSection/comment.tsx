@@ -1,6 +1,6 @@
 import { count, error } from "console"
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/router"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Heart, Trash } from "lucide-react"
 import toast from "react-hot-toast"
@@ -33,66 +33,64 @@ import { Avatar } from "../ui/avatar"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { Textarea } from "../ui/textarea"
+import { InsertCommentForm } from "./insert-comment-form"
+import { UpdateCommentForm } from "./update-comment-form"
 
 interface CommentProps {
     comment: CommentType
     currentUser: any
 }
 
+const handleSupabaseError = (error: any) => {
+    console.error(error)
+    toast.error("Something went wrong.")
+}
+
 function Comment({ comment, currentUser }: CommentProps) {
     const supabase = createClientComponentClient<Database>()
-
-    const router = useRouter()
 
     const [username, setUsername] = useState<any>(null)
 
     const handleRemove = async (commentId: string) => {
-        const { data, error } = await supabase
-            .from("comments")
-            .delete()
-            .eq("id", commentId)
-            .eq("user_id", comment.user_id)
-        if (error) {
-            console.log(error)
-            toast.error("Something went wrong.")
-        } else {
-            toast.success("Comment removed.")
-            router.refresh()
+        try {
+            const { data, error } = await supabase
+                .from("comments")
+                .delete()
+                .eq("id", commentId)
+                .eq("user_id", comment.user_id)
+
+            if (error) {
+                handleSupabaseError(error)
+            } else {
+                toast.success("Comment removed.")
+            }
+        } catch (error) {
+            handleSupabaseError(error)
         }
-    }
-    const handleUpdate = async (commentId: string) => {
-        const { data, error } = await supabase
-            .from("comments")
-            .delete()
-            .eq("id", commentId)
-            .eq("user_id", comment.user_id)
-        if (error) {
-            console.log(error)
-            toast.error("Something went wrong.")
-        } else {
-            toast.success("Comment removed.")
-            router.refresh()
-        }
+
+        window.location.reload()
     }
 
     useEffect(() => {
         const getUsername = async () => {
-            const { data, error } = await supabase
-                .from("profiles")
-                .select("username")
-                .eq("id", comment.user_id)
+            try {
+                const { data, error } = await supabase
+                    .from("profiles")
+                    .select("username")
+                    .eq("id", comment.user_id)
 
-            if (error) {
-                console.log(error)
-            }
+                if (error) {
+                    handleSupabaseError(error)
+                }
 
-            if (data) {
-                setUsername(data[0].username)
+                setUsername(data?.[0]?.username || "Can not get username")
+            } catch (error) {
+                handleSupabaseError(error)
             }
         }
 
         getUsername()
-    })
+    }, [])
 
     return (
         <article
@@ -104,9 +102,7 @@ function Comment({ comment, currentUser }: CommentProps) {
                     <div className="h-[50px] w-[50px] bg-blue-50" />
                 </Avatar>
                 <div className="flex flex-wrap space-x-2">
-                    <h1 className="font-bold text-blue-500">
-                        {username ? username : "Can not get username"}
-                    </h1>
+                    <h1 className="font-bold text-blue-500">{username}</h1>
                     <p className=" max-w-[450px] break-words text-muted-foreground">
                         {comment.comment}
                     </p>
@@ -152,26 +148,16 @@ function Comment({ comment, currentUser }: CommentProps) {
                                     view this.
                                 </DialogDescription>
                             </DialogHeader>
-                            <Textarea
-                                id="link"
-                                defaultValue={comment.comment}
+
+                            <UpdateCommentForm
+                                commentId={comment.id}
+                                userId={currentUser.id}
+                                content={comment.comment}
                             />
-                            <DialogFooter className="sm:justify-end">
-                                <Button variant={"secondaryOutline"}>
-                                    Confirm
-                                </Button>
-                                <DialogClose asChild>
-                                    <Button type="button" variant="secondary">
-                                        Close
-                                    </Button>
-                                </DialogClose>
-                            </DialogFooter>
                         </DialogContent>
                     </Dialog>
                 </div>
-            ) : (
-                ""
-            )}
+            ) : null}
         </article>
     )
 }

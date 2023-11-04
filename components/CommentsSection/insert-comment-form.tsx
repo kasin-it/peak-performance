@@ -61,7 +61,7 @@ export function InsertCommentForm({
             setError("comment", { message: error.message })
             return
         }
-        router.refresh()
+        window.location.reload()
     }
 
     return (
@@ -69,7 +69,7 @@ export function InsertCommentForm({
             {currentUser ? (
                 <div
                     className={cn(
-                        "flex w-full flex-col px-4 sm:w-[600px] sm:px-0 ",
+                        "flex w-full flex-col rounded-xl border-t border-gray-100 p-4 shadow-md sm:w-[600px]",
                         className
                     )}
                     {...props}
@@ -133,7 +133,9 @@ export function InsertCommentForm({
                     </form>
                 </div>
             ) : (
-                "login"
+                <div className="rounded-xl border-t border-gray-100 p-5 shadow-lg">
+                    <h1>Sign in to comment</h1>
+                </div>
             )}
         </>
     )

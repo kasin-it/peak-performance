@@ -2,12 +2,10 @@
 
 import { useEffect, useState } from "react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-import { Heart, Trash } from "lucide-react"
 
 import { Database } from "@/types/database"
 import { Comment as CommentType } from "@/types/types"
 
-import { Avatar } from "../ui/avatar"
 import { Skeleton } from "../ui/skeleton"
 import Comment from "./comment"
 import { InsertCommentForm } from "./insert-comment-form"
@@ -17,10 +15,6 @@ function CommentsSection({ articleId }: { articleId: string }) {
     const [comments, setComments] = useState<any | null>(null)
     const [isLoading, setLoading] = useState(true)
     const [currentUser, setCurrentUser] = useState<any | null>(null)
-
-    // const handleDelete =() => {
-    //     const {data, error} = await
-    // }
 
     useEffect(() => {
         const getUser = async () => {
@@ -68,7 +62,10 @@ function CommentsSection({ articleId }: { articleId: string }) {
     }, [articleId, supabase])
 
     return (
-        <section className="flex w-full max-w-[1500px] flex-col justify-center space-y-6 border-y px-5 py-8">
+        <section
+            className="flex w-full max-w-[1500px] flex-col justify-center space-y-6 border-y px-5 py-8"
+            id="comments"
+        >
             <h2 className="w-full text-center text-xl font-bold tracking-widest text-blue-500 lg:text-left">
                 COMMENTS
             </h2>
