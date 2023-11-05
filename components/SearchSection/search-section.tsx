@@ -68,7 +68,7 @@ function SearchSection() {
                                 width={150}
                                 height={150}
                                 alt={route.label}
-                                className="group rounded-full border-2 border-blue-300 transition duration-200 group-hover:border-[5px] group-hover:border-orange-500 "
+                                className="group rounded-full border-2 border-blue-300 transition duration-200 group-hover:border-[2px] group-hover:border-orange-500 "
                             />
                             <h1 className="group border-b-[3px] border-blue-300 text-xl font-medium text-blue-500 transition duration-200 group-hover:border-orange-300 group-hover:text-orange-500">
                                 {route.label}

@@ -5,3 +5,12 @@ export interface Comment {
     comment: string
     slug: string
 }
+
+export interface Exercise {
+    name: string
+    type: string
+    muscle: string
+    equipment: string
+    difficulty: string
+    instructions: string
+}
