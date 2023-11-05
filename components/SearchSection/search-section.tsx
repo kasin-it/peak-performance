@@ -57,7 +57,7 @@ function SearchSection() {
                 <section className="flex flex-wrap items-center justify-around space-x-4 space-y-4 pb-6">
                     {routes.map((route, index) => (
                         <Link
-                            href={`/workouts/${route.label.toLowerCase()}`}
+                            href={`/exercises?muslce=${route.label.toLowerCase()}`}
                             className="group flex flex-col items-center justify-center space-y-4"
                             key={index}
                         >
