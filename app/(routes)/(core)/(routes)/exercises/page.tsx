@@ -11,7 +11,14 @@ function ExercisesPage() {
 
     useEffect(() => {
         const fetchExercises = async () => {
-            const response = await axios.get("/api/exercises")
+            const searchParams = new URLSearchParams(window.location.search)
+
+            const skill_level = searchParams.get("skill_level")
+            const exercise_type = searchParams.get("exercise_type")
+
+            const response = await axios.get(
+                `/api/exercises?skill_level=${skill_level}&exercise_type=${exercise_type}`
+            )
 
             if (response.status !== 200) {
                 setError("Something went wrong.")

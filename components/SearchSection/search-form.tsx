@@ -81,14 +81,12 @@ function SearchForm({ className, ...props }: SearchFormProps) {
                                         {...field}
                                     >
                                         <option value="all">All</option>
-                                        <option value="advanced">
-                                            Advanced
-                                        </option>
+                                        <option value="expert">Advanced</option>
                                         <option value="intermediate">
                                             Intermediate
                                         </option>
-                                        <option value="begginer">
-                                            Begginer
+                                        <option value="beginner">
+                                            Beginner
                                         </option>
                                     </select>
                                 </FormControl>
@@ -114,14 +112,24 @@ function SearchForm({ className, ...props }: SearchFormProps) {
                                         {...field}
                                     >
                                         <option value="all">All</option>
-                                        <option value="advanced">
-                                            Advanced
+                                        <option value="cardio">cardio</option>
+                                        <option value="olympic_weightlifting">
+                                            Olympic Weightlifting
                                         </option>
-                                        <option value="intermediate">
-                                            Intermediate
+                                        <option value="plyometrics">
+                                            Plyometrics
                                         </option>
-                                        <option value="begginer">
-                                            Begginer
+                                        <option value="powerlifting">
+                                            Powerlifting
+                                        </option>
+                                        <option value="strength">
+                                            Strength
+                                        </option>
+                                        <option value="stretching">
+                                            Stretching
+                                        </option>
+                                        <option value="strongman">
+                                            Strongman
                                         </option>
                                     </select>
                                 </FormControl>

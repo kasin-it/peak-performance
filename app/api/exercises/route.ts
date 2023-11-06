@@ -4,8 +4,9 @@ import axios from "axios"
 const BASE_URL = "https://api.api-ninjas.com/v1/exercises"
 export const GET = async (req: Request) => {
     try {
-        // const body = await req.json()
-        // const { muscle, exercise_type, skill_level } = body
+        const { searchParams } = new URL(req.url)
+        const difficulty = searchParams.get("skill_level")
+        const type = searchParams.get("exercise_type")
 
         const config = {
             headers: {
@@ -14,10 +15,11 @@ export const GET = async (req: Request) => {
         }
 
         try {
-            const response = await axios.get(BASE_URL, config)
-            console.log(response)
+            const response = await axios.get(
+                BASE_URL + `?difficulty=${difficulty}&type=${type}`,
+                config
+            )
             const exercises = response.data
-            console.log("s")
             return NextResponse.json(exercises)
         } catch (error) {
             console.error("[EXERCISES_GET] Axios Error:", error)
