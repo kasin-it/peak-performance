@@ -43,7 +43,6 @@ export function UpdateCommentForm({
     ...props
 }: UpdateCommentFormProps) {
     const supabase = createClientComponentClient<Database>()
-    const router = useRouter()
 
     const {
         register,

@@ -4,10 +4,22 @@ import React, { FormEvent, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { ChevronDownIcon } from "lucide-react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
-import { Button } from "../ui/button"
+import { cn } from "@/lib/utils"
+
+import { Button, buttonVariants } from "../ui/button"
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "../ui/form"
 import {
     Select,
     SelectContent,
@@ -21,22 +33,27 @@ interface SearchFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 type FormData = z.infer<typeof formSchema>
 
 const formSchema = z.object({
-    skillLevel: z.string(), // z.enum(["all", "advanced", "intermediate", "beginner"]),
-    exerciseType: z.string(), //z.enum(["all", "bodyweight", "power"]),
+    skillLevel: z.any(),
+    exerciseType: z.any(),
 })
 
 function SearchForm({ className, ...props }: SearchFormProps) {
     const router = useRouter()
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors, isSubmitting },
-    } = useForm<FormData>({
+    // const {
+    //     register,
+    //     handleSubmit,
+    //     formState: { isSubmitting },
+    // } = useForm<FormData>({
+    //     resolver: zodResolver(formSchema),
+    //     mode: "onSubmit",
+    //     reValidateMode: "onSubmit",
+    // })
+
+    const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
-        mode: "onSubmit",
-        reValidateMode: "onSubmit",
     })
+
     const onSubmit: SubmitHandler<FormData> = async (formData: FormData) => {
         router.push(
             `/exercises?skill_level=${formData.skillLevel}&exercise_type=${formData.exerciseType}`
@@ -44,65 +61,88 @@ function SearchForm({ className, ...props }: SearchFormProps) {
     }
 
     return (
-        <form
-            className="justify-left flex w-full flex-col flex-wrap items-center space-y-5 py-6 lg:flex-row lg:space-x-5 lg:space-y-0"
-            onSubmit={handleSubmit(onSubmit)}
-            // onSubmit={() => {
-            //     console.log("submit")
-            // }}
-        >
-            <Select disabled={isSubmitting} {...register("skillLevel")}>
-                <SelectTrigger className="sm:w-[500px] lg:w-[280px]">
-                    <SelectValue placeholder="Skill Level" />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectItem value="all">All</SelectItem>
-                    <SelectItem value="advanced">Advanced</SelectItem>
-                    <SelectItem value="intermediate">Intermediate</SelectItem>
-                    <SelectItem value="beginner">Beginner</SelectItem>
-                </SelectContent>
-            </Select>
-            {errors.skillLevel && (
-                <div className="-translate-y-2/5 absolute right-3 top-1/4 text-red-500">
-                    <p>{errors.skillLevel.message}</p>
-                </div>
-            )}
-            {errors.exerciseType && (
-                <div className="-translate-y-2/5 absolute right-3 top-1/4 text-red-500">
-                    <p>{errors.exerciseType.message}</p>
-                </div>
-            )}
-            <Select disabled={isSubmitting} {...register("exerciseType")}>
-                <SelectTrigger className="sm:w-[500px] lg:w-[380px]">
-                    <SelectValue placeholder="Exercise Type" />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectItem value="all">All</SelectItem>
-                    <SelectItem value="bodyweight">Bodyweight</SelectItem>
-                    <SelectItem value="power">Power</SelectItem>
-                    <SelectItem value="strength-training">
-                        Strength Training
-                    </SelectItem>
-                    <SelectItem value="cardio">Cardio</SelectItem>
-                </SelectContent>
-            </Select>
+        <Form {...form}>
+            <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="justify-left flex w-full flex-col flex-wrap items-center space-y-5 py-6 lg:flex-row lg:space-x-5 lg:space-y-0"
+            >
+                <FormField
+                    control={form.control}
+                    name="skillLevel"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Skill Level</FormLabel>
+                            <div className="relative w-max">
+                                <FormControl>
+                                    <select
+                                        className={cn(
+                                            "w-[300px]  cursor-pointer appearance-none rounded-md border border-blue-300 bg-white px-2 py-2 font-normal sm:w-[500px] lg:w-[380px]"
+                                        )}
+                                        {...field}
+                                    >
+                                        <option value="all">All</option>
+                                        <option value="advanced">
+                                            Advanced
+                                        </option>
+                                        <option value="intermediate">
+                                            Intermediate
+                                        </option>
+                                        <option value="begginer">
+                                            Begginer
+                                        </option>
+                                    </select>
+                                </FormControl>
+                                <ChevronDownIcon className="absolute right-3 top-3 h-4 w-4 opacity-50" />
+                            </div>
 
-            <Button
-                className="px-16"
-                variant={"secondary"}
-                disabled={isSubmitting}
-                type="submit"
-            >
-                SEARCH
-            </Button>
-            <Link
-                href="/exercises"
-                passHref
-                className="text-muted-foreground underline hover:cursor-pointer hover:text-blue-500"
-            >
-                View All Exercises
-            </Link>
-        </form>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="exerciseType"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Exercise Type</FormLabel>
+                            <div className="relative w-max">
+                                <FormControl>
+                                    <select
+                                        className={cn(
+                                            "w-[300px] cursor-pointer appearance-none rounded-md border border-blue-300 bg-white px-2 py-2 font-normal sm:w-[500px] lg:w-[380px]"
+                                        )}
+                                        {...field}
+                                    >
+                                        <option value="all">All</option>
+                                        <option value="advanced">
+                                            Advanced
+                                        </option>
+                                        <option value="intermediate">
+                                            Intermediate
+                                        </option>
+                                        <option value="begginer">
+                                            Begginer
+                                        </option>
+                                    </select>
+                                </FormControl>
+                                <ChevronDownIcon className="absolute right-3 top-3 h-4 w-4 opacity-50" />
+                            </div>
+
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <div className="flex h-[73px] items-end">
+                    <Button
+                        className="px-16"
+                        variant={"secondary"}
+                        type="submit"
+                    >
+                        SEARCH
+                    </Button>
+                </div>
+            </form>
+        </Form>
     )
 }
 
