@@ -13,10 +13,12 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import { Skeleton } from "@/components/ui/skeleton"
 
 function ExercisesPage() {
     const [exercises, setExercises] = useState<Exercise[] | null>(null)
     const [error, setError] = useState<string | null>(null)
+    const [isLoading, setIsLoading] = useState(true) // Add a loading state
 
     useEffect(() => {
         const fetchExercises = async () => {
@@ -25,16 +27,13 @@ function ExercisesPage() {
 
                 const skillLevel = searchParams.get("skill_level")
                 const exerciseType = searchParams.get("exercise_type")
-
-                if (!skillLevel || !exerciseType) {
-                    setError("Skill level and exercise type are required.")
-                    return
-                }
+                const muscle = searchParams.get("muscle")
 
                 const response = await axios.get("/api/exercises", {
                     params: {
                         skill_level: skillLevel,
                         exercise_type: exerciseType,
+                        muscle: muscle,
                     },
                 })
 
@@ -45,6 +44,8 @@ function ExercisesPage() {
                 }
             } catch (error) {
                 setError("An error occurred while fetching data.")
+            } finally {
+                setIsLoading(false) // Set loading state to false when data is available
             }
         }
 
@@ -56,16 +57,24 @@ function ExercisesPage() {
             <h1 className="pb-10 text-6xl font-bold text-black/80">
                 Exercises:
             </h1>
-            <section className="flex w-full max-w-[1500px] flex-wrap justify-center">
+            <section className="flex-center flex w-full max-w-[1500px] flex-wrap">
                 {error && <div>{error}</div>}
                 {exercises && exercises.length === 0 && (
                     <div>No exercises found.</div>
                 )}
+                {isLoading &&
+                    Array.from({ length: 10 }).map((_, index) => (
+                        <Skeleton
+                            key={index}
+                            className="m-3 mx-auto h-[475px] w-full max-w-md overflow-hidden rounded-xl shadow-md md:max-w-2xl"
+                        ></Skeleton>
+                    ))}
+
                 {exercises && exercises.length > 0 && (
                     <>
                         {exercises.map((exercise, index) => (
                             <Card
-                                className="m-3 mx-auto max-w-md overflow-hidden rounded-xl bg-white shadow-md md:max-w-2xl"
+                                className="m-3 mx-auto w-full max-w-md overflow-hidden rounded-xl bg-white shadow-md md:max-w-2xl"
                                 key={index}
                             >
                                 <div className="p-8">
@@ -111,7 +120,11 @@ function ExercisesPage() {
                                             the exercise correctly:
                                         </CardDescription>
 
-                                        <p>{exercise.instructions}</p>
+                                        <p>
+                                            {exercise.instructions
+                                                ? exercise.instructions
+                                                : "No instructions added"}
+                                        </p>
                                     </div>
                                     <div className="mt-4">
                                         <Button

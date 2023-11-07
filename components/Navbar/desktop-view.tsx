@@ -1,47 +1,48 @@
-import Link from 'next/link';
-import AccountSection from './account-section';
-import SearchBar from '../ui/search-bar';
-import SearchSheet from './search-sheet';
+import Link from "next/link"
+
+import SearchBar from "../ui/search-bar"
+import AccountSection from "./account-section"
+import SearchSheet from "./search-sheet"
 
 function DesktopView() {
     return (
-        <div className="max-w-[1920px] justify-between px-10 w-full items-center hidden lg:flex">
+        <div className="hidden w-full max-w-[1920px] items-center justify-between px-10 lg:flex">
             <div className="flex space-x-10">
                 <Link
-                    href={'/'}
-                    className="font-black text-orange-500 text-2xl italic"
+                    href={"/"}
+                    className="text-2xl font-black italic text-orange-500"
                 >
                     PEAK<span className="text-blue-500">PERFORMANCE</span>
                 </Link>
-                <ul className="flex items-center text-blue-300 font-extrabold italic space-x-8 text-xl">
+                <ul className="flex items-center space-x-8 text-xl font-extrabold italic text-blue-300">
                     {/* <li>SHOP</li> */}
                     <li>
                         <Link
-                            href={'/articles'}
-                            className="hover:border-b-[3px] hover:text-blue-500 border-orange-500"
+                            href={"/articles"}
+                            className="border-orange-500 hover:border-b-[3px] hover:text-blue-500"
                         >
                             ARTICLES
                         </Link>
                     </li>
                     <li>
                         <Link
-                            href={'/workouts'}
-                            className="hover:border-b-[3px] hover:text-blue-500 border-orange-500"
+                            href={"/exercises"}
+                            className="border-orange-500 hover:border-b-[3px] hover:text-blue-500"
                         >
-                            WORKOUTS
+                            EXERCISES
                         </Link>
                     </li>
                     <li>
                         <Link
-                            href={'/forum'}
-                            className="hover:border-b-[3px] hover:text-blue-500 border-orange-500"
+                            href={"/forum"}
+                            className="border-orange-500 hover:border-b-[3px] hover:text-blue-500"
                         >
                             FORUM
                         </Link>
                     </li>
                 </ul>
             </div>
-            <div className="flex space-x-2 items-center">
+            <div className="flex items-center space-x-2">
                 <div className="hidden xl:block">
                     <SearchBar className="w-[400px]" />
                 </div>
@@ -51,6 +52,6 @@ function DesktopView() {
                 <AccountSection />
             </div>
         </div>
-    );
+    )
 }
-export default DesktopView;
+export default DesktopView

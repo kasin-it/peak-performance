@@ -18,19 +18,16 @@ export const GET = async (req: Request) => {
 
         const queryParams: QueryParams = {}
 
-        // Add parameters to the queryParams object only if they have values
-        if (difficulty !== null) queryParams.difficulty = difficulty
-        if (type !== null) queryParams.type = type
-        if (muscle !== null) queryParams.muscle = muscle
+        if (difficulty !== null && difficulty != "undefined")
+            queryParams.difficulty = difficulty
+        if (type !== null && type != "undefined") queryParams.type = type
+        if (muscle !== null && muscle != "undefined")
+            queryParams.muscle = muscle
 
-        // Build the query string from the queryParams object
         const queryString = Object.keys(queryParams)
             .map((key) => `${key}=${queryParams[key as keyof QueryParams]}`)
             .join("&")
 
-        console.log(queryString)
-
-        // Create the complete URL with the query string
         const searchParamsUrl = queryString ? `?${queryString}` : ""
 
         const config = {
