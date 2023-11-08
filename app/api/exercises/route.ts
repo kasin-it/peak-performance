@@ -7,6 +7,7 @@ interface QueryParams {
     difficulty?: string
     type?: string
     muscle?: string
+    offset?: string
 }
 
 export const GET = async (req: Request) => {
@@ -15,6 +16,7 @@ export const GET = async (req: Request) => {
         const difficulty = searchParams.get("skill_level")
         const type = searchParams.get("exercise_type")
         const muscle = searchParams.get("muscle")
+        const offset = searchParams.get("offset")
 
         const queryParams: QueryParams = {}
 
@@ -23,6 +25,8 @@ export const GET = async (req: Request) => {
         if (type !== null && type != "undefined") queryParams.type = type
         if (muscle !== null && muscle != "undefined")
             queryParams.muscle = muscle
+        if (offset !== null && offset != "undefined")
+            queryParams.offset = offset
 
         const queryString = Object.keys(queryParams)
             .map((key) => `${key}=${queryParams[key as keyof QueryParams]}`)
