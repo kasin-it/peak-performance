@@ -41,7 +41,6 @@ export function InsertCommentForm({
     ...props
 }: InsertCommentFormProps) {
     const supabase = createClientComponentClient<Database>()
-    const router = useRouter()
     const {
         register,
         handleSubmit,

@@ -1,24 +1,26 @@
-'use client';
+"use client"
 
-import { ChevronRight, Menu } from 'lucide-react';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import Link from 'next/link';
-import SearchBar from '../ui/search-bar';
+import Link from "next/link"
+import { ChevronRight, Menu } from "lucide-react"
+
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+
+import SearchBar from "../ui/search-bar"
 
 function HamburgerMenuSheet() {
     return (
         <Sheet>
-            <SheetTrigger className="bg-transparent hover:bg-transparent hover:text-blue-500 text-blue-300">
-                <Menu className="h-8 w-8" strokeWidth={'3px'} />
+            <SheetTrigger className="bg-transparent text-blue-300 hover:bg-transparent hover:text-blue-500">
+                <Menu className="h-8 w-8" strokeWidth={"3px"} />
             </SheetTrigger>
-            <SheetContent side={'left'}>
-                <SearchBar className={'w-full mt-16'} />
-                <ul className="flex flex-col items-center text-blue-300 font-extrabold italic text-left text-xl mt-10">
+            <SheetContent side={"left"}>
+                <SearchBar className={"mt-16 w-full"} />
+                <ul className="mt-10 flex flex-col items-center text-left text-xl font-extrabold italic text-blue-300">
                     {/* <li>SHOP</li> */}
                     <li className="w-full border-y border-blue-500 pl-10">
                         <Link
-                            href={'/articles'}
-                            className=" hover:text-blue-500 w-full h-full py-5 flex justify-between"
+                            href={"/articles"}
+                            className=" flex h-full w-full justify-between py-5 hover:text-blue-500"
                         >
                             <p>ARTICLES</p>
                             <ChevronRight />
@@ -26,17 +28,17 @@ function HamburgerMenuSheet() {
                     </li>
                     <li className="w-full border-b border-blue-500 pl-10">
                         <Link
-                            href={'/workouts'}
-                            className=" hover:text-blue-500 w-full h-full py-5 flex justify-between"
+                            href={"/exercises"}
+                            className=" flex h-full w-full justify-between py-5 hover:text-blue-500"
                         >
-                            <p>WORKOUTS</p>
+                            <p>EXERCISES</p>
                             <ChevronRight />
                         </Link>
                     </li>
                     <li className="w-full border-b border-blue-500 pl-10">
                         <Link
-                            href={'/forum'}
-                            className=" hover:text-blue-500 w-full h-full py-5 flex justify-between"
+                            href={"/forum"}
+                            className=" flex h-full w-full justify-between py-5 hover:text-blue-500"
                         >
                             <p>FORUM</p>
                             <ChevronRight />
@@ -45,6 +47,6 @@ function HamburgerMenuSheet() {
                 </ul>
             </SheetContent>
         </Sheet>
-    );
+    )
 }
-export default HamburgerMenuSheet;
+export default HamburgerMenuSheet
