@@ -5,6 +5,13 @@ import axios from "axios"
 
 import ArticlePreview from "@/components/ui/article-preview"
 import { Button } from "@/components/ui/button"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 import { Skeleton } from "@/components/ui/skeleton"
 
 function Articles() {
@@ -13,6 +20,7 @@ function Articles() {
     const [isLoading, setIsLoading] = useState(true)
     const [isFetchingMore, setIsFetchingMore] = useState(false)
     const [skip, setSkip] = useState(0)
+    const [sort, setSort] = useState<string>("")
 
     const fetchArticles = async (skipValue: number) => {
         try {
@@ -32,7 +40,7 @@ function Articles() {
     }
 
     const handleClick = () => {
-        const newSkip = skip + 5 // Increase skip by 5
+        const newSkip = skip + 6 // Increase skip by 5
         setIsFetchingMore(true)
         fetchArticles(newSkip)
         setSkip(newSkip) // Update skip for the next load more
@@ -42,8 +50,45 @@ function Articles() {
         fetchArticles(0)
     }, [])
 
+    const handleSortChange = (value: string) => {
+        setSort(value)
+
+        // Sort the exercises based on the selected sorting option
+        if (value === "asc") {
+            setArticles((prevArticles: any[]) =>
+                prevArticles
+                    ? [...prevArticles].sort((a, b) =>
+                          a.fields.title.localeCompare(b.fields.title)
+                      )
+                    : prevArticles
+            )
+        } else if (value === "desc") {
+            setArticles((prevArticles: any) =>
+                prevArticles
+                    ? [...prevArticles].sort((a, b) =>
+                          b.fields.title.localeCompare(a.fields.title)
+                      )
+                    : prevArticles
+            )
+        }
+    }
+
     return (
-        <section className="flex w-full flex-col items-center pt-48">
+        <section className="flex w-full flex-col items-center">
+            <div className="space-y-5">
+                <h1 className=" pt-48 text-4xl font-bold">Articles:</h1>
+                <div className="flex justify-center space-x-4 pb-12">
+                    <Select onValueChange={handleSortChange}>
+                        <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder="Sort by" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="asc">A-Z</SelectItem>
+                            <SelectItem value="desc">Z-A</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+            </div>
             <article className="grid max-w-[1500px] grid-cols-1 gap-5 lg:grid-cols-2 2xl:grid-cols-3">
                 {error && <div>{error}</div>}
                 {isLoading &&

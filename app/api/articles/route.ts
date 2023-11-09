@@ -28,7 +28,7 @@ export const GET = async (req: Request) => {
         try {
             const res = await contentfulClient.getEntries({
                 content_type: "article",
-                limit: 5,
+                limit: 6,
                 skip: queryParams.skip ? queryParams.skip : 0,
                 order: ["fields.title"],
             })
