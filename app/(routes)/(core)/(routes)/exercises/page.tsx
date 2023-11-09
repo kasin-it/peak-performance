@@ -26,7 +26,6 @@ function ExercisesPage() {
     const [isFetchingMore, setIsFetchingMore] = useState(false)
 
     const [sort, setSort] = useState<string>("")
-    const [query, setQuery] = useState("")
 
     const fetchExercises = async () => {
         try {
@@ -70,7 +69,7 @@ function ExercisesPage() {
         fetchExercises() // Fetch more data
     }
 
-    const handleSelectChange = (value: string) => {
+    const handleSortChange = (value: string) => {
         setSort(value)
         console.log(value)
 
@@ -98,27 +97,12 @@ function ExercisesPage() {
         fetchExercises()
     }, [])
 
-    useEffect(() => {}, [exercises])
-
     return (
         <div className="relative flex flex-col items-center">
             <div className="flex w-full flex-col items-center space-y-10 pb-20 pt-52 text-center text-7xl font-bold">
                 <p>Exercises:</p>
                 <div className="flex justify-center space-x-4">
-                    <div className={cn("relative flex w-full items-center")}>
-                        <Input
-                            type="search"
-                            placeholder="What are you looking for?"
-                            className="w-full rounded-lg pr-10"
-                        />
-                        <button
-                            type="button"
-                            className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-primary"
-                        >
-                            <Search size={16} />
-                        </button>
-                    </div>
-                    <Select onValueChange={handleSelectChange}>
+                    <Select onValueChange={handleSortChange}>
                         <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Sort by" />
                         </SelectTrigger>
