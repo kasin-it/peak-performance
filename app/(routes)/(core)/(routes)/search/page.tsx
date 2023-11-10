@@ -33,22 +33,31 @@ function SearchPage() {
                 exercisesResponse.status === 200 &&
                 articlesResponse.status === 200
             ) {
-                const mixedResults = [
-                    ...exercisesResponse.data.map((exercise: any) => ({
-                        type: "exercise",
-                        data: exercise,
-                    })),
-                    ...articlesResponse.data.map((article: any) => ({
-                        type: "article",
-                        data: article,
-                    })),
-                ]
+                const mixedResults = []
 
-                const randomizedResults = mixedResults.sort(
-                    () => Math.random() - 0.5
+                // Assuming both exercisesResponse.data and articlesResponse.data are arrays
+                const maxLen = Math.max(
+                    exercisesResponse.data.length,
+                    articlesResponse.data.length
                 )
 
-                setResults(randomizedResults)
+                for (let i = 0; i < maxLen; i++) {
+                    if (i < exercisesResponse.data.length) {
+                        mixedResults.push({
+                            type: "exercise",
+                            data: exercisesResponse.data[i],
+                        })
+                    }
+
+                    if (i < articlesResponse.data.length) {
+                        mixedResults.push({
+                            type: "article",
+                            data: articlesResponse.data[i],
+                        })
+                    }
+                }
+
+                setResults(mixedResults)
             } else {
                 setError("Something went wrong.")
             }
