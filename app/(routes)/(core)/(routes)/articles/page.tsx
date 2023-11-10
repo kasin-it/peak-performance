@@ -20,7 +20,6 @@ function Articles() {
     const [isLoading, setIsLoading] = useState(true)
     const [isFetchingMore, setIsFetchingMore] = useState(false)
     const [skip, setSkip] = useState(0)
-    const [sort, setSort] = useState<string>("")
 
     const fetchArticles = async (skipValue: number) => {
         try {
@@ -40,7 +39,7 @@ function Articles() {
     }
 
     const handleClick = () => {
-        const newSkip = skip + 6 // Increase skip by 5
+        const newSkip = skip + 6
         setIsFetchingMore(true)
         fetchArticles(newSkip)
         setSkip(newSkip) // Update skip for the next load more
@@ -51,8 +50,6 @@ function Articles() {
     }, [])
 
     const handleSortChange = (value: string) => {
-        setSort(value)
-
         // Sort the exercises based on the selected sorting option
         if (value === "asc") {
             setArticles((prevArticles: any[]) =>

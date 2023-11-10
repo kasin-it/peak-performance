@@ -90,7 +90,7 @@ function Comment({ comment, currentUser }: CommentProps) {
         }
 
         getUsername()
-    }, [])
+    }, [comment, supabase])
 
     return (
         <article

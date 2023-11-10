@@ -91,6 +91,7 @@ function CommentsSection({ articleId }: { articleId: string }) {
                                             <Comment
                                                 comment={comment}
                                                 currentUser={currentUser}
+                                                key={comment.id}
                                             />
                                         ))
                                     ) : (
