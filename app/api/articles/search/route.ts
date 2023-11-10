@@ -11,14 +11,14 @@ const accessToken = process.env.CONTENTFUL_ACCESS_KEY
 const space = process.env.CONTENTFUL_SPACE_ID
 
 const contentfulClient = createClient({
-    accessToken: accessToken ? accessToken : "",
-    space: space ? space : "",
+    accessToken: accessToken || "",
+    space: space || "",
 })
 
 export const GET = async (req: Request) => {
     try {
         const { searchParams } = new URL(req.url)
-        const query = searchParams.get("query")
+        const query = decodeURI(searchParams.get("query") || "")
 
         const queryParams: QueryParams = {}
 

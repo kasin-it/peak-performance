@@ -12,48 +12,43 @@ import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
 
 function SearchPage() {
-    const searchParams = new URLSearchParams(window.location.search)
     const [error, setError] = useState("")
-    const query = searchParams.get("q") || ""
-    const [exercises, setExercises] = useState<any[]>([])
-    const [articles, setArticles] = useState<any[]>([])
+    const [results, setResults] = useState<any[]>([])
     const [isLoading, setIsLoading] = useState(false)
 
-    const fetchExercises = async () => {
+    const fetchResults = async (query: string) => {
         try {
-            const response = await axios.get("/api/exercises/search", {
+            const exercisesResponse = await axios.get("/api/exercises/search", {
                 params: {
-                    query: query,
+                    query: encodeURI(query),
+                },
+            })
+            const articlesResponse = await axios.get("/api/articles/search", {
+                params: {
+                    query: encodeURI(query),
                 },
             })
 
-            if (response.status === 200) {
-                setExercises((prevExercises: any) => [
-                    ...(prevExercises || []),
-                    ...response.data,
-                ])
-            } else {
-                setError("Something went wrong.")
-            }
-        } catch (error) {
-            setError("An error occurred while fetching data.")
-        } finally {
-            setIsLoading(false)
-        }
-    }
-    const fetchArticles = async () => {
-        try {
-            const response = await axios.get("/api/articles/search", {
-                params: {
-                    query: query,
-                },
-            })
+            if (
+                exercisesResponse.status === 200 &&
+                articlesResponse.status === 200
+            ) {
+                const mixedResults = [
+                    ...exercisesResponse.data.map((exercise: any) => ({
+                        type: "exercise",
+                        data: exercise,
+                    })),
+                    ...articlesResponse.data.map((article: any) => ({
+                        type: "article",
+                        data: article,
+                    })),
+                ]
 
-            if (response.status === 200) {
-                setArticles((prevArticles: any) => [
-                    ...(prevArticles || []),
-                    ...response.data,
-                ])
+                const randomizedResults = mixedResults.sort(
+                    () => Math.random() - 0.5
+                )
+
+                setResults(randomizedResults)
             } else {
                 setError("Something went wrong.")
             }
@@ -65,15 +60,19 @@ function SearchPage() {
     }
 
     useEffect(() => {
+        const searchParams = new URLSearchParams(window.location.search)
+        const query = searchParams.get("q") || ""
+
+        const encoded = encodeURI("dupa mnie boli")
+        console.log("encoded", encoded)
+        console.log("encoded", decodeURI(encoded))
         if (query != "") {
-            console.log("query:", query)
             setIsLoading(true)
-            fetchArticles()
-            fetchExercises()
+            fetchResults(query)
         } else {
             setIsLoading(false)
         }
-    }, [query])
+    }, [])
 
     return (
         <section className="flex w-full flex-col items-center space-y-4">
@@ -92,22 +91,21 @@ function SearchPage() {
                                 className="m-3 mx-auto h-[415px] w-[448px] max-w-md overflow-hidden rounded-xl shadow-md md:max-w-2xl"
                             ></Skeleton>
                         ))}
-                    {exercises && exercises.length > 0 && (
+                    {results.map((result, index) => (
                         <>
-                            {exercises.map((exercise, index) => (
+                            {result.type === "exercise" && (
                                 <ExercisePreview
-                                    exercise={exercise}
+                                    exercise={result.data}
                                     key={index}
                                 />
-                            ))}
+                            )}
+                            {result.type === "article" && (
+                                <ArticlePreview
+                                    article={result.data}
+                                    key={index}
+                                />
+                            )}
                         </>
-                    )}
-                    {articles.length === 0 &&
-                        exercises.length === 0 &&
-                        !isLoading &&
-                        !error && <div>No results found.</div>}
-                    {articles.map((article: any, index: number) => (
-                        <ArticlePreview article={article} key={index} />
                     ))}
                 </div>
             </article>

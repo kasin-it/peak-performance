@@ -3,24 +3,12 @@ import axios from "axios"
 
 const BASE_URL = "https://api.api-ninjas.com/v1/exercises"
 
-interface QueryParams {
-    name?: string
-}
-
 export const GET = async (req: Request) => {
     try {
         const { searchParams } = new URL(req.url)
-        const name = searchParams.get("query")
+        const name = searchParams.get("query") || ""
 
-        const queryParams: QueryParams = {}
-
-        if (name !== null && name != "undefined") queryParams.name = name
-
-        const queryString = Object.keys(queryParams)
-            .map((key) => `${key}=${queryParams[key as keyof QueryParams]}`)
-            .join("&")
-
-        const searchParamsUrl = queryString ? `?${queryString}` : ""
+        const searchParamsUrl = name.length > 0 ? `?name=${name}` : ""
 
         const config = {
             headers: {

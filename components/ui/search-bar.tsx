@@ -12,7 +12,8 @@ const SearchBar = ({ className }: { className?: string }) => {
 
     const router = useRouter()
     const handleSearch = () => {
-        router.push(`/search?q=${query}`)
+        router.push(`/search?q=${encodeURI(query)}`)
+        window.location.reload()
     }
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
