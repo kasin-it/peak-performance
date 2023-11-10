@@ -12,7 +12,7 @@ const SearchBar = ({ className }: { className?: string }) => {
 
     const router = useRouter()
     const handleSearch = () => {
-        router.push(`/browse?q=${query}`)
+        router.push(`/search?q=${query}`)
     }
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
