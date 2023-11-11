@@ -18,12 +18,12 @@ function SearchPage() {
         try {
             const exercisesResponse = await axios.get("/api/exercises", {
                 params: {
-                    query: encodeURI(query),
+                    query: query,
                 },
             })
             const articlesResponse = await axios.get("/api/articles", {
                 params: {
-                    query: encodeURI(query),
+                    query: query,
                 },
             })
 
@@ -33,10 +33,9 @@ function SearchPage() {
             ) {
                 const mixedResults = []
 
-                // Assuming both exercisesResponse.data and articlesResponse.data are arrays
                 const maxLen = Math.max(
                     exercisesResponse.data.length,
-                    articlesResponse.data.length
+                    articlesResponse.data.items.length
                 )
 
                 for (let i = 0; i < maxLen; i++) {
@@ -47,10 +46,10 @@ function SearchPage() {
                         })
                     }
 
-                    if (i < articlesResponse.data.length) {
+                    if (i < articlesResponse.data.items.length) {
                         mixedResults.push({
                             type: "article",
-                            data: articlesResponse.data[i],
+                            data: articlesResponse.data.items[i],
                         })
                     }
                 }
@@ -68,11 +67,11 @@ function SearchPage() {
 
     useEffect(() => {
         const searchParams = new URLSearchParams(window.location.search)
-        const query = searchParams.get("q") || ""
+        const queryParam = searchParams.get("query") || ""
 
-        if (query != "") {
+        if (queryParam != "") {
             setIsLoading(true)
-            fetchResults(query)
+            fetchResults(queryParam)
         } else {
             setIsLoading(false)
         }

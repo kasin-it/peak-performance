@@ -28,6 +28,7 @@ function ExercisesPage() {
     const [muscle, setMuscle] = useState("")
     const [skillLevel, setSkillLevel] = useState("")
     const [exerciseType, setExerciseType] = useState("")
+    const [emptyResponse, setEmptyResponse] = useState(false)
 
     const [sort, setSort] = useState<string>("")
     const router = useRouter()
@@ -62,10 +63,14 @@ function ExercisesPage() {
                 }
             } else {
                 if (response.status === 200) {
-                    setExercises((prevExercises) => [
-                        ...(prevExercises || []),
-                        ...response.data,
-                    ])
+                    if (response.data.length > 0) {
+                        setExercises((prevExercises) => [
+                            ...(prevExercises || []),
+                            ...response.data,
+                        ])
+                    } else {
+                        setEmptyResponse(true)
+                    }
                 } else {
                     setError("Something went wrong.")
                 }
@@ -291,7 +296,7 @@ function ExercisesPage() {
                         ></Skeleton>
                     ))}
             </div>
-            {exercises && exercises.length > 0 && (
+            {exercises && exercises.length > 0 && !emptyResponse && (
                 <Button onClick={handleClick} className="my-10 px-10 py-6">
                     Load more...
                 </Button>

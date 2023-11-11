@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { tree } from "next/dist/build/templates/app-page"
 import { useRouter } from "next/navigation"
 import axios from "axios"
 import { Search } from "lucide-react"
@@ -24,19 +25,27 @@ function Articles() {
     const [isFetchingMore, setIsFetchingMore] = useState(false)
     const [skip, setSkip] = useState(0)
     const [query, setQuery] = useState("")
+    const [emptyResponse, setEmptyResponse] = useState(false)
 
     const router = useRouter()
 
     const fetchArticles = async (skipValue: number) => {
+        const searchParams = new URLSearchParams(window.location.search)
+        const queryParam = searchParams.get("query") || ""
+
         try {
             const response = await axios.get("/api/articles", {
                 params: {
                     skip: skipValue,
-                    query: encodeURI(query),
+                    query: queryParam,
                 },
             })
-            console.log(response.data)
-            setArticles([...articles, ...response.data.items])
+
+            if (response.data.items.length > 0) {
+                setArticles([...articles, ...response.data.items])
+            } else {
+                setEmptyResponse(true)
+            }
         } catch (error) {
             setError("An error occurred while fetching data.")
         } finally {
@@ -53,6 +62,11 @@ function Articles() {
     }
 
     useEffect(() => {
+        const searchParams = new URLSearchParams(window.location.search)
+        const queryParam = searchParams.get("query") || ""
+
+        setQuery(queryParam == "null" ? "" : queryParam)
+
         fetchArticles(0)
     }, [])
 
@@ -80,7 +94,9 @@ function Articles() {
     const handleSearch = () => {
         const queryParams = new URLSearchParams()
 
-        if (query !== "") queryParams.set("query", encodeURI(query))
+        if (query !== "") queryParams.set("query", query)
+
+        console.log(queryParams)
 
         router.push(`/articles?${queryParams.toString()}`)
         window.location.reload()
@@ -93,8 +109,8 @@ function Articles() {
 
     return (
         <section className="flex w-full flex-col items-center">
-            <div className="space-y-5">
-                <h1 className=" pt-48 text-4xl font-bold">Articles:</h1>
+            <div className="flex flex-col items-center space-y-5">
+                <h1 className=" pt-48 text-6xl font-bold">Articles:</h1>
                 <div className="flex justify-center space-x-4 pb-12">
                     <div className={"relative flex w-full items-center"}>
                         <Input
@@ -147,7 +163,7 @@ function Articles() {
                         ></Skeleton>
                     ))}
             </article>
-            {!isFetchingMore && articles.length > 0 && (
+            {!isFetchingMore && articles.length > 0 && !emptyResponse && (
                 <Button onClick={handleClick} className="my-10 px-10 py-6">
                     Load more...
                 </Button>

@@ -20,7 +20,7 @@ export const GET = async (req: Request) => {
     try {
         const { searchParams } = new URL(req.url)
         const skip = searchParams.get("skip")
-        const query = decodeURI(searchParams.get("query") || "")
+        const query = searchParams.get("query")
 
         const queryParams: QueryParams = {}
 
@@ -34,7 +34,6 @@ export const GET = async (req: Request) => {
                 limit: 6,
                 query: queryParams.query ? queryParams.query : "",
                 skip: queryParams.skip ? queryParams.skip : 0,
-                order: query ? [] : ["fields.title"],
             })
             return NextResponse.json(res)
         } catch (error) {
