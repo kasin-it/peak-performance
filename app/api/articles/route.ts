@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label"
 
 interface QueryParams {
     skip?: number
+    query?: string
 }
 const accessToken = process.env.CONTENTFUL_ACCESS_KEY
 const space = process.env.CONTENTFUL_SPACE_ID
@@ -19,18 +20,21 @@ export const GET = async (req: Request) => {
     try {
         const { searchParams } = new URL(req.url)
         const skip = searchParams.get("skip")
+        const query = decodeURI(searchParams.get("query") || "")
 
         const queryParams: QueryParams = {}
 
         if (skip !== null && skip != "undefined")
             queryParams.skip = parseInt(skip)
+        if (query !== null && query != "undefined") queryParams.query = query
 
         try {
             const res = await contentfulClient.getEntries({
                 content_type: "article",
                 limit: 6,
+                query: queryParams.query ? queryParams.query : "",
                 skip: queryParams.skip ? queryParams.skip : 0,
-                order: ["fields.title"],
+                order: query ? [] : ["fields.title"],
             })
             return NextResponse.json(res)
         } catch (error) {

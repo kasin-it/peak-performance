@@ -1,11 +1,9 @@
 "use client"
 
-import { AnyNaptrRecord } from "dns"
 import { useEffect, useState } from "react"
 import axios from "axios"
 
 import ArticlePreview from "@/components/ui/article-preview"
-import { Card, CardDescription, CardTitle } from "@/components/ui/card"
 import ExercisePreview from "@/components/ui/exercise-preview"
 import SearchBar from "@/components/ui/search-bar"
 import { Separator } from "@/components/ui/separator"
@@ -18,12 +16,12 @@ function SearchPage() {
 
     const fetchResults = async (query: string) => {
         try {
-            const exercisesResponse = await axios.get("/api/exercises/search", {
+            const exercisesResponse = await axios.get("/api/exercises", {
                 params: {
                     query: encodeURI(query),
                 },
             })
-            const articlesResponse = await axios.get("/api/articles/search", {
+            const articlesResponse = await axios.get("/api/articles", {
                 params: {
                     query: encodeURI(query),
                 },
@@ -72,9 +70,6 @@ function SearchPage() {
         const searchParams = new URLSearchParams(window.location.search)
         const query = searchParams.get("q") || ""
 
-        const encoded = encodeURI("dupa mnie boli")
-        console.log("encoded", encoded)
-        console.log("encoded", decodeURI(encoded))
         if (query != "") {
             setIsLoading(true)
             fetchResults(query)

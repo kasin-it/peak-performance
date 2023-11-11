@@ -8,6 +8,7 @@ interface QueryParams {
     type?: string
     muscle?: string
     offset?: string
+    name?: string
 }
 
 export const GET = async (req: Request) => {
@@ -17,6 +18,7 @@ export const GET = async (req: Request) => {
         const type = searchParams.get("exercise_type")
         const muscle = searchParams.get("muscle")
         const offset = searchParams.get("offset")
+        const name = searchParams.get("query") || ""
 
         const queryParams: QueryParams = {}
 
@@ -27,12 +29,16 @@ export const GET = async (req: Request) => {
             queryParams.muscle = muscle
         if (offset !== null && offset != "undefined")
             queryParams.offset = offset
+        if (name !== null && name != "undefined" && name != "")
+            queryParams.name = decodeURI(name)
 
         const queryString = Object.keys(queryParams)
             .map((key) => `${key}=${queryParams[key as keyof QueryParams]}`)
             .join("&")
 
         const searchParamsUrl = queryString ? `?${queryString}` : ""
+
+        console.log(searchParamsUrl)
 
         const config = {
             headers: {
