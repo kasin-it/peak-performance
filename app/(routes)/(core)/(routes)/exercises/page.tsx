@@ -32,7 +32,10 @@ function ExercisesPage() {
     const [sort, setSort] = useState<string>("")
     const router = useRouter()
 
-    const fetchExercises = async (offsetValue: number) => {
+    const fetchExercises = async (
+        offsetValue: number,
+        initial: boolean = false
+    ) => {
         try {
             console.log(exercises)
             const searchParams = new URLSearchParams(window.location.search)
@@ -51,14 +54,21 @@ function ExercisesPage() {
                     query: queryParam,
                 },
             })
-
-            if (response.status === 200) {
-                setExercises((prevExercises) => [
-                    ...(prevExercises || []),
-                    ...response.data,
-                ])
+            if (initial) {
+                if (response.status === 200) {
+                    setExercises([...response.data])
+                } else {
+                    setError("Something went wrong.")
+                }
             } else {
-                setError("Something went wrong.")
+                if (response.status === 200) {
+                    setExercises((prevExercises) => [
+                        ...(prevExercises || []),
+                        ...response.data,
+                    ])
+                } else {
+                    setError("Something went wrong.")
+                }
             }
         } catch (error) {
             setError("An error occurred while fetching data.")
@@ -114,7 +124,7 @@ function ExercisesPage() {
         setMuscle(muscleParam)
         setQuery(queryParam == "null" ? "" : queryParam)
 
-        fetchExercises(0)
+        fetchExercises(0, true)
     }, [])
 
     const handleSearch = () => {
