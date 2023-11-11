@@ -7,12 +7,19 @@ import { Search } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 
-const SearchBar = ({ className }: { className?: string }) => {
-    const [query, setQuery] = useState("")
+const SearchBar = ({
+    className,
+    value = "",
+}: {
+    className?: string
+    value?: string
+}) => {
+    const [query, setQuery] = useState(value)
 
     const router = useRouter()
     const handleSearch = () => {
-        router.push(`/search?q=${query}`)
+        router.push(`/search?query=${query}`)
+        window.location.reload()
     }
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
