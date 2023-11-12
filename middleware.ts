@@ -18,7 +18,7 @@ export async function middleware(req: NextRequest) {
         return NextResponse.redirect(new URL(`/`, req.url))
     }
 
-    if (req.nextUrl.pathname.startsWith("/user/settings") && !user) {
+    if (req.nextUrl.pathname.startsWith("/user") && !user) {
         return NextResponse.redirect(new URL(`/`, req.url))
     }
 
