@@ -78,14 +78,14 @@ function SearchPage() {
     }, [])
 
     return (
-        <section className="flex w-full flex-col items-center space-y-4">
+        <section className="flex w-full flex-col items-center space-y-10 px-5 pb-10">
             <div className="flex flex-col items-center space-y-5">
                 <h1 className="pb-8 pt-48 text-4xl font-bold">Search:</h1>
-                <SearchBar className="w-[500px]" />
+                <SearchBar className="w-full min-w-[400px]" />
             </div>
+            <Separator />
             <article className="w-full max-w-[1500px]">
-                <Separator />
-                <div className="grid max-w-[1500px] grid-cols-1 gap-5 lg:grid-cols-2 2xl:grid-cols-3">
+                <div className="flex max-w-[1500px] flex-wrap gap-10 ">
                     {error && <div>{error}</div>}
                     {isLoading &&
                         Array.from({ length: 10 }).map((_, index) => (

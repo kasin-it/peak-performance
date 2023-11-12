@@ -25,8 +25,12 @@ function CommentsSection({ articleId }: { articleId: string }) {
                     console.log(error)
                 }
 
-                if (data.user) {
+                if (data?.user) {
                     setCurrentUser(data.user)
+                } else {
+                    // Handle case where the token is not available or expired
+                    // You might want to redirect the user to the login page or refresh the token
+                    console.log("User not authenticated or token expired")
                 }
             } catch (error) {
                 console.log(error)

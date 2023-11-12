@@ -16,6 +16,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
 
 function Articles() {
@@ -108,7 +109,7 @@ function Articles() {
     }
 
     return (
-        <section className="flex w-full flex-col items-center">
+        <section className="flex w-full flex-col items-center px-3 pb-10">
             <div className="flex flex-col items-center space-y-5">
                 <h1 className=" pt-48 text-6xl font-bold">Articles:</h1>
                 <div className="flex justify-center space-x-4 pb-12">
@@ -140,6 +141,7 @@ function Articles() {
                     </Select>
                 </div>
             </div>
+            <Separator className="mb-10" />
             <article className="grid max-w-[1500px] grid-cols-1 gap-5 lg:grid-cols-2 2xl:grid-cols-3">
                 {error && <div>{error}</div>}
                 {isLoading &&

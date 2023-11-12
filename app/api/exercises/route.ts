@@ -38,8 +38,6 @@ export const GET = async (req: Request) => {
 
         const searchParamsUrl = queryString ? `?${queryString}` : ""
 
-        console.log(searchParamsUrl)
-
         const config = {
             headers: {
                 "X-Api-Key": process.env.NINJA_API_KEY,

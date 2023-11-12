@@ -6,7 +6,7 @@ import { Card, CardDescription, CardTitle } from "@/components/ui/card"
 
 function ExercisePreview({ exercise }: { exercise: Exercise }) {
     return (
-        <Card className="m-3 mx-auto w-full max-w-md overflow-hidden rounded-xl bg-white shadow-md md:max-w-2xl">
+        <Card className="m-3 mx-auto w-full max-w-md overflow-hidden rounded-xl bg-white shadow-md 2xl:max-w-xl">
             <div className="p-8">
                 <CardTitle className="mt-1 block text-4xl font-medium leading-tight text-black">
                     {exercise.name}
