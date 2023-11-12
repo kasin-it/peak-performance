@@ -16,6 +16,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
 
 function ExercisesPage() {
@@ -152,11 +153,15 @@ function ExercisesPage() {
     }
 
     return (
-        <div className="relative flex flex-col items-center">
-            <div className="flex w-full flex-col items-center space-y-10 pb-20 pt-52 text-center text-7xl font-bold">
+        <div className="relative flex flex-col items-center px-4">
+            <div className="flex w-full flex-col items-center space-y-10 px-4 pb-20 pt-52 text-center text-7xl font-bold">
                 <p>Exercises:</p>
-                <div className="flex justify-center space-x-4">
-                    <div className={"relative flex w-full items-center"}>
+                <div className="flex flex-wrap justify-center gap-4">
+                    <div
+                        className={
+                            "relative flex w-full max-w-[500px] items-center"
+                        }
+                    >
                         <Input
                             type="search"
                             placeholder="What are you looking for?"
@@ -195,10 +200,10 @@ function ExercisesPage() {
                             </SelectItem>
                             <SelectItem value="lats">lats</SelectItem>
                             <SelectItem value="lower_back">
-                                lower_back
+                                lower back
                             </SelectItem>
                             <SelectItem value="middle_back">
-                                middle_back
+                                middle back
                             </SelectItem>
                             <SelectItem value="quadriceps">
                                 quadriceps
@@ -267,7 +272,8 @@ function ExercisesPage() {
                     <Button onClick={handleSearch}>Search</Button>
                 </div>
             </div>
-            <div className="flex w-full max-w-[1500px] flex-wrap justify-between pb-12">
+            <Separator className="mb-5" />
+            <div className="flex w-full max-w-[1500px] flex-wrap justify-between gap-5 pb-12">
                 {error && <div>{error}</div>}
                 {exercises && exercises.length === 0 && (
                     <div>No exercises found.</div>

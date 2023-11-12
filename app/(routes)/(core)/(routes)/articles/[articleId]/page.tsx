@@ -53,10 +53,10 @@ async function ArticlePage({ params }: { params: { articleId: string } }) {
                     </p>
                     <Link
                         className="group relative bottom-0 flex max-w-[185px] flex-col pt-5"
-                        href={`#routine`}
+                        href={`#comments`}
                     >
                         <p className="text-xl font-medium tracking-wider">
-                            GO TO THE ROUTINE
+                            GO TO COMMENTS
                         </p>
                         <div className=" absolute bottom-0 left-0 h-1 w-full origin-left scale-x-[.23] transform bg-orange-500 transition-transform duration-300 group-hover:scale-x-100" />
                     </Link>

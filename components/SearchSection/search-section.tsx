@@ -16,30 +16,37 @@ function SearchSection() {
         {
             img: abs_image,
             label: "ABS",
+            value: "abdominals",
         },
         {
             img: arms_image,
-            label: "ARMS",
+            label: "BICEPS",
+            value: "biceps",
         },
         {
             img: legs_image,
-            label: "LEGS",
+            label: "QUADS",
+            value: "quadriceps",
         },
         {
             img: back_image,
-            label: "BACK",
+            label: "LATS",
+            value: "lats",
         },
         {
             img: shoulders_image,
-            label: "SHOULDERS",
+            label: "TRICEPS",
+            value: "triceps",
         },
         {
             img: chest_image,
             label: "CHEST",
+            value: "chest",
         },
         {
             img: full_body_image,
-            label: "FULL-BODY",
+            label: "FOREARMS",
+            value: "forearms",
         },
     ]
 
@@ -50,14 +57,12 @@ function SearchSection() {
                     "flex w-full max-w-[1500px] flex-col space-y-4 px-10 text-center md:text-left"
                 }
             >
-                <h1 className="text-7xl font-black text-blue-500">
-                    WORKOUT ROUTINES
-                </h1>
+                <h1 className="text-7xl font-black text-blue-500">EXERCISES</h1>
 
-                <section className="flex flex-wrap items-center justify-around space-x-4 space-y-4 pb-6">
+                <section className="flex flex-wrap items-center justify-around gap-y-7 space-x-4 pb-6">
                     {routes.map((route, index) => (
                         <Link
-                            href={`/exercises?muslce=${route.label.toLowerCase()}`}
+                            href={`/exercises?muscle=${route.value.toLowerCase()}`}
                             className="group flex flex-col items-center justify-center space-y-4"
                             key={index}
                         >
