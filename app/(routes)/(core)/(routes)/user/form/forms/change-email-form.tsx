@@ -47,9 +47,9 @@ function ChangeEmailForm() {
             setError("email", { message: error.message })
             return
         }
-        toast.success("Check your new email to confirm the change.")
-
-        router.refresh()
+        toast.success("Check your new email to confirm the change.", {
+            duration: 10000,
+        })
     }
 
     return (

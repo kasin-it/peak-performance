@@ -26,12 +26,12 @@ const formSchema = z.object({
     username: z
         .string()
         .min(1, "Username can not be empty.")
-        .min(8, "Username must have at least 8 characters."),
+        .min(5, "Username must have at least 5 characters."),
 })
 
 function ChangeUsernameForm() {
     const supabase = createClientComponentClient<Database>()
-    const router = useRouter()
+
     const {
         register,
         handleSubmit,
@@ -43,16 +43,22 @@ function ChangeUsernameForm() {
         reValidateMode: "onSubmit",
     })
     const onSubmit: SubmitHandler<FormData> = async (formData: FormData) => {
-        // const { data: _, error } = await supabase.auth.updateUser({
-        //     username: formData.username,
-        // })
-        // if (error) {
-        //     setError("username", { message: error.message })
-        //     return
-        // }
-        // toast.success("Check your new username to confirm the change.")
+        const {
+            data: { user },
+        } = await supabase.auth.getUser()
 
-        router.refresh()
+        const { data: _, error } = await supabase
+            .from("profiles")
+            .update({
+                username: formData.username,
+            })
+            .eq("id", user!.id)
+        if (error) {
+            setError("username", { message: error.message })
+            return
+        }
+
+        window.location.reload()
     }
 
     return (
@@ -63,13 +69,13 @@ function ChangeUsernameForm() {
         >
             <div>
                 <Label className="text-muted-foreground" htmlFor="username">
-                    username
+                    Username
                 </Label>
                 <div className="relative">
                     <Input
                         id="username"
-                        placeholder="andrew@mail.com"
                         type="username"
+                        placeholder="example768g"
                         autoCapitalize="none"
                         autoComplete="username"
                         autoCorrect="off"

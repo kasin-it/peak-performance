@@ -23,12 +23,8 @@ async function UserPage({ children }: { children: React.ReactNode }) {
             href: "/user/training-plan",
         },
         {
-            title: "Change Password",
-            href: "/user/form/change-password",
-        },
-        {
-            title: "Delete Account",
-            href: "/user/form/delete-account",
+            title: "Options",
+            href: "/user/options",
         },
     ]
 
