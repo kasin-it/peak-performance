@@ -15,7 +15,7 @@ async function UserPage({ children }: { children: React.ReactNode }) {
 
     const sidebarNavItems = [
         {
-            title: "Profile",
+            title: "Settings",
             href: "/user",
         },
         {
@@ -30,11 +30,11 @@ async function UserPage({ children }: { children: React.ReactNode }) {
                 <h1 className="w-full pb-10 text-center text-5xl font-bold">
                     {data![0].username}
                 </h1>
-                <div className="flex flex-col justify-center space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-                    <aside className="-mx-4 lg:w-1/5">
+                <div className="flex flex-col justify-center space-y-8 lg:space-x-12 lg:space-y-0">
+                    <aside className="-mx-4">
                         <SidebarNav items={sidebarNavItems} />
                     </aside>
-                    <div className="flex-1 lg:max-w-2xl">{children}</div>
+                    <div className="w-full flex-1">{children}</div>
                 </div>
             </section>
         </section>

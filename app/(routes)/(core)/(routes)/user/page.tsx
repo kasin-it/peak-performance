@@ -1,15 +1,12 @@
-import { useEffect, useState } from "react"
 import Link from "next/link"
-import { redirect } from "next/navigation"
 
-import ChangeEmailForm from "./form/forms/change-email-form"
-import ChangePasswordForm from "./form/forms/change-password-form"
-import ChangeUsernameForm from "./form/forms/change-username-form"
+import ChangeEmailForm from "./forms/change-email-form"
+import ChangePasswordForm from "./forms/change-password-form"
+import ChangeUsernameForm from "./forms/change-username-form"
 
 function ProfilePage() {
     return (
-        <div className="mx-auto max-w-md space-y-6">
-            <h1 className="text-center text-3xl font-bold">User Settings</h1>
+        <div className="mx-auto max-w-md space-y-6 pt-12">
             <div className="space-y-4">
                 <div className="space-y-2">
                     <ChangeEmailForm />
