@@ -1,52 +1,53 @@
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
-import { User2 } from 'lucide-react';
-import { cookies } from 'next/headers';
-import { Button } from '../ui/button';
-import Link from 'next/link';
+import { cookies } from "next/headers"
+import Link from "next/link"
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
+import { User2 } from "lucide-react"
+
+import { Button } from "../ui/button"
 
 async function AccountSection() {
-    const cookieStore = cookies();
+    const cookieStore = cookies()
 
     const supabase = createServerComponentClient({
         cookies: () => cookieStore,
-    });
+    })
 
     const {
         data: { user },
-    } = await supabase.auth.getUser();
+    } = await supabase.auth.getUser()
 
     if (user) {
         return (
             <>
                 <Link
                     href="/user"
-                    className="text-blue-300 hover:text-blue-500 p-2"
+                    className="p-2 text-blue-300 hover:text-blue-500"
                 >
-                    <User2 className=" w-8 h-8" />
+                    <User2 className=" h-8 w-8" strokeWidth={"1px"} />
                 </Link>
             </>
-        );
+        )
     }
 
     return (
         <>
-            <Link href={'/auth/sign-in'}>
+            <Link href={"/auth/sign-in"}>
                 <Button
-                    className="font-black uppercase  text-md"
-                    variant={'outline'}
+                    className="text-md font-black  uppercase"
+                    variant={"outline"}
                 >
                     Sign in
                 </Button>
             </Link>
-            <Link href={'/auth/sign-up'}>
+            <Link href={"/auth/sign-up"}>
                 <Button
-                    className="font-black uppercase text-md"
-                    variant={'default'}
+                    className="text-md font-black uppercase"
+                    variant={"default"}
                 >
                     Sign up
                 </Button>
             </Link>
         </>
-    );
+    )
 }
-export default AccountSection;
+export default AccountSection

@@ -23,13 +23,10 @@ import {
 type FormData = z.infer<typeof formSchema>
 
 const formSchema = z.object({
-    username: z
-        .string()
-        .min(1, "Username can not be empty.")
-        .min(8, "Username must have at least 8 characters."),
+    email: z.string().email(),
 })
 
-function ChangeUsernameForm() {
+function ChangeEmailForm() {
     const supabase = createClientComponentClient<Database>()
     const router = useRouter()
     const {
@@ -43,16 +40,16 @@ function ChangeUsernameForm() {
         reValidateMode: "onSubmit",
     })
     const onSubmit: SubmitHandler<FormData> = async (formData: FormData) => {
-        // const { data: _, error } = await supabase.auth.updateUser({
-        //     username: formData.username,
-        // })
-        // if (error) {
-        //     setError("username", { message: error.message })
-        //     return
-        // }
-        // toast.success("Check your new username to confirm the change.")
-
-        router.refresh()
+        const { data: _, error } = await supabase.auth.updateUser({
+            email: formData.email,
+        })
+        if (error) {
+            setError("email", { message: error.message })
+            return
+        }
+        toast.success("Check your new email to confirm the change.", {
+            duration: 10000,
+        })
     }
 
     return (
@@ -62,24 +59,22 @@ function ChangeUsernameForm() {
             className="space-y-3"
         >
             <div>
-                <Label className="text-muted-foreground" htmlFor="username">
-                    username
-                </Label>
+                <Label htmlFor="email">Email</Label>
                 <div className="relative">
                     <Input
-                        id="username"
-                        placeholder="andrew@mail.com"
-                        type="username"
+                        id="email"
+                        placeholder="Enter new email"
+                        type="email"
                         autoCapitalize="none"
-                        autoComplete="username"
+                        autoComplete="email"
                         autoCorrect="off"
                         disabled={isSubmitting}
-                        {...register("username")}
+                        {...register("email")}
                         className={`${
-                            errors.username ? "border border-red-500 pr-10" : ""
+                            errors.email ? "border border-red-500 pr-10" : ""
                         }`}
                     />
-                    {errors.username && (
+                    {errors.email && (
                         <div className="-translate-y-2/5 absolute right-3 top-1/4 text-red-500">
                             <TooltipProvider delayDuration={100}>
                                 <Tooltip>
@@ -87,7 +82,7 @@ function ChangeUsernameForm() {
                                         <AlertCircle size={18} />
                                     </TooltipTrigger>
                                     <TooltipContent>
-                                        <p>{errors.username.message}</p>
+                                        <p>{errors.email.message}</p>
                                     </TooltipContent>
                                 </Tooltip>
                             </TooltipProvider>
@@ -96,17 +91,13 @@ function ChangeUsernameForm() {
                 </div>
             </div>
 
-            <Button
-                className="w-[160px]"
-                disabled={isSubmitting}
-                variant={"secondary"}
-            >
+            <Button className="w-full" disabled={isSubmitting}>
                 {isSubmitting && (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 )}
-                <p className="px-5">UPDATE USERNAME</p>
+                <p className="px-5">UPDATE EMAIL</p>
             </Button>
         </form>
     )
 }
-export default ChangeUsernameForm
+export default ChangeEmailForm

@@ -7,10 +7,18 @@ export interface Comment {
 }
 
 export interface Exercise {
+    name?: string
+    type?: string
+    muscle?: string
+    equipment?: string
+    difficulty?: string
+    instructions?: string
+    repetitions?: number
+    sets?: number
+}
+
+export interface Workout {
     name: string
-    type: string
-    muscle: string
-    equipment: string
-    difficulty: string
-    instructions: string
+    desc: string
+    exercises?: Exercise[]
 }
