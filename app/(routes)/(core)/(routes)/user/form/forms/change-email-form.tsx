@@ -59,13 +59,11 @@ function ChangeEmailForm() {
             className="space-y-3"
         >
             <div>
-                <Label className="text-muted-foreground" htmlFor="email">
-                    Email
-                </Label>
+                <Label htmlFor="email">Email</Label>
                 <div className="relative">
                     <Input
                         id="email"
-                        placeholder="andrew@mail.com"
+                        placeholder="Enter new email"
                         type="email"
                         autoCapitalize="none"
                         autoComplete="email"
@@ -93,11 +91,7 @@ function ChangeEmailForm() {
                 </div>
             </div>
 
-            <Button
-                className="w-[160px]"
-                disabled={isSubmitting}
-                variant={"secondary"}
-            >
+            <Button className="w-full" disabled={isSubmitting}>
                 {isSubmitting && (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 )}

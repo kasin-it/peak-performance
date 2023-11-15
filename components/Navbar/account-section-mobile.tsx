@@ -1,42 +1,43 @@
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
-import { User2 } from 'lucide-react';
-import { cookies } from 'next/headers';
-import { Button } from '../ui/button';
-import Link from 'next/link';
+import { cookies } from "next/headers"
+import Link from "next/link"
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
+import { User2 } from "lucide-react"
+
+import { Button } from "../ui/button"
 
 async function AccountSectionMobile() {
-    const cookieStore = cookies();
+    const cookieStore = cookies()
 
     const supabase = createServerComponentClient({
         cookies: () => cookieStore,
-    });
+    })
 
     const {
         data: { user },
-    } = await supabase.auth.getUser();
+    } = await supabase.auth.getUser()
 
     if (user) {
         return (
             <>
                 <Link
                     href="/user"
-                    className="text-blue-300 hover:text-blue-500 p-2"
+                    className="p-2 text-blue-300 hover:text-blue-500"
                 >
-                    <User2 className=" w-9 h-9" />
+                    <User2 className=" h-9 w-9" strokeWidth={"1px"} />
                 </Link>
             </>
-        );
+        )
     }
 
     return (
         <>
             <Link
                 href="/auth"
-                className="text-blue-300 hover:text-blue-500 p-2"
+                className="p-2 text-blue-300 hover:text-blue-500"
             >
-                <User2 className=" w-9 h-9" />
+                <User2 className=" h-9 w-9" />
             </Link>
         </>
-    );
+    )
 }
-export default AccountSectionMobile;
+export default AccountSectionMobile

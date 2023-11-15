@@ -68,14 +68,12 @@ function ChangeUsernameForm() {
             className="space-y-3"
         >
             <div>
-                <Label className="text-muted-foreground" htmlFor="username">
-                    Username
-                </Label>
+                <Label htmlFor="username">Username</Label>
                 <div className="relative">
                     <Input
                         id="username"
                         type="username"
-                        placeholder="example768g"
+                        placeholder="Enter new username"
                         autoCapitalize="none"
                         autoComplete="username"
                         autoCorrect="off"
@@ -102,11 +100,7 @@ function ChangeUsernameForm() {
                 </div>
             </div>
 
-            <Button
-                className="w-[160px]"
-                disabled={isSubmitting}
-                variant={"secondary"}
-            >
+            <Button className="w-full" disabled={isSubmitting}>
                 {isSubmitting && (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 )}

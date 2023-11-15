@@ -30,7 +30,7 @@ function ChangePasswordForm() {
     }
 
     return (
-        <Button className="w-[160px]" onClick={onSubmit} variant={"secondary"}>
+        <Button className="w-full" onClick={onSubmit}>
             <p className="px-5">RESET PASSWORD</p>
         </Button>
     )
