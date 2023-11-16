@@ -1,21 +1,40 @@
-import { Workout } from "@/types/types"
+import Link from "next/link"
+import { redirect } from "next/navigation"
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
+import WorkoutItem from "./workout-item"
+
 interface TrainingPlanItemProps {
-    header: string
-    workouts: Workout[]
-    estimatedTime: number
+    name: string
+    workouts?: string[]
 }
 
-function TrainingPlanItem() {
+function TrainingPlanItem({ name, workouts }: TrainingPlanItemProps) {
+    const queryUrl = `/user/workouts?day=${name}`
+
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Wednesday</CardTitle>
+                <CardTitle className="capitalize">{name}</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4 border-y py-4">
-                <Button size="sm">Add Event</Button>
+                {workouts ? (
+                    <>
+                        {workouts.map((workoutId) => (
+                            <WorkoutItem workoutId={workoutId} />
+                        ))}
+                    </>
+                ) : (
+                    <p>No workouts</p>
+                )}
+                <Link
+                    href={queryUrl}
+                    className="rounded-md bg-blue-500 px-4 py-2 text-center text-white transition duration-300 ease-linear hover:bg-blue-300"
+                >
+                    Add Workout
+                </Link>
             </CardContent>
         </Card>
     )

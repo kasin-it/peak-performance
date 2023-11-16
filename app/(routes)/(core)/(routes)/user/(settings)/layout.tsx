@@ -15,12 +15,12 @@ async function UserPage({ children }: { children: React.ReactNode }) {
 
     const sidebarNavItems = [
         {
-            title: "Settings",
-            href: "/user",
+            title: "Profile",
+            href: "/user/",
         },
         {
-            title: "Training Plan",
-            href: "/user/training-plan",
+            title: "Settings",
+            href: "/user/settings",
         },
     ]
 

@@ -19,6 +19,15 @@ function HamburgerMenuSheet() {
                     {/* <li>SHOP</li> */}
                     <li className="w-full border-y border-blue-500 pl-10">
                         <Link
+                            href={"/user/training-plan"}
+                            className=" flex h-full w-full justify-between py-5 hover:text-blue-500"
+                        >
+                            <p>MY TRAINING</p>
+                            <ChevronRight />
+                        </Link>
+                    </li>
+                    <li className="w-full border-b border-blue-500 pl-10">
+                        <Link
                             href={"/articles"}
                             className=" flex h-full w-full justify-between py-5 hover:text-blue-500"
                         >
@@ -35,7 +44,7 @@ function HamburgerMenuSheet() {
                             <ChevronRight />
                         </Link>
                     </li>
-                    <li className="w-full border-b border-blue-500 pl-10">
+                    {/* <li className="w-full border-b border-blue-500 pl-10">
                         <Link
                             href={"/forum"}
                             className=" flex h-full w-full justify-between py-5 hover:text-blue-500"
@@ -43,7 +52,7 @@ function HamburgerMenuSheet() {
                             <p>FORUM</p>
                             <ChevronRight />
                         </Link>
-                    </li>
+                    </li> */}
                 </ul>
             </SheetContent>
         </Sheet>

@@ -18,6 +18,14 @@ function DesktopView() {
                     {/* <li>SHOP</li> */}
                     <li>
                         <Link
+                            href={"/user/training-plan/"}
+                            className="border-orange-500 hover:border-b-[3px] hover:text-blue-500"
+                        >
+                            MY TRAINING
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
                             href={"/articles"}
                             className="border-orange-500 hover:border-b-[3px] hover:text-blue-500"
                         >
@@ -32,14 +40,14 @@ function DesktopView() {
                             EXERCISES
                         </Link>
                     </li>
-                    <li>
+                    {/* <li>
                         <Link
                             href={"/forum"}
                             className="border-orange-500 hover:border-b-[3px] hover:text-blue-500"
                         >
                             FORUM
                         </Link>
-                    </li>
+                    </li> */}
                 </ul>
             </div>
             <div className="flex items-center space-x-2">
