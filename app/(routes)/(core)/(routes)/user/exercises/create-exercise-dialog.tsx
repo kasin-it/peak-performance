@@ -32,10 +32,12 @@ type FormData = z.infer<typeof schema>
 
 const schema = z.object({
     name: z.string().min(5, "Name needs to be at least 5 characters"),
-    desc: z.string().max(256, "Y"),
+    instructions: z.string().max(256, "Y"),
+    repetitions: z.coerce.number().gte(1, "Must be 1 and above"),
+    sets: z.coerce.number().gte(1, "Must be 1 and above"),
 })
 
-function CreateWorkoutDialog() {
+function CreateExerciseDialog() {
     const supabase = createClientComponentClient()
     const router = useRouter()
     const [isMounted, setIsMounted] = useState(false)
@@ -51,10 +53,14 @@ function CreateWorkoutDialog() {
     })
 
     const onSubmit: SubmitHandler<FormData> = async (formData: FormData) => {
-        const { data: _, error } = await supabase.from("user_workouts").insert({
-            name: formData.name,
-            desc: formData.desc,
-        })
+        const { data: _, error } = await supabase
+            .from("user_exercises")
+            .insert({
+                name: formData.name,
+                instructions: formData.instructions,
+                sets: formData.sets,
+                repetitions: formData.repetitions,
+            })
 
         if (error) {
             setError("name", { message: error.message })
@@ -83,13 +89,15 @@ function CreateWorkoutDialog() {
                     className="space-y-3"
                 >
                     <DialogHeader>
-                        <DialogTitle>Create your very own workout!</DialogTitle>
+                        <DialogTitle>
+                            Create your very own exercise!
+                        </DialogTitle>
                     </DialogHeader>
                     <div className="relative">
                         <Label>Name</Label>
                         <Input
                             id="name"
-                            placeholder="Enter name of the workout"
+                            placeholder="Enter name of the exercise"
                             type="text"
                             autoCapitalize="none"
                             autoCorrect="off"
@@ -115,21 +123,23 @@ function CreateWorkoutDialog() {
                         )}
                     </div>
                     <div className="relative">
-                        <Label>Description</Label>
+                        <Label>Instructions</Label>
                         <Textarea
                             maxLength={256}
                             rows={5}
-                            id="desc"
-                            placeholder="Enter description of the workout"
+                            id="instructions"
+                            placeholder="Enter description of the exercise"
                             autoCapitalize="none"
                             autoCorrect="off"
                             disabled={isSubmitting}
-                            {...register("desc")}
+                            {...register("instructions")}
                             className={`resize-none ${
-                                errors.desc ? "border border-red-500 pr-10" : ""
+                                errors.instructions
+                                    ? "border border-red-500 pr-10"
+                                    : ""
                             }`}
                         />
-                        {errors.desc && (
+                        {errors.instructions && (
                             <div className="-translate-y-2/5 absolute right-3 top-[35px]  text-red-500">
                                 <TooltipProvider delayDuration={100}>
                                     <Tooltip>
@@ -137,7 +147,71 @@ function CreateWorkoutDialog() {
                                             <AlertCircle size={18} />
                                         </TooltipTrigger>
                                         <TooltipContent>
-                                            <p>{errors.desc.message}</p>
+                                            <p>{errors.instructions.message}</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            </div>
+                        )}
+                    </div>
+                    <div className="relative">
+                        <Label>Sets</Label>
+                        <Input
+                            type="number"
+                            id="sets"
+                            defaultValue={1}
+                            min={1}
+                            placeholder="Enter description of the workout"
+                            autoCapitalize="none"
+                            autoCorrect="off"
+                            disabled={isSubmitting}
+                            {...register("sets")}
+                            className={`resize-none ${
+                                errors.sets ? "border border-red-500 pr-10" : ""
+                            }`}
+                        />
+                        {errors.sets && (
+                            <div className="-translate-y-2/5 absolute right-3 top-[35px]  text-red-500">
+                                <TooltipProvider delayDuration={100}>
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <AlertCircle size={18} />
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>{errors.sets.message}</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            </div>
+                        )}
+                    </div>
+                    <div className="relative">
+                        <Label>Repetitions</Label>
+                        <Input
+                            type="number"
+                            id="repetitions"
+                            min={1}
+                            placeholder="Enter description of the workout"
+                            defaultValue={1}
+                            autoCapitalize="none"
+                            autoCorrect="off"
+                            disabled={isSubmitting}
+                            {...register("repetitions")}
+                            className={`resize-none ${
+                                errors.repetitions
+                                    ? "border border-red-500 pr-10"
+                                    : ""
+                            }`}
+                        />
+                        {errors.repetitions && (
+                            <div className="-translate-y-2/5 absolute right-3 top-[35px]  text-red-500">
+                                <TooltipProvider delayDuration={100}>
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <AlertCircle size={18} />
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>{errors.repetitions.message}</p>
                                         </TooltipContent>
                                     </Tooltip>
                                 </TooltipProvider>
@@ -155,4 +229,4 @@ function CreateWorkoutDialog() {
         </Dialog>
     )
 }
-export default CreateWorkoutDialog
+export default CreateExerciseDialog

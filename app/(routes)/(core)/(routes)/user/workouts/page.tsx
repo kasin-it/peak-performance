@@ -63,10 +63,14 @@ function MyWorkoutsPage() {
                 <div className="w-full max-w-[1500px]">
                     {workouts.map((workout, index) => (
                         <WorkoutItem
-                            name={workout.name}
-                            desc={workout.desc}
-                            exercises={workout.exercises}
+                            workout={{
+                                id: workout.id,
+                                name: workout.name,
+                                desc: workout.desc,
+                                exercises: workout.exercises,
+                            }}
                             key={index}
+                            day={day}
                         />
                     ))}
                 </div>
