@@ -20,5 +20,5 @@ export interface Exercise {
 export interface Workout {
     name: string
     desc: string
-    exercises?: Exercise[]
+    exercises?: string[]
 }

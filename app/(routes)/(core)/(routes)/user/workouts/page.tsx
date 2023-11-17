@@ -50,9 +50,9 @@ function MyWorkoutsPage() {
 
     return (
         <section className="flex w-full flex-col items-center px-5 pt-48">
-            <div className="relative w-full text-center">
+            <div className="relative w-full max-w-[1500px] text-center">
                 <h1 className="text-4xl font-bold">My Workouts</h1>
-                <div className="absolute right-10 top-0">
+                <div className="absolute right-0 top-0">
                     <CreateWorkoutDialog />
                 </div>
             </div>
