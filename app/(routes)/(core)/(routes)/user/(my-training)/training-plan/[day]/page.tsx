@@ -31,7 +31,11 @@ async function AddWorkoutPage({ params }: AddWorkoutPageProps) {
                 {data && (
                     <>
                         {data.map((workout, index) => (
-                            <WorkoutItem key={index} />
+                            <WorkoutItem
+                                key={index}
+                                workout={workout}
+                                day={params.day}
+                            />
                         ))}
                     </>
                 )}

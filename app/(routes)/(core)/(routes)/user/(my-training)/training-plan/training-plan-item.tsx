@@ -22,8 +22,8 @@ function TrainingPlanItem({ name, workouts }: TrainingPlanItemProps) {
             <CardContent className="grid gap-4 border-y py-4">
                 {workouts ? (
                     <>
-                        {workouts.map((workoutId) => (
-                            <WorkoutItem workoutId={workoutId} />
+                        {workouts.map((workoutId, index) => (
+                            <WorkoutItem workoutId={workoutId} key={index} name={name} />
                         ))}
                     </>
                 ) : (

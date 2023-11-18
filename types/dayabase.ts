@@ -174,14 +174,7 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      append_to_training_plan_column: {
-        Args: {
-          userid: string
-          workout_id: string
-          day: string
-        }
-        Returns: Json
-      }
+      [_ in never]: never
     }
     Enums: {
       [_ in never]: never

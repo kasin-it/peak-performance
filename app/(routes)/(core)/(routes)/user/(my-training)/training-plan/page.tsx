@@ -13,7 +13,6 @@ async function TrainingPlanPage() {
         .select()
         .limit(1)
 
-    console.log(data)
 
     if (error) {
         return <div>Something went wrong.</div>
@@ -24,7 +23,7 @@ async function TrainingPlanPage() {
             <div className="pb-10">
                 <h1 className="text-4xl font-bold">My Training</h1>
             </div>
-            <div className="grid w-full max-w-[1500px] grid-cols-1 gap-4 p-4 pb-24 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7">
+            <div className="grid w-full max-w-[1500px] grid-cols-1 gap-4 p-4 pb-24 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
                 <TrainingPlanItem name={"monday"} workouts={data[0].monday} />
                 <TrainingPlanItem name={"tuesday"} workouts={data[0].tuesday} />
                 <TrainingPlanItem
