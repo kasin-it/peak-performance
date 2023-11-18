@@ -40,9 +40,7 @@ function WorkoutItem({
                         {!workout.exercises && "There are no exercises added"}
                         <Button
                             onClick={() =>
-                                router.push(
-                                    `/user/exercises?workout=${workout.id}`
-                                )
+                                router.push(`/user/workouts/${workout.id}/`)
                             }
                             className="space-x-2"
                         >

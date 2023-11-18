@@ -80,7 +80,7 @@ function CreateExerciseDialog() {
     return (
         <Dialog>
             <DialogTrigger>
-                <Button>Create workout</Button>
+                <Button>Create exercise</Button>
             </DialogTrigger>
             <DialogContent>
                 <form

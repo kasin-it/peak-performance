@@ -12,7 +12,7 @@ interface TrainingPlanItemProps {
 }
 
 function TrainingPlanItem({ name, workouts }: TrainingPlanItemProps) {
-    const queryUrl = `/user/workouts?day=${name}`
+    const queryUrl = `/user/training-plan/${name}/`
 
     return (
         <Card>

@@ -1,8 +1,8 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Link from "next/link"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-import { Link } from "lucide-react"
 
 import { Exercise, Workout } from "@/types/types"
 import { Button } from "@/components/ui/button"
@@ -49,7 +49,7 @@ function MyExercisesPage() {
                 <h1 className="text-4xl font-bold">My Exercises</h1>
                 <div className="absolute right-0 top-0">
                     <CreateExerciseDialog />
-                    <Link>Import exercise</Link>
+                    <Link href={"/exercises"}>Import exercise</Link>
                 </div>
             </div>
             {isLoading && <p>Loading...</p>}
