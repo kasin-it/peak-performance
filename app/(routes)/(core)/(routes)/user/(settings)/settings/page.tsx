@@ -1,8 +1,8 @@
 import Link from "next/link"
 
-import ChangeEmailForm from "./forms/change-email-form"
-import ChangePasswordForm from "./forms/change-password-form"
-import ChangeUsernameForm from "./forms/change-username-form"
+import ChangeEmailForm from "../forms/change-email-form"
+import ChangePasswordForm from "../forms/change-password-form"
+import ChangeUsernameForm from "../forms/change-username-form"
 
 function ProfilePage() {
     return (

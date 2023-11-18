@@ -4,7 +4,7 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Database } from "@/types/database"
 import { SidebarNav } from "@/components/ui/sidebar-nav"
 
-async function UserPage({ children }: { children: React.ReactNode }) {
+async function UserSettingsLayout({ children }: { children: React.ReactNode }) {
     const supabase = createServerComponentClient<Database>({ cookies })
 
     const {
@@ -15,12 +15,12 @@ async function UserPage({ children }: { children: React.ReactNode }) {
 
     const sidebarNavItems = [
         {
-            title: "Settings",
-            href: "/user",
+            title: "Profile",
+            href: "/user/",
         },
         {
-            title: "Training Plan",
-            href: "/user/training-plan",
+            title: "Settings",
+            href: "/user/settings",
         },
     ]
 
@@ -40,4 +40,4 @@ async function UserPage({ children }: { children: React.ReactNode }) {
         </section>
     )
 }
-export default UserPage
+export default UserSettingsLayout

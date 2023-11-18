@@ -101,7 +101,7 @@ function ExercisesPage() {
         if (value === "asc") {
             setExercises((prevExercises) =>
                 prevExercises
-                    ? [...prevExercises].sort((a, b) =>
+                    ? [...prevExercises].sort((a: any, b: any) =>
                           a.name.localeCompare(b.name)
                       )
                     : prevExercises
@@ -109,7 +109,7 @@ function ExercisesPage() {
         } else if (value === "desc") {
             setExercises((prevExercises) =>
                 prevExercises
-                    ? [...prevExercises].sort((a, b) =>
+                    ? [...prevExercises].sort((a: any, b: any) =>
                           b.name.localeCompare(a.name)
                       )
                     : prevExercises
