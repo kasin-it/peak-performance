@@ -1,22 +1,36 @@
-import { redirect, useRouter } from "next/navigation"
+import { cookies } from "next/headers"
+import Link from "next/link"
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { PlusCircle } from "lucide-react"
 
 import { Workout } from "@/types/types"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Card, CardTitle } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
 
 import ExerciseItem from "./exercise-item"
 
-function WorkoutItem({
-    workout,
-    day,
-}: {
-    workout: Workout
-    day: string | undefined
-}) {
-    const router = useRouter()
+async function WorkoutItem({ workout }: { workout: Workout }) {
+    const supabase = createServerComponentClient({ cookies })
+
+    let exercises = []
+
+    if (workout.exercises?.length !== 0) {
+        try {
+            const { data, error } = await supabase
+                .from("user_exercises")
+                .select()
+                .overlaps("id", workout.exercises || [])
+
+            if (error) {
+                console.error("Error fetching exercises:", error)
+            } else {
+                exercises = data
+            }
+        } catch (error) {
+            console.error("Error fetching exercises:", error)
+        }
+    }
 
     return (
         <Card className="m-3 mx-auto w-full max-w-md overflow-hidden rounded-xl bg-white shadow-md 2xl:max-w-xl">
@@ -28,33 +42,39 @@ function WorkoutItem({
                 <div className="mt-4">
                     <p>{workout.desc && workout.desc}</p>
                 </div>
+
                 <div className="mt-4">
                     <Alert>
-                        {workout.exercises && (
-                            <>
-                                {workout.exercises?.map((exerciseId) => (
-                                    <ExerciseItem exerciseId={exerciseId} />
-                                ))}
-                            </>
+                        {workout.exercises?.length !== 0 ? (
+                            exercises.map((exercise) => (
+                                <ExerciseItem
+                                    key={exercise.id}
+                                    exercise={exercise}
+                                />
+                            ))
+                        ) : (
+                            <AlertDescription>
+                                There are no exercises added
+                            </AlertDescription>
                         )}
-                        {!workout.exercises && "There are no exercises added"}
-                        <Button
-                            onClick={() =>
-                                router.push(`/user/workouts/${workout.id}/`)
-                            }
-                            className="space-x-2"
-                        >
-                            <p>Add exercises</p>
-                            <PlusCircle />
-                        </Button>
+
+                        <Link href={`/user/workouts/${workout.id}/`}>
+                            <div className="flex w-[200px] justify-center space-x-2 rounded-md bg-blue-500 px-3 py-2 text-white">
+                                <p>Add exercises</p>
+                                <PlusCircle />
+                            </div>
+                        </Link>
                     </Alert>
                 </div>
             </div>
+
             <div>
-                {day && <Button>Add to {day} workouts</Button>}
-                {!day && <Button>Add to day plan</Button>}
+                {workout.exercises?.length === 0 && (
+                    <Button>Add to plan</Button>
+                )}
             </div>
         </Card>
     )
 }
+
 export default WorkoutItem
