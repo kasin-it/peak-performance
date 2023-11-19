@@ -1,6 +1,8 @@
 import { cookies } from "next/headers"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 
+import { Workout } from "@/types/types"
+
 import WorkoutItem from "./workout-item"
 
 async function TrainingPlanWorkouts({
@@ -11,29 +13,31 @@ async function TrainingPlanWorkouts({
     name: string
 }) {
     if (workoutsId === null || workoutsId.length === 0) {
-        return
+        return null // Returning null when there are no workouts
     }
 
     const supabase = createServerComponentClient({ cookies })
 
-    const { data, error } = await supabase.from("user_workouts").select()
+    const getWorkouts = async () => {
+        // Use Promise.all to fetch all workouts asynchronously
+        const workoutsPromises = workoutsId.map(async (id) => {
+            const { data } = await supabase
+                .from("user_workouts")
+                .select()
+                .eq("id", id)
 
-    function checkIfInArray(data: any[], array: any[]): any[] {
-        let output: any[] = []
-
-        data.forEach((element) => {
-            if (array.includes(element.id)) {
-                output.push(element)
+            if (!data) {
+                return
             }
+
+            return data[0] // Assuming the query returns an array, and you want the first element
         })
 
-        return output
+        return Promise.all(workoutsPromises)
     }
-    // @ts-ignore
-    const workouts = checkIfInArray(data, workoutsId)
-    if (workoutsId === null) {
-        return <p>data is null</p>
-    }
+
+    // Call the asynchronous function
+    const workouts = await getWorkouts()
 
     return (
         <>
@@ -43,4 +47,5 @@ async function TrainingPlanWorkouts({
         </>
     )
 }
+
 export default TrainingPlanWorkouts
