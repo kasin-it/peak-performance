@@ -77,7 +77,7 @@ function WorkoutItem({
                             <AlertDialogContent>
                                 <AlertDialogHeader>
                                     <AlertDialogTitle>
-                                        Are you absolutely sure?
+                                        Exercises:
                                     </AlertDialogTitle>
                                     <Alert>
                                         {workout.exercises?.map((exercise) => (
@@ -90,9 +90,6 @@ function WorkoutItem({
                                     <AlertDialogCancel>
                                         Cancel
                                     </AlertDialogCancel>
-                                    <AlertDialogAction>
-                                        Continue
-                                    </AlertDialogAction>
                                 </AlertDialogFooter>
                             </AlertDialogContent>
                         </AlertDialog>

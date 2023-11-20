@@ -5,13 +5,11 @@ import Link from "next/link"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
 import { Exercise, Workout } from "@/types/types"
-import { Button } from "@/components/ui/button"
 
-import CreateExerciseDialog from "./create-exercise-dialog"
+import ExerciseCreateDialog from "./exercise-create-dialog"
 import ExerciseItem from "./exercise-item"
 
 function MyExercisesPage() {
-    const [workout, setWorkout] = useState<undefined | string>(undefined)
     const [exercises, setExercises] = useState<Exercise[] | null>(null)
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
@@ -48,7 +46,7 @@ function MyExercisesPage() {
             <div className="relative w-full max-w-[1500px] text-center">
                 <h1 className="text-4xl font-bold">My Exercises</h1>
                 <div className="absolute right-0 top-0">
-                    <CreateExerciseDialog />
+                    <ExerciseCreateDialog />
                     <Link href={"/exercises"}>Import exercise</Link>
                 </div>
             </div>
