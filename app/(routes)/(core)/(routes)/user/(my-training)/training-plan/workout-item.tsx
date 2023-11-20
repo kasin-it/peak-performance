@@ -7,58 +7,34 @@ import toast from "react-hot-toast"
 
 import { Workout } from "@/types/types"
 import { cn } from "@/lib/utils"
-import { Skeleton } from "@/components/ui/skeleton"
+import { Alert } from "@/components/ui/alert"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
 
-function WorkoutItem({ workoutId, name }: { workoutId: string; name: string }) {
+import ExerciseItem from "./exercise-item"
+
+function WorkoutItem({
+    workout,
+    workoutId,
+    name,
+}: {
+    workout?: Workout
+    name: string
+    workoutId: string
+}) {
     const supabase = createClientComponentClient()
 
-    const [isLoading, setIsLoading] = useState(true)
-    const [data, setData] = useState<Workout | null>(null)
-    const [error, setError] = useState<string | null>(null)
     const [isDeleted, setIsDeleted] = useState(false)
-
-    const fetchWorkout = async () => {
-        try {
-            setIsLoading(true)
-
-            const { data, error } = await supabase
-                .from("user_workouts")
-                .select()
-                .eq("id", workoutId)
-                .limit(1)
-
-            if (error) {
-                throw new Error(error.message)
-            }
-
-            if (data && data.length > 0) {
-                setData(data[0])
-            } else {
-                throw new Error("Workout not found")
-            }
-        } catch (error) {
-            setError("Something went wrong.")
-            console.log(error)
-        } finally {
-            setIsLoading(false)
-        }
-    }
-
-    useEffect(() => {
-        fetchWorkout()
-    }, []) // Run this effect only once on component mo unt
-
-    if (isLoading) {
-        return <Skeleton className="h-[70px] w-full"></Skeleton>
-    }
-
-    if (error) {
-        return <div>Error: {error}</div>
-    }
-
-    if (!data) {
-        return <div>Workout not found</div>
-    }
 
     const handleDelete = async (id: string) => {
         try {
@@ -81,24 +57,65 @@ function WorkoutItem({ workoutId, name }: { workoutId: string; name: string }) {
         }
 
         setIsDeleted(true)
-        toast.success("Workout deleted succesfully.")
+        toast.success("Workout deleted successfully.")
     }
 
     return (
         <div className={cn("relative space-y-2", isDeleted && "hidden")}>
-            <h4 className="text-lg font-semibold">{data.name}</h4>
-            <p className="text-sm">{data.desc}</p>
-            <div className="absolute right-5 top-2 flex space-x-2">
-                <div className="cursor-pointer rounded-md bg-blue-500 p-2 text-white hover:opacity-70">
-                    <Info className="h-4 w-4" />
+            {workout ? (
+                <>
+                    <h4 className="text-lg font-semibold">{workout.name}</h4>
+                    <p className="text-sm">{workout.desc}</p>
+                    <div className="absolute right-5 top-2 flex space-x-2">
+                        <AlertDialog>
+                            <AlertDialogTrigger>
+                                {" "}
+                                <div className="cursor-pointer rounded-md bg-blue-500 p-2 text-white hover:opacity-70">
+                                    <Info className="h-4 w-4" />
+                                </div>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>
+                                        Are you absolutely sure?
+                                    </AlertDialogTitle>
+                                    <Alert>
+                                        {workout.exercises?.map((exercise) => (
+                                            <ExerciseItem key={exercise} />
+                                        ))}
+                                        {!workout.exercises && <p>Empty</p>}
+                                    </Alert>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>
+                                        Cancel
+                                    </AlertDialogCancel>
+                                    <AlertDialogAction>
+                                        Continue
+                                    </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
+
+                        <div
+                            className="cursor-pointer rounded-md bg-red-500 p-2 text-white hover:opacity-70"
+                            onClick={() => handleDelete(workout.id)}
+                        >
+                            <Trash className="h-4 w-4" />
+                        </div>
+                    </div>
+                </>
+            ) : (
+                <div className="flex items-center space-x-2">
+                    <p>Workout deleted.</p>
+                    <Button
+                        variant={"destructive"}
+                        onClick={() => handleDelete(workoutId)}
+                    >
+                        <Trash className="h-5 w-5" />
+                    </Button>
                 </div>
-                <div
-                    className="cursor-pointer rounded-md bg-red-500 p-2 text-white hover:opacity-70"
-                    onClick={() => handleDelete(data.id)}
-                >
-                    <Trash className="h-4 w-4" />
-                </div>
-            </div>
+            )}
         </div>
     )
 }

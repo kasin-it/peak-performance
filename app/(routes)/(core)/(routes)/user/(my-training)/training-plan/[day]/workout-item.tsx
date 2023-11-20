@@ -1,17 +1,12 @@
 "use client"
 
-import { cookies } from "next/headers"
-import { useRouter } from "next/navigation"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
 import { Workout } from "@/types/types"
-import { Alert } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Card, CardTitle } from "@/components/ui/card"
 
 function WorkoutItem({ workout, day }: { workout: Workout; day: string }) {
-    const router = useRouter()
-
     const onSubmit = async () => {
         const supabase = await createClientComponentClient()
 
@@ -23,7 +18,7 @@ function WorkoutItem({ workout, day }: { workout: Workout; day: string }) {
             }
         )
 
-        router.back()
+        window.location.href = "/user/training-plan"
     }
 
     return (

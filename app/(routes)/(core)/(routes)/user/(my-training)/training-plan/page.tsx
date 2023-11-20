@@ -13,7 +13,6 @@ async function TrainingPlanPage() {
         .select()
         .limit(1)
 
-
     if (error) {
         return <div>Something went wrong.</div>
     }
@@ -24,22 +23,25 @@ async function TrainingPlanPage() {
                 <h1 className="text-4xl font-bold">My Training</h1>
             </div>
             <div className="grid w-full max-w-[1500px] grid-cols-1 gap-4 p-4 pb-24 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-                <TrainingPlanItem name={"monday"} workouts={data[0].monday} />
-                <TrainingPlanItem name={"tuesday"} workouts={data[0].tuesday} />
+                <TrainingPlanItem name={"monday"} workoutsId={data[0].monday} />
+                <TrainingPlanItem
+                    name={"tuesday"}
+                    workoutsId={data[0].tuesday}
+                />
                 <TrainingPlanItem
                     name={"wednesday"}
-                    workouts={data[0].wednesday}
+                    workoutsId={data[0].wednesday}
                 />
                 <TrainingPlanItem
                     name={"thursday"}
-                    workouts={data[0].thursday}
+                    workoutsId={data[0].thursday}
                 />
-                <TrainingPlanItem name={"friday"} workouts={data[0].friday} />
+                <TrainingPlanItem name={"friday"} workoutsId={data[0].friday} />
                 <TrainingPlanItem
                     name={"saturday"}
-                    workouts={data[0].saturday}
+                    workoutsId={data[0].saturday}
                 />
-                <TrainingPlanItem name={"sunday"} workouts={data[0].sunday} />
+                <TrainingPlanItem name={"sunday"} workoutsId={data[0].sunday} />
             </div>
         </section>
     )

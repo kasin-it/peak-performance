@@ -1,50 +1,51 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { Trash } from "lucide-react"
+import toast from "react-hot-toast"
 
 import { Exercise } from "@/types/types"
+import { cn } from "@/lib/utils"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { Button } from "@/components/ui/button"
 
-function ExerciseItem({ exerciseId }: { exerciseId: string }) {
+function ExerciseItem({
+    exercise,
+    workoutId,
+}: {
+    exercise: Exercise
+    workoutId: string
+}) {
     const supabase = createClientComponentClient()
-    const [exercise, setExercise] = useState<Exercise | null>(null)
-    const [isLoading, setIsLoading] = useState(true)
-    const [error, setError] = useState<string | null>(null)
+    const [isDeleted, setIsDeleted] = useState(false)
 
-    const fetchExercise = async () => {
+    const handleDelete = async (workoutId: string, exerciseId: string) => {
         try {
-            const { data, error } = await supabase
-                .from("user_exercises")
-                .select()
-                .eq("id", exerciseId)
+            const { data: _, error } = await supabase.rpc(
+                "delete_exercise_from_workout",
+                {
+                    workout_id: workoutId,
+                    exercise_id: exerciseId,
+                }
+            )
 
             if (error) {
-                throw error
+                toast.error("Failed to delete exercise. Please try again.")
+                console.log(error)
+                return
             }
 
-            if (data && data.length > 0) {
-                setExercise(data[0])
-            } else {
-                setExercise(null)
-            }
+            // Additional success handling if needed
         } catch (error) {
-            setError("An error occurred while fetching data.")
-            console.log(error)
-        } finally {
-            setIsLoading(false)
+            toast.error("Failed to delete exercise. Please try again.")
         }
+
+        setIsDeleted(true)
+        toast.success("Exercise deleted succesfully.")
     }
 
-    useEffect(() => {
-        fetchExercise()
-    }, [exerciseId])
-
     return (
-        <Alert className="relative">
-            {isLoading && <AlertTitle>Loading...</AlertTitle>}
-            {error && <AlertTitle>Error: {error}</AlertTitle>}
+        <Alert className={cn("relative", isDeleted ? "hidden" : "")}>
             {exercise && (
                 <>
                     <AlertTitle>{exercise.name}</AlertTitle>
@@ -53,14 +54,17 @@ function ExerciseItem({ exerciseId }: { exerciseId: string }) {
                         {exercise.sets} x {exercise.repetitions}
                     </AlertDescription>
 
-                    {/* Render other exercise details here */}
+                    <div
+                        className="absolute right-5 top-2 cursor-pointer rounded-md bg-red-500 p-2 text-white hover:opacity-70"
+                        onClick={() => handleDelete(workoutId, exercise.id)}
+                    >
+                        <Trash className="h-4 w-4" />
+                    </div>
                 </>
             )}
-            {!isLoading && !error && !exercise && (
+            {!exercise && (
                 <>
-                    <AlertDescription>
-                        No data found for exercise ID: {exerciseId}
-                    </AlertDescription>
+                    <AlertDescription>Exercise nmot found</AlertDescription>
                 </>
             )}
         </Alert>
