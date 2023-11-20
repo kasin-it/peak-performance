@@ -42,7 +42,12 @@ async function TrainingPlanWorkouts({
     return (
         <>
             {workouts.map((workout, index) => (
-                <WorkoutItem workout={workout} key={index} name={name} />
+                <WorkoutItem
+                    workout={workout}
+                    workoutId={workoutsId[index]}
+                    key={index}
+                    name={name}
+                />
             ))}
         </>
     )

@@ -1,20 +1,35 @@
 import React, { useEffect, useState } from "react"
+import { cookies } from "next/headers"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import toast from "react-hot-toast"
 
 import { Exercise } from "@/types/types"
 import { Button } from "@/components/ui/button"
 import { Card, CardDescription, CardTitle } from "@/components/ui/card"
 
 function ExercisePreview({ exercise }: { exercise: Exercise }) {
+    const supabase = createClientComponentClient()
+
+    const onExerciseAdd = async () => {
+        const { data: _, error } = await supabase
+            .from("user_exercises")
+            .insert({
+                name: exercise.name,
+                instructions: exercise.instructions,
+                sets: 1,
+                repetitions: 1,
+            })
+
+        toast.success("Workout has been created successfully!")
+    }
+
     return (
         <Card className="m-3 mx-auto w-full max-w-md overflow-hidden rounded-xl bg-white shadow-md 2xl:max-w-xl">
             <div className="p-8">
                 <CardTitle className="mt-1 block text-4xl font-medium leading-tight text-black">
                     {exercise.name}
                 </CardTitle>
-                {/* <CardDescription className="mt-2 text-gray-500">
-            Start your day with a refreshing morning
-            workout.
-        </CardDescription> */}
+
                 <div className="mt-4">
                     <p className="text-sm text-gray-700">
                         Muscles targeted:{" "}
@@ -56,8 +71,9 @@ function ExercisePreview({ exercise }: { exercise: Exercise }) {
                     <Button
                         className="text-blue-600 hover:text-blue-900"
                         variant="outline"
+                        onClick={onExerciseAdd}
                     >
-                        Add to my workout
+                        Add to my exercises
                     </Button>
                 </div>
             </div>

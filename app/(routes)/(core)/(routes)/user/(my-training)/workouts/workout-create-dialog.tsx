@@ -35,7 +35,7 @@ const schema = z.object({
     desc: z.string().max(256, "Y"),
 })
 
-function CreateWorkoutDialog() {
+function WorkoutCreateDialog() {
     const supabase = createClientComponentClient()
     const router = useRouter()
     const [isMounted, setIsMounted] = useState(false)
@@ -155,4 +155,4 @@ function CreateWorkoutDialog() {
         </Dialog>
     )
 }
-export default CreateWorkoutDialog
+export default WorkoutCreateDialog

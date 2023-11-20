@@ -19,11 +19,19 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { Skeleton } from "@/components/ui/skeleton"
+import { Button } from "@/components/ui/button"
 
 import ExerciseItem from "./exercise-item"
 
-function WorkoutItem({ workout, name }: { workout: Workout; name: string }) {
+function WorkoutItem({
+    workout,
+    workoutId,
+    name,
+}: {
+    workout?: Workout
+    name: string
+    workoutId: string
+}) {
     const supabase = createClientComponentClient()
 
     const [isDeleted, setIsDeleted] = useState(false)
@@ -49,47 +57,65 @@ function WorkoutItem({ workout, name }: { workout: Workout; name: string }) {
         }
 
         setIsDeleted(true)
-        toast.success("Workout deleted succesfully.")
+        toast.success("Workout deleted successfully.")
     }
 
     return (
         <div className={cn("relative space-y-2", isDeleted && "hidden")}>
-            <h4 className="text-lg font-semibold">{workout.name}</h4>
-            <p className="text-sm">{workout.desc}</p>
-            <div className="absolute right-5 top-2 flex space-x-2">
-                <AlertDialog>
-                    <AlertDialogTrigger>
-                        {" "}
-                        <div className="cursor-pointer rounded-md bg-blue-500 p-2 text-white hover:opacity-70">
-                            <Info className="h-4 w-4" />
-                        </div>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                        <AlertDialogHeader>
-                            <AlertDialogTitle>
-                                Are you absolutely sure?
-                            </AlertDialogTitle>
-                            <Alert>
-                                {workout.exercises?.map((exercise) => (
-                                    <ExerciseItem />
-                                ))}
-                                {!workout.exercises && <p>Empty</p>}
-                            </Alert>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction>Continue</AlertDialogAction>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialog>
+            {workout ? (
+                <>
+                    <h4 className="text-lg font-semibold">{workout.name}</h4>
+                    <p className="text-sm">{workout.desc}</p>
+                    <div className="absolute right-5 top-2 flex space-x-2">
+                        <AlertDialog>
+                            <AlertDialogTrigger>
+                                {" "}
+                                <div className="cursor-pointer rounded-md bg-blue-500 p-2 text-white hover:opacity-70">
+                                    <Info className="h-4 w-4" />
+                                </div>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>
+                                        Are you absolutely sure?
+                                    </AlertDialogTitle>
+                                    <Alert>
+                                        {workout.exercises?.map((exercise) => (
+                                            <ExerciseItem key={exercise} />
+                                        ))}
+                                        {!workout.exercises && <p>Empty</p>}
+                                    </Alert>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>
+                                        Cancel
+                                    </AlertDialogCancel>
+                                    <AlertDialogAction>
+                                        Continue
+                                    </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
 
-                <div
-                    className="cursor-pointer rounded-md bg-red-500 p-2 text-white hover:opacity-70"
-                    onClick={() => handleDelete(workout.id)}
-                >
-                    <Trash className="h-4 w-4" />
+                        <div
+                            className="cursor-pointer rounded-md bg-red-500 p-2 text-white hover:opacity-70"
+                            onClick={() => handleDelete(workout.id)}
+                        >
+                            <Trash className="h-4 w-4" />
+                        </div>
+                    </div>
+                </>
+            ) : (
+                <div className="flex items-center space-x-2">
+                    <p>Workout deleted.</p>
+                    <Button
+                        variant={"destructive"}
+                        onClick={() => handleDelete(workoutId)}
+                    >
+                        <Trash className="h-5 w-5" />
+                    </Button>
                 </div>
-            </div>
+            )}
         </div>
     )
 }

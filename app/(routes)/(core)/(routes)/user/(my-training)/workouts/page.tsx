@@ -1,7 +1,7 @@
 import { cookies } from "next/headers"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 
-import CreateWorkoutDialog from "./create-workout-dialog"
+import WorkoutCreateDialog from "./workout-create-dialog"
 import WorkoutItem from "./workout-item"
 
 async function MyWorkoutsPage() {
@@ -16,7 +16,7 @@ async function MyWorkoutsPage() {
             <div className="relative w-full max-w-[1500px] text-center">
                 <h1 className="text-4xl font-bold">My Workouts</h1>
                 <div className="absolute right-0 top-0">
-                    <CreateWorkoutDialog />
+                    <WorkoutCreateDialog />
                 </div>
             </div>
             <div className="w-full max-w-[1500px]">

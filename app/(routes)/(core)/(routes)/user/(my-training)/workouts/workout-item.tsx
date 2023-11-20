@@ -1,7 +1,7 @@
 import { cookies } from "next/headers"
 import Link from "next/link"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
-import { PlusCircle } from "lucide-react"
+import { Edit, PlusCircle } from "lucide-react"
 
 import { Exercise, Workout } from "@/types/types"
 import { Alert, AlertDescription } from "@/components/ui/alert"
@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardTitle } from "@/components/ui/card"
 
 import ExerciseItem from "./exercise-item"
+import WorkoutDeleteDialog from "./workout-delete-dialog"
+import WorkoutEditDialog from "./workout-edit-dialog"
 
 async function WorkoutItem({ workout }: { workout: Workout }) {
     const supabase = createServerComponentClient({ cookies })
@@ -24,6 +26,8 @@ async function WorkoutItem({ workout }: { workout: Workout }) {
                     <div className="mt-4">
                         <p>{workout.desc && workout.desc}</p>
                     </div>
+
+                    <WorkoutEditDialog {...workout} />
 
                     <div className="mt-4">
                         <Alert>
@@ -73,10 +77,14 @@ async function WorkoutItem({ workout }: { workout: Workout }) {
 
     return (
         <Card className="m-3 mx-auto w-full max-w-md overflow-hidden rounded-xl bg-white shadow-md 2xl:max-w-xl">
-            <div className="p-8">
+            <div className="relative p-8">
                 <CardTitle className="mt-1 block text-4xl font-medium leading-tight text-black">
                     {workout.name}
                 </CardTitle>
+                <div className="absolute right-6 top-6 flex space-x-2 ">
+                    <WorkoutEditDialog {...workout} />
+                    <WorkoutDeleteDialog workoutId={workout.id} />
+                </div>
 
                 <div className="mt-4">
                     <p>{workout.desc && workout.desc}</p>
@@ -90,6 +98,7 @@ async function WorkoutItem({ workout }: { workout: Workout }) {
                                     <ExerciseItem
                                         key={exercise.id}
                                         exercise={exercise}
+                                        workoutId={workout.id}
                                     />
                                 ) : null
                             )
