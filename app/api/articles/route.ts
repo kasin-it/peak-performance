@@ -35,6 +35,7 @@ export const GET = async (req: Request) => {
                 query: queryParams.query ? queryParams.query : "",
                 skip: queryParams.skip ? queryParams.skip : 0,
             })
+
             return NextResponse.json(res)
         } catch (error) {
             console.error("[EXERCISES_GET] Axios Error:", error)

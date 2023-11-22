@@ -80,10 +80,17 @@ function WorkoutItem({
                                         Exercises:
                                     </AlertDialogTitle>
                                     <Alert>
-                                        {workout.exercises?.map((exercise) => (
-                                            <ExerciseItem key={exercise} />
-                                        ))}
-                                        {!workout.exercises && <p>Empty</p>}
+                                        {workout.exercises?.map(
+                                            (exercise, index) => (
+                                                <ExerciseItem
+                                                    key={index}
+                                                    exerciseId={exercise}
+                                                />
+                                            )
+                                        )}
+                                        {workout.exercises?.length === 0 && (
+                                            <p>Empty</p>
+                                        )}
                                     </Alert>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>

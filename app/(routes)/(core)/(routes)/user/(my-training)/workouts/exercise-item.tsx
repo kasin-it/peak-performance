@@ -71,17 +71,10 @@ function ExerciseItem({
                             </div>
                         </>
                     )}
-                    {!exercise && (
-                        <>
-                            <AlertDescription>
-                                Exercise nmot found
-                            </AlertDescription>
-                        </>
-                    )}
                 </>
             ) : (
                 <div className="flex items-center space-x-2">
-                    <p>Workout deleted.</p>
+                    <p>Exercise not found.</p>
                     <Button
                         variant={"destructive"}
                         onClick={() => handleDelete(workoutId, exerciseId)}
