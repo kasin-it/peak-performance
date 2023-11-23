@@ -53,6 +53,7 @@ function ArticlesSearchResults({ query, sort }: ArticlesSearchResults) {
 
     const fetchMoreArticles = async (skipValue: number) => {
         try {
+            setIsFetchingMore(true)
             const response = await axios.get("/api/articles", {
                 params: {
                     skip: skipValue,

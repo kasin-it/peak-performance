@@ -46,9 +46,9 @@ function WorkoutDeleteDialog({ workoutId }: { workoutId: string }) {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <div className="cursor-pointer rounded-md bg-red-500 p-2 text-white hover:opacity-70">
-                    <Trash className="h-4 w-4" />
-                </div>
+                <Button variant={"destructive"} className="p-0 px-2">
+                    <Trash className="h-5 w-5" />
+                </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>

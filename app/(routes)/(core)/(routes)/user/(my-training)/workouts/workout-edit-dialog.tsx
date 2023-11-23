@@ -78,9 +78,9 @@ function WorkoutEditDialog(workout: Workout) {
     return (
         <Dialog>
             <DialogTrigger>
-                <div className=" cursor-pointer rounded-md bg-blue-300 p-2 text-white hover:opacity-70">
-                    <Edit className="h-4 w-4" />
-                </div>
+                <Button className="p-0 px-2">
+                    <Edit className="h-5 w-5" />
+                </Button>
             </DialogTrigger>
             <DialogContent>
                 <form

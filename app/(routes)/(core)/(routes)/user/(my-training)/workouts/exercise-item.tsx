@@ -53,22 +53,26 @@ function ExerciseItem({
                 <>
                     {exercise && (
                         <>
-                            <AlertTitle>{exercise.name}</AlertTitle>
-                            <AlertDescription>
+                            <div className="flex w-full items-center justify-between">
+                                <AlertTitle className="w-full max-w-[80%] break-words text-xl">
+                                    {exercise.name}
+                                </AlertTitle>
+                                <Button
+                                    className="h-8 p-0 px-3"
+                                    variant={"destructive"}
+                                    onClick={() =>
+                                        handleDelete(workoutId, exercise.id)
+                                    }
+                                >
+                                    <Trash className="h-4 w-4" />
+                                </Button>
+                            </div>
+                            <AlertDescription className="mt-3">
                                 {exercise.instructions}
                             </AlertDescription>
                             <AlertDescription>
                                 {exercise.sets} x {exercise.repetitions}
                             </AlertDescription>
-
-                            <div
-                                className="absolute right-5 top-2 cursor-pointer rounded-md bg-red-500 p-2 text-white hover:opacity-70"
-                                onClick={() =>
-                                    handleDelete(workoutId, exercise.id)
-                                }
-                            >
-                                <Trash className="h-4 w-4" />
-                            </div>
                         </>
                     )}
                 </>

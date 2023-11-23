@@ -19,24 +19,24 @@ async function WorkoutItem({ workout }: { workout: Workout }) {
         return (
             <Card className="m-3 mx-auto w-full max-w-md overflow-hidden rounded-xl bg-white shadow-md 2xl:max-w-xl">
                 <div className="p-8">
-                    <div className="mb-4 flex items-center justify-between">
-                        <CardTitle className="block text-4xl font-medium leading-tight text-black">
+                    <div className="relative mb-4 flex w-full">
+                        <CardTitle className="block w-full max-w-[80%] break-words text-4xl font-medium leading-tight text-black">
                             {workout.name}
                         </CardTitle>
-                        <div className="flex space-x-2">
+                        <div className="right-0 top-0 flex items-start space-x-2">
                             <WorkoutEditDialog {...workout} />
                             <WorkoutDeleteDialog workoutId={workout.id} />
                         </div>
                     </div>
 
-                    <div className="mt-4">
+                    <div className="mt-4 break-words pr-2 text-muted-foreground">
                         <p>{workout.desc && workout.desc}</p>
                     </div>
 
                     <div className="mt-4">
                         <Alert>
-                            <AlertDescription>
-                                There are no exercises added
+                            <AlertDescription className="mb-4 text-lg italic">
+                                There are no exercises added.
                             </AlertDescription>
                             <Link
                                 href={`/user/workouts/${workout.id}/`}
@@ -86,13 +86,14 @@ async function WorkoutItem({ workout }: { workout: Workout }) {
                     </div>
                 </div>
 
-                <div className="mt-4">
+                <div className="mt-4 text-muted-foreground">
                     <p>{workout.desc && workout.desc}</p>
                 </div>
 
                 <div className="mt-4">
-                    <Alert>
-                        {exercises.some((exercise) => exercise !== null) ? (
+                    <p className="font-bold italic">Exercises:</p>
+                    <Alert className="max-h-[500px] space-y-2 overflow-y-scroll">
+                        {exercises.length != 0 ? (
                             exercises.map((exercise, index) =>
                                 exercise !== null ? (
                                     <ExerciseItem
@@ -108,7 +109,8 @@ async function WorkoutItem({ workout }: { workout: Workout }) {
                                 There are no exercises added
                             </AlertDescription>
                         )}
-
+                    </Alert>
+                    <div className="mt-5 flex w-full justify-center">
                         <Link
                             href={`/user/workouts/${workout.id}/`}
                             className="flex w-[200px] justify-center space-x-2 rounded-md bg-blue-500 px-3 py-2 text-white"
@@ -116,7 +118,7 @@ async function WorkoutItem({ workout }: { workout: Workout }) {
                             <p>Add exercises</p>
                             <PlusCircle />
                         </Link>
-                    </Alert>
+                    </div>
                 </div>
             </div>
 

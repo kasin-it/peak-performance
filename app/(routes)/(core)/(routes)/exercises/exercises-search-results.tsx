@@ -32,6 +32,7 @@ function ExercisesSearchResults({
 
     const fetchExercises = async (hardRefresh?: boolean) => {
         try {
+            setIsLoading(true)
             const response = await axios.get("/api/exercises", {
                 params: {
                     query: query,
@@ -66,7 +67,7 @@ function ExercisesSearchResults({
 
     const fetchMoreExercises = async (offset: number) => {
         try {
-            setIsLoading(true)
+            setIsFetchingMore(true)
             const response = await axios.get("/api/exercises", {
                 params: {
                     offset: offset,
