@@ -16,23 +16,22 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
 
-function WorkoutDeleteDialog({ workoutId }: { workoutId: string }) {
+function ExerciseDeleteDialog({ exerciseId }: { exerciseId: string }) {
     const supabase = createClientComponentClient()
     const [isMounted, setIsMounted] = useState(false)
 
     const onDelete = async () => {
         const { data: _, error } = await supabase
-            .from("user_workouts")
+            .from("user_exercises")
             .delete()
-            .eq("id", workoutId)
+            .eq("id", exerciseId)
 
         if (error) {
-            toast.error("Workout has not been deleted.")
+            toast.error("exercise has not been deleted.")
             return
         }
-        toast.success("Workout has been created successfully!")
+        toast.success("exercise has been created successfully!")
         window.location.reload()
     }
 
@@ -46,9 +45,9 @@ function WorkoutDeleteDialog({ workoutId }: { workoutId: string }) {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <Button variant={"destructive"} className="p-0 px-2">
-                    <Trash className="h-5 w-5" />
-                </Button>
+                <div className="cursor-pointer rounded-md bg-red-500 p-2 text-white hover:opacity-70">
+                    <Trash className="h-4 w-4" />
+                </div>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
@@ -71,4 +70,4 @@ function WorkoutDeleteDialog({ workoutId }: { workoutId: string }) {
         </AlertDialog>
     )
 }
-export default WorkoutDeleteDialog
+export default ExerciseDeleteDialog

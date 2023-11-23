@@ -4,11 +4,12 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-import { AlertCircle } from "lucide-react"
+import { AlertCircle, Edit } from "lucide-react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import * as z from "zod"
 
+import { Exercise } from "@/types/types"
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
@@ -32,10 +33,12 @@ type FormData = z.infer<typeof schema>
 
 const schema = z.object({
     name: z.string().min(5, "Name needs to be at least 5 characters"),
-    desc: z.string().max(256, "Y"),
+    instructions: z.string(),
+    repetitions: z.coerce.number().gte(1, "Must be 1 and above"),
+    sets: z.coerce.number().gte(1, "Must be 1 and above"),
 })
 
-function WorkoutCreateDialog() {
+function ExerciseEditDialog(exercise: Exercise) {
     const supabase = createClientComponentClient()
     const [isMounted, setIsMounted] = useState(false)
     const {
@@ -50,10 +53,15 @@ function WorkoutCreateDialog() {
     })
 
     const onSubmit: SubmitHandler<FormData> = async (formData: FormData) => {
-        const { data: _, error } = await supabase.from("user_workouts").insert({
-            name: formData.name,
-            desc: formData.desc,
-        })
+        const { data: _, error } = await supabase
+            .from("user_exercises")
+            .update({
+                name: formData.name,
+                instructions: formData.instructions,
+                sets: formData.sets,
+                repetitions: formData.repetitions,
+            })
+            .eq("id", exercise.id)
 
         if (error) {
             setError("name", { message: error.message })
@@ -73,7 +81,9 @@ function WorkoutCreateDialog() {
     return (
         <Dialog>
             <DialogTrigger>
-                <Button>Create workout</Button>
+                <Button>
+                    <Edit />
+                </Button>
             </DialogTrigger>
             <DialogContent>
                 <form
@@ -82,15 +92,18 @@ function WorkoutCreateDialog() {
                     className="space-y-3"
                 >
                     <DialogHeader>
-                        <DialogTitle>Create your very own workout!</DialogTitle>
+                        <DialogTitle>
+                            Create your very own exercise!
+                        </DialogTitle>
                     </DialogHeader>
                     <div className="relative">
                         <Label>Name</Label>
                         <Input
                             id="name"
-                            placeholder="Enter name of the workout"
+                            placeholder="Enter name of the exercise"
                             type="text"
                             autoCapitalize="none"
+                            defaultValue={exercise.name}
                             autoCorrect="off"
                             disabled={isSubmitting}
                             {...register("name")}
@@ -114,21 +127,24 @@ function WorkoutCreateDialog() {
                         )}
                     </div>
                     <div className="relative">
-                        <Label>Description</Label>
+                        <Label>Instructions</Label>
                         <Textarea
                             maxLength={256}
                             rows={5}
-                            id="desc"
-                            placeholder="Enter description of the workout"
+                            defaultValue={exercise.instructions}
+                            id="instructions"
+                            placeholder="Enter description of the exercise"
                             autoCapitalize="none"
                             autoCorrect="off"
                             disabled={isSubmitting}
-                            {...register("desc")}
+                            {...register("instructions")}
                             className={`resize-none ${
-                                errors.desc ? "border border-red-500 pr-10" : ""
+                                errors.instructions
+                                    ? "border border-red-500 pr-10"
+                                    : ""
                             }`}
                         />
-                        {errors.desc && (
+                        {errors.instructions && (
                             <div className="-translate-y-2/5 absolute right-3 top-[35px]  text-red-500">
                                 <TooltipProvider delayDuration={100}>
                                     <Tooltip>
@@ -136,7 +152,71 @@ function WorkoutCreateDialog() {
                                             <AlertCircle size={18} />
                                         </TooltipTrigger>
                                         <TooltipContent>
-                                            <p>{errors.desc.message}</p>
+                                            <p>{errors.instructions.message}</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            </div>
+                        )}
+                    </div>
+                    <div className="relative">
+                        <Label>Sets</Label>
+                        <Input
+                            type="number"
+                            id="sets"
+                            defaultValue={exercise.sets}
+                            min={1}
+                            placeholder="Enter description of the workout"
+                            autoCapitalize="none"
+                            autoCorrect="off"
+                            disabled={isSubmitting}
+                            {...register("sets")}
+                            className={`resize-none ${
+                                errors.sets ? "border border-red-500 pr-10" : ""
+                            }`}
+                        />
+                        {errors.sets && (
+                            <div className="-translate-y-2/5 absolute right-3 top-[35px]  text-red-500">
+                                <TooltipProvider delayDuration={100}>
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <AlertCircle size={18} />
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>{errors.sets.message}</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            </div>
+                        )}
+                    </div>
+                    <div className="relative">
+                        <Label>Repetitions</Label>
+                        <Input
+                            type="number"
+                            id="repetitions"
+                            min={1}
+                            placeholder="Enter description of the workout"
+                            defaultValue={exercise.repetitions}
+                            autoCapitalize="none"
+                            autoCorrect="off"
+                            disabled={isSubmitting}
+                            {...register("repetitions")}
+                            className={`resize-none ${
+                                errors.repetitions
+                                    ? "border border-red-500 pr-10"
+                                    : ""
+                            }`}
+                        />
+                        {errors.repetitions && (
+                            <div className="-translate-y-2/5 absolute right-3 top-[35px]  text-red-500">
+                                <TooltipProvider delayDuration={100}>
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <AlertCircle size={18} />
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>{errors.repetitions.message}</p>
                                         </TooltipContent>
                                     </Tooltip>
                                 </TooltipProvider>
@@ -154,4 +234,4 @@ function WorkoutCreateDialog() {
         </Dialog>
     )
 }
-export default WorkoutCreateDialog
+export default ExerciseEditDialog

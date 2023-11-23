@@ -1,13 +1,10 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
-import axios from "axios"
+import React, { useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Search } from "lucide-react"
 
-import { Exercise } from "@/types/types"
 import { Button } from "@/components/ui/button"
-import ExercisePreview from "@/components/ui/exercise-preview"
 import { Input } from "@/components/ui/input"
 import {
     Select,
@@ -17,121 +14,24 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
-import { Skeleton } from "@/components/ui/skeleton"
+
+import ExercisesSearchResults from "./exercises-search-results"
 
 function ExercisesPage() {
-    const [offset, setOffset] = useState(0)
-    const [exercises, setExercises] = useState<Exercise[] | null>(null)
-    const [error, setError] = useState<string | null>(null)
-    const [isLoading, setIsLoading] = useState(true)
-    const [isFetchingMore, setIsFetchingMore] = useState(false)
-    const [query, setQuery] = useState("")
-    const [muscle, setMuscle] = useState("")
-    const [skillLevel, setSkillLevel] = useState("")
-    const [exerciseType, setExerciseType] = useState("")
-    const [emptyResponse, setEmptyResponse] = useState(false)
-
+    const searchParams = useSearchParams()
+    const queryParam = searchParams.get("q") ?? ""
+    const muscleParam = searchParams.get("muscle") ?? ""
+    const skillLevelParam = searchParams.get("skill_level") ?? ""
+    const exerciseTypeParam = searchParams.get("exercise_type") ?? ""
+    const [query, setQuery] = useState<string>(queryParam)
+    const [search, setSearch] = useState<string>(queryParam)
+    const [muscle, setMuscle] = useState(muscleParam)
+    const [skillLevel, setSkillLevel] = useState(skillLevelParam)
+    const [exerciseType, setExerciseType] = useState(exerciseTypeParam)
     const [sort, setSort] = useState<string>("")
+    const [reset, setReset] = useState(false)
+
     const router = useRouter()
-
-    const fetchExercises = async (
-        offsetValue: number,
-        initial: boolean = false
-    ) => {
-        try {
-            console.log(exercises)
-            const searchParams = new URLSearchParams(window.location.search)
-
-            const skillLevelParam = searchParams.get("skill_level")
-            const exerciseTypeParam = searchParams.get("exercise_type")
-            const muscleParam = searchParams.get("muscle")
-            const queryParam = searchParams.get("query") || ""
-
-            const response = await axios.get("/api/exercises", {
-                params: {
-                    skill_level: skillLevelParam,
-                    exercise_type: exerciseTypeParam,
-                    muscle: muscleParam,
-                    offset: offsetValue,
-                    query: queryParam,
-                },
-            })
-            if (initial) {
-                if (response.status === 200) {
-                    setExercises([...response.data])
-                } else {
-                    setError("Something went wrong.")
-                }
-            } else {
-                if (response.status === 200) {
-                    if (response.data.length > 0) {
-                        setExercises((prevExercises) => [
-                            ...(prevExercises || []),
-                            ...response.data,
-                        ])
-                    } else {
-                        setEmptyResponse(true)
-                    }
-                } else {
-                    setError("Something went wrong.")
-                }
-            }
-        } catch (error) {
-            setError("An error occurred while fetching data.")
-        } finally {
-            setIsLoading(false)
-            setIsFetchingMore(false)
-        }
-    }
-
-    const handleClick = () => {
-        // Increment the offset when the "Load more" button is clicked
-        const newOffset = offset + 1
-        setOffset(newOffset)
-        setIsFetchingMore(true)
-
-        fetchExercises(newOffset)
-    }
-
-    const handleSortChange = (value: string) => {
-        setSort(value)
-        console.log(value)
-
-        // Sort the exercises based on the selected sorting option
-        if (value === "asc") {
-            setExercises((prevExercises) =>
-                prevExercises
-                    ? [...prevExercises].sort((a: any, b: any) =>
-                          a.name.localeCompare(b.name)
-                      )
-                    : prevExercises
-            )
-        } else if (value === "desc") {
-            setExercises((prevExercises) =>
-                prevExercises
-                    ? [...prevExercises].sort((a: any, b: any) =>
-                          b.name.localeCompare(a.name)
-                      )
-                    : prevExercises
-            )
-        }
-    }
-
-    useEffect(() => {
-        const searchParams = new URLSearchParams(window.location.search)
-
-        const skillLevelParam = searchParams.get("skill_level") || ""
-        const exerciseTypeParam = searchParams.get("exercise_type") || ""
-        const muscleParam = searchParams.get("muscle") || ""
-        const queryParam = searchParams.get("query") || ""
-
-        setSkillLevel(skillLevelParam)
-        setExerciseType(exerciseTypeParam)
-        setMuscle(muscleParam)
-        setQuery(queryParam == "null" ? "" : queryParam)
-
-        fetchExercises(0, true)
-    }, [])
 
     const handleSearch = () => {
         const queryParams = new URLSearchParams()
@@ -144,8 +44,10 @@ function ExercisesPage() {
         if (query !== "") queryParams.set("query", query)
 
         router.push(`/exercises?${queryParams.toString()}`)
-        window.location.reload()
+        setSearch(query)
+        setReset((prev) => !prev)
     }
+
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
             handleSearch()
@@ -179,7 +81,9 @@ function ExercisesPage() {
                         </button>
                     </div>
                     <Select
-                        onValueChange={(value) => setMuscle(value)}
+                        onValueChange={(value) =>
+                            value != "all" ? setMuscle(value) : setMuscle("")
+                        }
                         defaultValue={muscle || undefined}
                         value={muscle || undefined}
                     >
@@ -215,7 +119,9 @@ function ExercisesPage() {
                     </Select>
                     <Select
                         onValueChange={(value) => {
-                            setSkillLevel(value)
+                            value != "all"
+                                ? setSkillLevel(value)
+                                : setSkillLevel("")
                         }}
                         defaultValue={skillLevel || undefined}
                         value={skillLevel || undefined}
@@ -234,7 +140,11 @@ function ExercisesPage() {
                     </Select>
 
                     <Select
-                        onValueChange={(value) => setExerciseType(value)}
+                        onValueChange={(value) =>
+                            value != "all"
+                                ? setExerciseType(value)
+                                : setExerciseType("")
+                        }
                         defaultValue={exerciseType || undefined}
                         value={exerciseType || undefined}
                     >
@@ -260,7 +170,7 @@ function ExercisesPage() {
                             <SelectItem value="strongman">Strongman</SelectItem>
                         </SelectContent>
                     </Select>
-                    <Select onValueChange={handleSortChange}>
+                    <Select onValueChange={(value) => setSort(value)}>
                         <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Sort by" />
                         </SelectTrigger>
@@ -273,40 +183,14 @@ function ExercisesPage() {
                 </div>
             </div>
             <Separator className="mb-5" />
-            <div className="flex w-full max-w-[1500px] flex-wrap justify-between gap-5 pb-12">
-                {error && <div>{error}</div>}
-                {exercises && exercises.length === 0 && (
-                    <div>No exercises found.</div>
-                )}
-                {isLoading &&
-                    Array.from({ length: 10 }).map((_, index) => (
-                        <Skeleton
-                            key={index}
-                            className=" m-3 mx-auto h-[475px] w-full max-w-md overflow-hidden rounded-xl shadow-md md:max-w-2xl"
-                        ></Skeleton>
-                    ))}
-
-                {exercises && exercises.length > 0 && (
-                    <>
-                        {exercises.map((exercise, index) => (
-                            <ExercisePreview key={index} exercise={exercise} />
-                        ))}
-                    </>
-                )}
-
-                {isFetchingMore &&
-                    Array.from({ length: 10 }).map((_, index) => (
-                        <Skeleton
-                            key={index}
-                            className=" m-3 mx-auto h-[475px] w-full max-w-md overflow-hidden rounded-xl shadow-md md:max-w-2xl"
-                        ></Skeleton>
-                    ))}
-            </div>
-            {exercises && exercises.length > 0 && !emptyResponse && (
-                <Button onClick={handleClick} className="my-10 px-10 py-6">
-                    Load more...
-                </Button>
-            )}
+            <ExercisesSearchResults
+                query={search || ""}
+                sort={sort}
+                muscle={muscle}
+                skillLevel={skillLevel}
+                exerciseType={exerciseType}
+                reset={reset}
+            />
         </div>
     )
 }

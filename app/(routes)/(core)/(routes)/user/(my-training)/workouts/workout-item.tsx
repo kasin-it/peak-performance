@@ -19,20 +19,24 @@ async function WorkoutItem({ workout }: { workout: Workout }) {
         return (
             <Card className="m-3 mx-auto w-full max-w-md overflow-hidden rounded-xl bg-white shadow-md 2xl:max-w-xl">
                 <div className="p-8">
-                    <CardTitle className="mt-1 block text-4xl font-medium leading-tight text-black">
-                        {workout.name}
-                    </CardTitle>
+                    <div className="relative mb-4 flex w-full">
+                        <CardTitle className="block w-full max-w-[80%] break-words text-4xl font-medium leading-tight text-black">
+                            {workout.name}
+                        </CardTitle>
+                        <div className="right-0 top-0 flex items-start space-x-2">
+                            <WorkoutEditDialog {...workout} />
+                            <WorkoutDeleteDialog workoutId={workout.id} />
+                        </div>
+                    </div>
 
-                    <div className="mt-4">
+                    <div className="mt-4 break-words pr-2 text-muted-foreground">
                         <p>{workout.desc && workout.desc}</p>
                     </div>
 
-                    <WorkoutEditDialog {...workout} />
-
                     <div className="mt-4">
                         <Alert>
-                            <AlertDescription>
-                                There are no exercises added
+                            <AlertDescription className="mb-4 text-lg italic">
+                                There are no exercises added.
                             </AlertDescription>
                             <Link
                                 href={`/user/workouts/${workout.id}/`}
@@ -55,50 +59,48 @@ async function WorkoutItem({ workout }: { workout: Workout }) {
     }
 
     const getExercises = async () => {
-        // Use Promise.all to fetch all workouts asynchronously
         const exercisePromises = workout.exercises!.map(async (id) => {
             const { data } = await supabase
                 .from("user_exercises")
                 .select()
                 .eq("id", id)
 
-            if (!data) {
-                return null
-            }
-
-            return data[0] // Assuming the query returns an array, and you want the first element
+            return data ? data[0] : null
         })
 
         return Promise.all(exercisePromises)
     }
 
-    // Call the asynchronous function
     const exercises: (Exercise | null)[] = await getExercises()
 
     return (
         <Card className="m-3 mx-auto w-full max-w-md overflow-hidden rounded-xl bg-white shadow-md 2xl:max-w-xl">
             <div className="relative p-8">
-                <CardTitle className="mt-1 block text-4xl font-medium leading-tight text-black">
-                    {workout.name}
-                </CardTitle>
-                <div className="absolute right-6 top-6 flex space-x-2 ">
-                    <WorkoutEditDialog {...workout} />
-                    <WorkoutDeleteDialog workoutId={workout.id} />
+                <div className="mb-4 flex items-center justify-between">
+                    <CardTitle className="block text-4xl font-medium leading-tight text-black">
+                        {workout.name}
+                    </CardTitle>
+                    <div className="flex space-x-2">
+                        <WorkoutEditDialog {...workout} />
+                        <WorkoutDeleteDialog workoutId={workout.id} />
+                    </div>
                 </div>
 
-                <div className="mt-4">
+                <div className="mt-4 text-muted-foreground">
                     <p>{workout.desc && workout.desc}</p>
                 </div>
 
                 <div className="mt-4">
-                    <Alert>
-                        {exercises.some((exercise) => exercise !== null) ? (
-                            exercises.map((exercise) =>
+                    <p className="font-bold italic">Exercises:</p>
+                    <Alert className="max-h-[500px] space-y-2 overflow-y-scroll">
+                        {exercises.length != 0 ? (
+                            exercises.map((exercise, index) =>
                                 exercise !== null ? (
                                     <ExerciseItem
-                                        key={exercise.id}
+                                        key={index}
                                         exercise={exercise}
                                         workoutId={workout.id}
+                                        exerciseId={workout.exercises![index]}
                                     />
                                 ) : null
                             )
@@ -107,7 +109,8 @@ async function WorkoutItem({ workout }: { workout: Workout }) {
                                 There are no exercises added
                             </AlertDescription>
                         )}
-
+                    </Alert>
+                    <div className="mt-5 flex w-full justify-center">
                         <Link
                             href={`/user/workouts/${workout.id}/`}
                             className="flex w-[200px] justify-center space-x-2 rounded-md bg-blue-500 px-3 py-2 text-white"
@@ -115,7 +118,7 @@ async function WorkoutItem({ workout }: { workout: Workout }) {
                             <p>Add exercises</p>
                             <PlusCircle />
                         </Link>
-                    </Alert>
+                    </div>
                 </div>
             </div>
 

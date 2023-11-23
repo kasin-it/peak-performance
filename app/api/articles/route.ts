@@ -31,10 +31,11 @@ export const GET = async (req: Request) => {
         try {
             const res = await contentfulClient.getEntries({
                 content_type: "article",
-                limit: 6,
+                limit: 10,
                 query: queryParams.query ? queryParams.query : "",
                 skip: queryParams.skip ? queryParams.skip : 0,
             })
+
             return NextResponse.json(res)
         } catch (error) {
             console.error("[EXERCISES_GET] Axios Error:", error)

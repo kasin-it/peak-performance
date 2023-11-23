@@ -32,12 +32,12 @@ type FormData = z.infer<typeof schema>
 
 const schema = z.object({
     name: z.string().min(5, "Name needs to be at least 5 characters"),
-    instructions: z.string().max(256, "Y"),
+    instructions: z.string(),
     repetitions: z.coerce.number().gte(1, "Must be 1 and above"),
     sets: z.coerce.number().gte(1, "Must be 1 and above"),
 })
 
-function CreateExerciseDialog() {
+function ExerciseCreateDialog() {
     const supabase = createClientComponentClient()
     const router = useRouter()
     const [isMounted, setIsMounted] = useState(false)
@@ -72,7 +72,7 @@ function CreateExerciseDialog() {
 
     useEffect(() => {
         setIsMounted(true)
-    })
+    }, [])
     if (!isMounted) {
         return null
     }
@@ -229,4 +229,4 @@ function CreateExerciseDialog() {
         </Dialog>
     )
 }
-export default CreateExerciseDialog
+export default ExerciseCreateDialog

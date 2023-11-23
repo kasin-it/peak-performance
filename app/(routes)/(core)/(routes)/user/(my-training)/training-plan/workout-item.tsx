@@ -77,22 +77,26 @@ function WorkoutItem({
                             <AlertDialogContent>
                                 <AlertDialogHeader>
                                     <AlertDialogTitle>
-                                        Are you absolutely sure?
+                                        Exercises:
                                     </AlertDialogTitle>
                                     <Alert>
-                                        {workout.exercises?.map((exercise) => (
-                                            <ExerciseItem key={exercise} />
-                                        ))}
-                                        {!workout.exercises && <p>Empty</p>}
+                                        {workout.exercises?.map(
+                                            (exercise, index) => (
+                                                <ExerciseItem
+                                                    key={index}
+                                                    exerciseId={exercise}
+                                                />
+                                            )
+                                        )}
+                                        {workout.exercises?.length === 0 && (
+                                            <p>Empty</p>
+                                        )}
                                     </Alert>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
                                     <AlertDialogCancel>
                                         Cancel
                                     </AlertDialogCancel>
-                                    <AlertDialogAction>
-                                        Continue
-                                    </AlertDialogAction>
                                 </AlertDialogFooter>
                             </AlertDialogContent>
                         </AlertDialog>
