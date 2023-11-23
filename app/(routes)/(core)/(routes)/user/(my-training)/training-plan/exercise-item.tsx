@@ -38,7 +38,7 @@ function ExerciseItem({ exerciseId }: { exerciseId: string }) {
         }
 
         fetchExercise()
-    }, [exerciseId])
+    }, [exerciseId, supabase])
 
     return (
         <Alert>

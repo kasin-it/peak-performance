@@ -73,7 +73,7 @@ function ExerciseEditDialog(exercise: Exercise) {
 
     useEffect(() => {
         setIsMounted(true)
-    })
+    }, [])
     if (!isMounted) {
         return null
     }

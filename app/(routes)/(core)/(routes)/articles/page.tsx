@@ -19,11 +19,9 @@ function Articles() {
     const searchParams = useSearchParams()
     const queryParam = searchParams.get("q") ?? ""
     const [query, setQuery] = useState<string>(queryParam)
-    const [sort, setSort] = useState<string>("")
     const [search, setSearch] = useState<string>(queryParam)
+    const [sort, setSort] = useState<string>("")
     const router = useRouter()
-
-    console.log(search)
 
     const handleSearch = () => {
         router.push(`/articles?q=${query}`)

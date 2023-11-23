@@ -32,7 +32,6 @@ function ArticlesSearchResults({ query, sort }: ArticlesSearchResults) {
                     if (!hardRefresh) {
                         return [...prevArticles, ...response.data.items]
                     } else {
-                        console.log("wring")
                         return [...response.data.items]
                     }
                 })
@@ -102,7 +101,7 @@ function ArticlesSearchResults({ query, sort }: ArticlesSearchResults) {
     useEffect(() => handleSortChange(), [sort])
 
     useEffect(() => {
-        fetchArticles(0, true)
+        fetchArticles(true)
         console.log("hard refresh!")
     }, [query])
 

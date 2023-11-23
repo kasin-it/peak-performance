@@ -37,7 +37,6 @@ const schema = z.object({
 
 function WorkoutCreateDialog() {
     const supabase = createClientComponentClient()
-    const router = useRouter()
     const [isMounted, setIsMounted] = useState(false)
     const {
         register,
@@ -66,7 +65,7 @@ function WorkoutCreateDialog() {
 
     useEffect(() => {
         setIsMounted(true)
-    })
+    }, [])
     if (!isMounted) {
         return null
     }
