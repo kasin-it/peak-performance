@@ -1,116 +1,60 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import axios from "axios"
+import { useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { Search } from "lucide-react"
 
-import ArticlePreview from "@/components/ui/article-preview"
-import ExercisePreview from "@/components/ui/exercise-preview"
-import SearchBar from "@/components/ui/search-bar"
+import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
-import { Skeleton } from "@/components/ui/skeleton"
+import SearchResults from "@/components/SearchSection/search-results"
 
 function SearchPage() {
-    const [error, setError] = useState("")
-    const [results, setResults] = useState<any[]>([])
-    const [isLoading, setIsLoading] = useState(false)
+    const searchParams = useSearchParams()
+    const router = useRouter()
+    const queryParam = searchParams.get("query") ?? ""
+    const [query, setQuery] = useState(queryParam)
+    const [search, setSearch] = useState(queryParam)
+    const [reset, setReset] = useState(false)
 
-    const fetchResults = async (query: string) => {
-        try {
-            const exercisesResponse = await axios.get("/api/exercises", {
-                params: {
-                    query: query,
-                },
-            })
-            const articlesResponse = await axios.get("/api/articles", {
-                params: {
-                    query: query,
-                },
-            })
-
-            if (
-                exercisesResponse.status === 200 &&
-                articlesResponse.status === 200
-            ) {
-                const mixedResults = []
-
-                const maxLen = Math.max(
-                    exercisesResponse.data.length,
-                    articlesResponse.data.items.length
-                )
-
-                for (let i = 0; i < maxLen; i++) {
-                    if (i < exercisesResponse.data.length) {
-                        mixedResults.push({
-                            type: "exercise",
-                            data: exercisesResponse.data[i],
-                        })
-                    }
-
-                    if (i < articlesResponse.data.items.length) {
-                        mixedResults.push({
-                            type: "article",
-                            data: articlesResponse.data.items[i],
-                        })
-                    }
-                }
-
-                setResults(mixedResults)
-            } else {
-                setError("Something went wrong.")
-            }
-        } catch (error) {
-            setError("An error occurred while fetching data.")
-        } finally {
-            setIsLoading(false)
-        }
+    const handleSearch = () => {
+        router.push(`/search?query=${query}`)
+        setSearch(query)
+        setReset((prev) => !prev)
     }
 
-    useEffect(() => {
-        const searchParams = new URLSearchParams(window.location.search)
-        const queryParam = searchParams.get("query") || ""
-
-        if (queryParam != "") {
-            setIsLoading(true)
-            fetchResults(queryParam)
-        } else {
-            setIsLoading(false)
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            handleSearch()
         }
-    }, [])
+    }
 
     return (
         <section className="flex w-full flex-col items-center space-y-10 px-5 pb-10">
             <div className="flex flex-col items-center space-y-5">
                 <h1 className="pb-8 pt-48 text-4xl font-bold">Search:</h1>
-                <SearchBar className="w-full min-w-[400px]" />
+                <div className="flex justify-center space-x-4 pb-12">
+                    <div className={"relative flex w-full items-center"}>
+                        <Input
+                            type="search"
+                            placeholder="What are you looking for?"
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            className="w-[500px] rounded-lg pr-10"
+                        />
+                        <button
+                            type="button"
+                            onClick={handleSearch}
+                            className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-primary"
+                        >
+                            <Search size={16} />
+                        </button>
+                    </div>
+                </div>
             </div>
             <Separator />
             <article className="w-full max-w-[1500px]">
-                <div className="flex max-w-[1500px] flex-wrap gap-10 ">
-                    {error && <div>{error}</div>}
-                    {isLoading &&
-                        Array.from({ length: 10 }).map((_, index) => (
-                            <Skeleton
-                                key={index}
-                                className="m-3 mx-auto h-[415px] w-[448px] max-w-md overflow-hidden rounded-xl shadow-md md:max-w-2xl"
-                            ></Skeleton>
-                        ))}
-                    {results.map((result, index) => (
-                        <>
-                            {result.type === "exercise" && (
-                                <ExercisePreview
-                                    exercise={result.data}
-                                    key={index}
-                                />
-                            )}
-                            {result.type === "article" && (
-                                <ArticlePreview
-                                    article={result.data}
-                                    key={index}
-                                />
-                            )}
-                        </>
-                    ))}
-                </div>
+                <SearchResults query={search} reset={reset} />
             </article>
         </section>
     )

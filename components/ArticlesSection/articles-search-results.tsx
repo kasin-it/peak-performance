@@ -21,6 +21,7 @@ function ArticlesSearchResults({ query, sort }: ArticlesSearchResults) {
 
     const fetchArticles = async (hardRefresh?: boolean) => {
         try {
+            setIsLoading(true)
             const response = await axios.get("/api/articles", {
                 params: {
                     query: query,
@@ -35,6 +36,9 @@ function ArticlesSearchResults({ query, sort }: ArticlesSearchResults) {
                         return [...response.data.items]
                     }
                 })
+                if (response.data.items.length < 10) {
+                    setEmptyResponse(true)
+                }
             } else {
                 setArticles([])
                 setEmptyResponse(true)

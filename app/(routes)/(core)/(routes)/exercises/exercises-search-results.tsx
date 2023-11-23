@@ -66,6 +66,7 @@ function ExercisesSearchResults({
 
     const fetchMoreExercises = async (offset: number) => {
         try {
+            setIsLoading(true)
             const response = await axios.get("/api/exercises", {
                 params: {
                     offset: offset,
