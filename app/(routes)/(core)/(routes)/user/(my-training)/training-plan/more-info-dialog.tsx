@@ -20,7 +20,7 @@ function MoreInfoDialog({ workout }: { workout: Workout }) {
 
     useEffect(() => {
         setIsMounted(true)
-    })
+    }, [])
 
     if (!isMounted) {
         return null

@@ -16,7 +16,7 @@ function WorkoutFullDescriptionDialog({ desc }: { desc: string }) {
 
     useEffect(() => {
         setIsMounted(true)
-    })
+    }, [])
 
     if (!isMounted) {
         return null
@@ -24,7 +24,9 @@ function WorkoutFullDescriptionDialog({ desc }: { desc: string }) {
 
     return (
         <Dialog>
-            <DialogTrigger>Show more</DialogTrigger>
+            <DialogTrigger className="hover:opacity-60">
+                Show more
+            </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Description</DialogTitle>

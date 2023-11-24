@@ -30,7 +30,9 @@ function ExerciseItem({
                                 : null
                         )}
                     >
-                        {exercise.instructions}
+                        {exercise.instructions
+                            ? exercise.instructions
+                            : "There are no insstructions included."}
                     </CardDescription>
                     {exercise.instructions?.length! > 100 ? (
                         <ExerciseFullDescriptionDialog

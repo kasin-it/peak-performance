@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import axios from "axios"
 
 import { Exercise } from "@/types/types"
@@ -30,40 +30,43 @@ function ExercisesSearchResults({
     const [isFetchingMore, setIsFetchingMore] = useState(false)
     const [emptyResponse, setEmptyResponse] = useState(false)
 
-    const fetchExercises = async (hardRefresh?: boolean) => {
-        try {
-            setIsLoading(true)
-            const response = await axios.get("/api/exercises", {
-                params: {
-                    query: query,
-                    muscle: muscle,
-                    skill_level: skillLevel,
-                    exercise_type: exerciseType,
-                },
-            })
-
-            if (response.data.length > 0) {
-                setExercises((prevExercises: any) => {
-                    if (!hardRefresh) {
-                        return [...prevExercises, ...response.data]
-                    } else {
-                        return [...response.data]
-                    }
+    const fetchExercises = useCallback(
+        async (hardRefresh?: boolean) => {
+            try {
+                setIsLoading(true)
+                const response = await axios.get("/api/exercises", {
+                    params: {
+                        query: query,
+                        muscle: muscle,
+                        skill_level: skillLevel,
+                        exercise_type: exerciseType,
+                    },
                 })
-                if (response.data.length < 10) {
+
+                if (response.data.length > 0) {
+                    setExercises((prevExercises: any) => {
+                        if (!hardRefresh) {
+                            return [...prevExercises, ...response.data]
+                        } else {
+                            return [...response.data]
+                        }
+                    })
+                    if (response.data.length < 10) {
+                        setEmptyResponse(true)
+                    }
+                } else {
+                    setExercises([])
                     setEmptyResponse(true)
                 }
-            } else {
-                setExercises([])
-                setEmptyResponse(true)
+            } catch (error) {
+                setError("An error occurred while fetching data.")
+            } finally {
+                setIsLoading(false)
+                setIsFetchingMore(false)
             }
-        } catch (error) {
-            setError("An error occurred while fetching data.")
-        } finally {
-            setIsLoading(false)
-            setIsFetchingMore(false)
-        }
-    }
+        },
+        [exerciseType, muscle, query, skillLevel]
+    )
 
     const fetchMoreExercises = async (offset: number) => {
         try {
@@ -101,7 +104,7 @@ function ExercisesSearchResults({
         setOffset(newOffset)
     }
 
-    const handleSortChange = () => {
+    const handleSortChange = useCallback(() => {
         if (sort === "asc") {
             setExercises((prevExercises: any) =>
                 prevExercises
@@ -119,18 +122,17 @@ function ExercisesSearchResults({
                     : prevExercises
             )
         }
-    }
+    }, [sort])
 
-    useEffect(() => handleSortChange(), [sort])
-
-    useEffect(() => {
-        fetchExercises(true)
-        console.log(query, skillLevel, muscle, exerciseType)
-    }, [query, reset])
+    useEffect(() => handleSortChange(), [sort, handleSortChange])
 
     useEffect(() => {
         fetchExercises(true)
-    }, [])
+    }, [query, reset, fetchExercises])
+
+    useEffect(() => {
+        fetchExercises(true)
+    }, [fetchExercises])
 
     const generateLoadingSkeletons = () =>
         Array.from({ length: 10 }).map((_, index) => (
@@ -142,7 +144,7 @@ function ExercisesSearchResults({
 
     return (
         <>
-            <article className="flex w-full max-w-[1500px] flex-wrap justify-between gap-5 pb-12">
+            <article className="grid max-w-[1500px] grid-cols-1 gap-5 lg:grid-cols-2 2xl:grid-cols-3">
                 {error && <div>{error}</div>}
 
                 {exercises.length === 0 && !isLoading && !error && (

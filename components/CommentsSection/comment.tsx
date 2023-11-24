@@ -29,7 +29,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 
-import { Avatar } from "../ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { Textarea } from "../ui/textarea"
@@ -93,72 +93,107 @@ function Comment({ comment, currentUser }: CommentProps) {
     }, [comment, supabase])
 
     return (
-        <article
-            className="relative flex w-full justify-between rounded-sm border-t border-gray-100 px-5 pb-10 pt-5 shadow-md lg:w-[600px]"
-            key={comment.id}
-        >
-            <div className="flex space-x-3">
-                <Avatar>
-                    <div className="h-[50px] w-[50px] bg-blue-50" />
-                </Avatar>
-                <div className="flex flex-wrap space-x-2">
-                    <h1 className="font-bold text-blue-500">{username}</h1>
-                    <p className=" max-w-[450px] break-words text-muted-foreground">
-                        {comment.comment}
-                    </p>
+        // <article
+        //     className="relative flex w-full justify-between rounded-sm border-t border-gray-100 px-5 pb-10 pt-5 shadow-md lg:w-[600px]"
+        //     key={comment.id}
+        // >
+        //     <div className="flex space-x-3">
+        //         <Avatar>
+        //             <div className="h-[50px] w-[50px] bg-blue-50" />
+        //         </Avatar>
+        //         <div className="flex flex-wrap space-x-2">
+        //             <h1 className="font-bold text-blue-500">{username}</h1>
+        //             <p className=" max-w-[450px] break-words text-muted-foreground">
+        //                 {comment.comment}
+        //             </p>
+        //         </div>
+        //     </div>
+
+        // </article>
+        <div className="flex items-start gap-4 text-sm">
+            <Avatar className="h-10 w-10 border">
+                <AvatarImage alt="User Avatar" src="/placeholder-user.jpg" />
+                <AvatarFallback>AC</AvatarFallback>
+            </Avatar>
+            <div className="grid gap-1.5">
+                <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                        <div className="font-semibold">John Doe</div>
+                        <div className="text-xs text-zinc-500 dark:text-zinc-400">
+                            3 hours ago
+                        </div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        {currentUser.id == comment.user_id ? (
+                            <>
+                                <Dialog>
+                                    <DialogTrigger>
+                                        <Button
+                                            className="text-xs"
+                                            variant="outline"
+                                        >
+                                            Edit
+                                        </Button>
+                                    </DialogTrigger>
+                                    <DialogContent className="sm:max-w-md">
+                                        <DialogHeader>
+                                            <DialogTitle>
+                                                Share link
+                                            </DialogTitle>
+                                            <DialogDescription>
+                                                Anyone who has this link will be
+                                                able to view this.
+                                            </DialogDescription>
+                                        </DialogHeader>
+
+                                        <UpdateCommentForm
+                                            commentId={comment.id}
+                                            userId={currentUser.id}
+                                            content={comment.comment}
+                                        />
+                                    </DialogContent>
+                                </Dialog>
+
+                                <AlertDialog>
+                                    <AlertDialogTrigger>
+                                        {" "}
+                                        <Button
+                                            className="text-xs"
+                                            variant="destructive"
+                                        >
+                                            Delete
+                                        </Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>
+                                                Are you absolutely sure?
+                                            </AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                This action cannot be undone.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel>
+                                                Cancel
+                                            </AlertDialogCancel>
+                                            <AlertDialogAction
+                                                onClick={() =>
+                                                    handleRemove(comment.id)
+                                                }
+                                            >
+                                                Delete
+                                            </AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
+                            </>
+                        ) : null}
+                    </div>
                 </div>
+                <div>This is a comment from John Doe.</div>
             </div>
-            {currentUser.id == comment.user_id ? (
-                <div className="absolute bottom-1 right-4 flex space-x-2 text-black/80">
-                    {/* <button
-                        onClick={() => handleRemove(comment.id)}
-                        className="transition duration-200 hover:text-red-500"
-                    >
-                        Remove
-                    </button> */}
-                    <AlertDialog>
-                        <AlertDialogTrigger>Remove</AlertDialogTrigger>
-                        <AlertDialogContent>
-                            <AlertDialogHeader>
-                                <AlertDialogTitle>
-                                    Are you absolutely sure?
-                                </AlertDialogTitle>
-                                <AlertDialogDescription>
-                                    This action cannot be undone.
-                                </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction
-                                    onClick={() => handleRemove(comment.id)}
-                                >
-                                    Delete
-                                </AlertDialogAction>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
-
-                    <Dialog>
-                        <DialogTrigger>Edit</DialogTrigger>
-                        <DialogContent className="sm:max-w-md">
-                            <DialogHeader>
-                                <DialogTitle>Share link</DialogTitle>
-                                <DialogDescription>
-                                    Anyone who has this link will be able to
-                                    view this.
-                                </DialogDescription>
-                            </DialogHeader>
-
-                            <UpdateCommentForm
-                                commentId={comment.id}
-                                userId={currentUser.id}
-                                content={comment.comment}
-                            />
-                        </DialogContent>
-                    </Dialog>
-                </div>
-            ) : null}
-        </article>
+        </div>
     )
 }
 export default Comment

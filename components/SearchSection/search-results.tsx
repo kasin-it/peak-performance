@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import axios from "axios"
 
 import ArticlePreview from "../ui/article-preview"
@@ -17,7 +17,7 @@ function SearchResults({ query, reset }: SearchResultsProps) {
 
     console.log(query)
 
-    const fetchResults = async () => {
+    const fetchResults = useCallback(async () => {
         try {
             setIsLoading(true)
             const exercisesResponse = await axios.get("/api/exercises", {
@@ -67,7 +67,7 @@ function SearchResults({ query, reset }: SearchResultsProps) {
         } finally {
             setIsLoading(false)
         }
-    }
+    }, [query])
     useEffect(() => {
         console.log("init")
         if (query != "") {
@@ -77,7 +77,7 @@ function SearchResults({ query, reset }: SearchResultsProps) {
         } else {
             setIsLoading(false)
         }
-    }, [])
+    }, [fetchResults, query])
 
     useEffect(() => {
         if (query != "") {
@@ -85,7 +85,7 @@ function SearchResults({ query, reset }: SearchResultsProps) {
         } else {
             setResults([])
         }
-    }, [query, reset])
+    }, [query, reset, fetchResults])
     return (
         <div className="flex max-w-[1500px] flex-wrap gap-10 ">
             {error && <div>{error}</div>}

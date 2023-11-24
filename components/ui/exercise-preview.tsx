@@ -4,8 +4,11 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import toast from "react-hot-toast"
 
 import { Exercise } from "@/types/types"
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardDescription, CardTitle } from "@/components/ui/card"
+
+import ExerciseFullDescriptionDialog from "./exercise-full-desctiption-dialog"
 
 function ExercisePreview({ exercise }: { exercise: Exercise }) {
     const supabase = createClientComponentClient()
@@ -61,18 +64,23 @@ function ExercisePreview({ exercise }: { exercise: Exercise }) {
                         correctly:
                     </CardDescription>
 
-                    <p>
-                        {exercise.instructions
-                            ? exercise.instructions
-                            : "No instructions added"}
-                    </p>
+                    <CardDescription
+                        className={cn(
+                            exercise.instructions?.length! > 100
+                                ? "line-clamp-[3] overflow-hidden bg-gradient-to-b from-primary bg-clip-text text-transparent"
+                                : null
+                        )}
+                    >
+                        {exercise.instructions}
+                    </CardDescription>
+                    {exercise.instructions?.length! > 100 ? (
+                        <ExerciseFullDescriptionDialog
+                            instructions={exercise.instructions!}
+                        />
+                    ) : null}
                 </div>
                 <div className="mt-4">
-                    <Button
-                        className="text-blue-600 hover:text-blue-900"
-                        variant="outline"
-                        onClick={onExerciseAdd}
-                    >
+                    <Button variant="outline" onClick={onExerciseAdd}>
                         Add to my exercises
                     </Button>
                 </div>

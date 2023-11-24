@@ -11,7 +11,7 @@ import Comment from "./comment"
 import { InsertCommentForm } from "./insert-comment-form"
 
 function CommentsSection({ articleId }: { articleId: string }) {
-    const supabase = createClientComponentClient<Database>()
+    const supabase = createClientComponentClient()
     const [comments, setComments] = useState<any | null>(null)
     const [isLoading, setLoading] = useState(true)
     const [currentUser, setCurrentUser] = useState<any | null>(null)
@@ -70,11 +70,21 @@ function CommentsSection({ articleId }: { articleId: string }) {
             className="flex w-full max-w-[1500px] flex-col justify-center space-y-6 border-y px-5 py-8"
             id="comments"
         >
-            <h2 className="w-full text-center text-xl font-bold tracking-widest text-blue-500 lg:text-left">
-                COMMENTS
-            </h2>
+            <div className="space-y-2">
+                <h2 className="text-3xl font-bold text-blue-500">
+                    Leave a Comment
+                </h2>
+                <p className="text-zinc-500 dark:text-zinc-400">
+                    Share your thoughts about this article.
+                </p>
+            </div>
             <section className="lg:justify-left  flex flex-col items-center space-x-0 space-y-10 lg:flex-row lg:items-start lg:space-x-10 lg:space-y-0">
-                <section className="flex w-full flex-col items-center lg:items-start lg:justify-start">
+                <section className="flex w-full flex-col  items-center lg:items-start lg:justify-start">
+                    <InsertCommentForm
+                        articleId={articleId}
+                        currentUser={currentUser}
+                    />
+
                     {isLoading ? (
                         Array.from({ length: 4 }, (value, index) => (
                             <article
@@ -106,10 +116,6 @@ function CommentsSection({ articleId }: { articleId: string }) {
                         </div>
                     )}
                 </section>
-                <InsertCommentForm
-                    articleId={articleId}
-                    currentUser={currentUser}
-                />
             </section>
         </section>
     )

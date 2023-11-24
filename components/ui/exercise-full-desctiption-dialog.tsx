@@ -20,7 +20,7 @@ function ExerciseFullDescriptionDialog({
 
     useEffect(() => {
         setIsMounted(true)
-    })
+    }, [])
 
     if (!isMounted) {
         return null
@@ -28,7 +28,9 @@ function ExerciseFullDescriptionDialog({
 
     return (
         <Dialog>
-            <DialogTrigger>Show more</DialogTrigger>
+            <DialogTrigger className="hover:opacity-60">
+                Show more
+            </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Instructions</DialogTitle>

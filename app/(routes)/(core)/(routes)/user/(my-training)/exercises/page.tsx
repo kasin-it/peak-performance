@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import Link from "next/link"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
@@ -16,7 +16,7 @@ function MyExercisesPage() {
 
     const supabase = createClientComponentClient()
 
-    const fetchExercises = async () => {
+    const fetchExercises = useCallback(async () => {
         try {
             setIsLoading(true)
 
@@ -35,22 +35,13 @@ function MyExercisesPage() {
         } finally {
             setIsLoading(false)
         }
-    }
+    }, [supabase])
 
     useEffect(() => {
         fetchExercises()
-    }, [])
+    }, [fetchExercises])
 
     return (
-        // <section className="flex w-full flex-col items-center px-5 pt-24">
-        //     <div className="relative w-full max-w-[1500px] text-center">
-        //         <h1 className="text-4xl font-bold">My Exercises</h1>
-        //         <div className="absolute right-0 top-0 space-x-3">
-        //         </div>
-        //     </div>
-
-        // </section>
-
         <section className="w-full py-6 sm:py-12 md:py-24 lg:py-32">
             <div className="container mx-auto grid max-w-7xl gap-4 px-2 sm:gap-6 sm:px-4 md:px-6 lg:px-8 xl:px-10 2xl:px-12">
                 <div className="flex justify-between">
