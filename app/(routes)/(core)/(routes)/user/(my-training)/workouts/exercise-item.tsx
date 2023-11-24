@@ -9,6 +9,7 @@ import { Exercise } from "@/types/types"
 import { cn } from "@/lib/utils"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
+import ExerciseFullDescriptionDialog from "@/components/ui/exercise-full-desctiption-dialog"
 
 function ExerciseItem({
     exercise,
@@ -67,10 +68,21 @@ function ExerciseItem({
                                     <Trash className="h-4 w-4" />
                                 </Button>
                             </div>
-                            <AlertDescription className="mt-3">
+                            <p
+                                className={cn(
+                                    exercise.instructions?.length! > 100
+                                        ? "line-clamp-[2] overflow-hidden bg-gradient-to-b from-primary bg-clip-text text-transparent"
+                                        : null
+                                )}
+                            >
                                 {exercise.instructions}
-                            </AlertDescription>
-                            <AlertDescription>
+                            </p>
+                            {exercise.instructions?.length! > 100 ? (
+                                <ExerciseFullDescriptionDialog
+                                    instructions={exercise.instructions!}
+                                />
+                            ) : null}
+                            <AlertDescription className="text-xl font-bold">
                                 {exercise.sets} x {exercise.repetitions}
                             </AlertDescription>
                         </>

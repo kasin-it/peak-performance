@@ -1,11 +1,6 @@
-import { cookies } from "next/headers"
 import Link from "next/link"
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 import TrainingPlanWorkouts from "./training-plan-workouts"
-import WorkoutItem from "./workout-item"
 
 interface TrainingPlanItemProps {
     name: string
@@ -16,20 +11,16 @@ async function TrainingPlanItem({ name, workoutsId }: TrainingPlanItemProps) {
     const queryUrl = `/user/training-plan/${name}/`
 
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle className="capitalize">{name}</CardTitle>
-            </CardHeader>
-            <CardContent className="grid gap-4 border-y py-4">
-                <TrainingPlanWorkouts workoutsId={workoutsId} name={name} />
-                <Link
-                    href={queryUrl}
-                    className="rounded-md bg-blue-500 px-4 py-2 text-center text-white transition duration-300 ease-linear hover:bg-blue-300"
-                >
-                    Add Workout
-                </Link>
-            </CardContent>
-        </Card>
+        <div className="flex flex-col space-y-4">
+            <div className="text-center font-bold capitalize">{name}</div>
+            <Link
+                href={queryUrl}
+                className="rounded-md border border-blue-500 bg-white px-4 py-3 text-center text-sm font-medium text-blue-500 transition duration-200 hover:bg-blue-500 hover:text-white"
+            >
+                Add Workout
+            </Link>
+            <TrainingPlanWorkouts workoutsId={workoutsId} name={name} />
+        </div>
     )
 }
 export default TrainingPlanItem

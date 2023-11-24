@@ -13,7 +13,7 @@ async function MyWorkoutsPage() {
 
     return (
         <section className="flex w-full flex-col items-center space-y-10 px-5 pt-24">
-            <div className="relative w-full max-w-[1500px] text-center">
+            <div className="relative w-full max-w-[1500px] text-left">
                 <h1 className="text-4xl font-bold">My Workouts</h1>
                 <div className="absolute right-0 top-0">
                     <WorkoutCreateDialog />

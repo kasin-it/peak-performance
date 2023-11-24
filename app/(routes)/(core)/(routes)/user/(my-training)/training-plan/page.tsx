@@ -18,32 +18,45 @@ async function TrainingPlanPage() {
     }
 
     return (
-        <section className="flex w-full flex-col items-center pt-48">
-            <div className="pb-10">
-                <h1 className="text-4xl font-bold">My Training</h1>
-            </div>
-            <div className="grid w-full max-w-[1500px] grid-cols-1 gap-4 p-4 pb-24 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-                <TrainingPlanItem name={"monday"} workoutsId={data[0].monday} />
+        <div className="h-full w-full p-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 <TrainingPlanItem
+                    key={"monday"}
+                    name={"monday"}
+                    workoutsId={data[0].monday}
+                />
+                <TrainingPlanItem
+                    key={"tuesday"}
                     name={"tuesday"}
                     workoutsId={data[0].tuesday}
                 />
                 <TrainingPlanItem
+                    key={"wednesday"}
                     name={"wednesday"}
                     workoutsId={data[0].wednesday}
                 />
                 <TrainingPlanItem
+                    key={"thursday"}
                     name={"thursday"}
                     workoutsId={data[0].thursday}
                 />
-                <TrainingPlanItem name={"friday"} workoutsId={data[0].friday} />
                 <TrainingPlanItem
+                    key={"friday"}
+                    name={"friday"}
+                    workoutsId={data[0].friday}
+                />
+                <TrainingPlanItem
+                    key={"saturday"}
                     name={"saturday"}
                     workoutsId={data[0].saturday}
                 />
-                <TrainingPlanItem name={"sunday"} workoutsId={data[0].sunday} />
+                <TrainingPlanItem
+                    key={"sunday"}
+                    name={"sunday"}
+                    workoutsId={data[0].sunday}
+                />
             </div>
-        </section>
+        </div>
     )
 }
 export default TrainingPlanPage

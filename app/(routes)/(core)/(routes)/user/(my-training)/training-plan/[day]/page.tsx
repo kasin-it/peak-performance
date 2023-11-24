@@ -16,11 +16,13 @@ async function AddWorkoutPage({ params }: AddWorkoutPageProps) {
     const { data, error } = await supabase.from("user_workouts").select()
 
     return (
-        <section className="flex w-full flex-col items-center px-5 pt-48">
+        <section className="flex w-full flex-col items-center space-y-10 px-5 pt-24">
             <div className="relative w-full max-w-[1500px] text-center">
                 <h1 className="text-4xl font-bold">
                     Add workout to {params.day}
                 </h1>
+            </div>
+            <div className="grid w-full max-w-[1500px] gap-5 lg:grid-cols-2 xl:grid-cols-3">
                 {error && <p>Fetchning data wnet wrong</p>}
                 {data?.length === 0 && (
                     <div className="flex flex-col space-y-2">

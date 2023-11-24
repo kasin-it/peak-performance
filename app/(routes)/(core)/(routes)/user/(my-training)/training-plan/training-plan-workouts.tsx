@@ -13,13 +13,12 @@ async function TrainingPlanWorkouts({
     name: string
 }) {
     if (workoutsId === null || workoutsId.length === 0) {
-        return null // Returning null when there are no workouts
+        return null
     }
 
     const supabase = createServerComponentClient({ cookies })
 
     const getWorkouts = async () => {
-        // Use Promise.all to fetch all workouts asynchronously
         const workoutsPromises = workoutsId.map(async (id) => {
             const { data } = await supabase
                 .from("user_workouts")
@@ -30,7 +29,7 @@ async function TrainingPlanWorkouts({
                 return
             }
 
-            return data[0] // Assuming the query returns an array, and you want the first element
+            return data[0]
         })
 
         return Promise.all(workoutsPromises)
