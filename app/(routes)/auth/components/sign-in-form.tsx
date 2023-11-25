@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { createBrowserClient } from "@supabase/ssr"
 import { AlertCircle, Loader2 } from "lucide-react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import toast from "react-hot-toast"
@@ -34,8 +35,8 @@ const formSchema = z.object({
 })
 
 export function SignInForm({ className, ...props }: SignInFormProps) {
-    const supabase = createClientComponentClient()
     const router = useRouter()
+
     const {
         register,
         handleSubmit,
@@ -47,6 +48,13 @@ export function SignInForm({ className, ...props }: SignInFormProps) {
         reValidateMode: "onSubmit",
     })
     const onSubmit: SubmitHandler<FormData> = async (formData: FormData) => {
+        const supabase = createBrowserClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        )
+
+        // const supabase = createClientComponentClient()
+
         const { data: _, error } = await supabase.auth.signInWithPassword({
             email: formData.email,
             password: formData.password,
@@ -58,7 +66,7 @@ export function SignInForm({ className, ...props }: SignInFormProps) {
         }
         toast.success("Login has been successfull!")
 
-        router.refresh()
+        router.push("/")
     }
 
     return (

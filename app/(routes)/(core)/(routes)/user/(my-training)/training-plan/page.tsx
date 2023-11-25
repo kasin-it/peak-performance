@@ -1,10 +1,10 @@
 import { cookies } from "next/headers"
+import { createServerClient } from "@supabase/ssr"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 import TrainingPlanItem from "./training-plan-item"
-import { createServerClient } from "@supabase/ssr"
 
 async function TrainingPlanPage() {
     const cookieStore = cookies()

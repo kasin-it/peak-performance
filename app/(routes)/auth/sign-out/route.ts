@@ -1,16 +1,36 @@
+import { NextApiRequest, NextApiResponse } from "next"
 import { cookies } from "next/headers"
-import { NextResponse, type NextRequest } from "next/server"
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs"
+import { NextRequest, NextResponse } from "next/server"
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
+import { CookieOptions, createServerClient, serialize } from "@supabase/ssr"
 
-import type { Database } from "@/types/database"
+export async function GET(request: NextRequest) {
+    try {
+        const cookieStore = cookies()
 
-export const dynamic = "force-dynamic"
+        const supabase = createServerClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+            {
+                cookies: {
+                    get(name: string) {
+                        return cookieStore.get(name)?.value
+                    },
+                    set(name: string, value: string, options: CookieOptions) {
+                        cookieStore.set({ name, value, ...options })
+                    },
+                    remove(name: string, options: CookieOptions) {
+                        cookieStore.set({ name, value: "", ...options })
+                    },
+                },
+            }
+        )
 
-export async function GET(req: NextRequest) {
-    const reqUrl = new URL(req.url)
+        await supabase.auth.signOut()
 
-    const supabase = createRouteHandlerClient<Database>({ cookies })
-    await supabase.auth.signOut()
-
-    return NextResponse.redirect(reqUrl.origin)
+        return NextResponse.redirect(new URL(request.url!).origin)
+    } catch (error) {
+        console.error("Error signing out:", error)
+        return new NextResponse("Failed to sign out")
+    }
 }
