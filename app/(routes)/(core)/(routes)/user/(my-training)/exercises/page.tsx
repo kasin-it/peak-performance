@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react"
 import Link from "next/link"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
-import { Exercise, Workout } from "@/types/types"
+import { Exercise } from "@/types/types"
 
 import ExerciseCreateDialog from "./exercise-create-dialog"
 import ExerciseItem from "./exercise-item"

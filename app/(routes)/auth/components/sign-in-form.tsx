@@ -10,7 +10,6 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { z } from "zod"
 
-import { Database } from "@/types/database"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -35,7 +34,7 @@ const formSchema = z.object({
 })
 
 export function SignInForm({ className, ...props }: SignInFormProps) {
-    const supabase = createClientComponentClient<Database>()
+    const supabase = createClientComponentClient()
     const router = useRouter()
     const {
         register,

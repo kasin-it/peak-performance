@@ -11,7 +11,7 @@ import WorkoutFullDescriptionDialog from "../../workouts/workout-full-descriptio
 
 function WorkoutItem({ workout, day }: { workout: Workout; day: string }) {
     const onSubmit = async () => {
-        const supabase = await createClientComponentClient()
+        const supabase = createClientComponentClient()
 
         const { data: _, error } = await supabase.rpc(
             "append_to_training_plan_column",

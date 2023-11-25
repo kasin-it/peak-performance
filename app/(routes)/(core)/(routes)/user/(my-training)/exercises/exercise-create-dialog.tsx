@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { AlertCircle } from "lucide-react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import toast from "react-hot-toast"
@@ -27,6 +26,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
 type FormData = z.infer<typeof schema>
 
@@ -39,7 +39,6 @@ const schema = z.object({
 
 function ExerciseCreateDialog() {
     const supabase = createClientComponentClient()
-    const router = useRouter()
     const [isMounted, setIsMounted] = useState(false)
     const {
         register,

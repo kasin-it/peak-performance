@@ -1,6 +1,6 @@
 import { cookies } from "next/headers"
 import Link from "next/link"
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
+import { createServerClient } from "@supabase/ssr"
 import { Edit, PlusCircle } from "lucide-react"
 
 import { Exercise, Workout } from "@/types/types"
@@ -15,7 +15,19 @@ import WorkoutEditDialog from "./workout-edit-dialog"
 import WorkoutFullDescriptionDialog from "./workout-full-description-dialog"
 
 async function WorkoutItem({ workout }: { workout: Workout }) {
-    const supabase = createServerComponentClient({ cookies })
+    const cookieStore = cookies()
+
+    const supabase = createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        {
+            cookies: {
+                get(name: string) {
+                    return cookieStore.get(name)?.value
+                },
+            },
+        }
+    )
 
     if (!workout.exercises || workout.exercises.length === 0) {
         return (

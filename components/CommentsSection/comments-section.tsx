@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
-import { Database } from "@/types/database"
 import { Comment as CommentType } from "@/types/types"
 
 import { Skeleton } from "../ui/skeleton"

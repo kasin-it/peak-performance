@@ -75,7 +75,7 @@ async function ArticlePage({ params }: { params: { articleId: string } }) {
                     <ArticleRichText document={article.fields.content} />
                 </main>
 
-                <CommentsSection articleId={params.articleId} />
+                {/* <CommentsSection articleId={params.articleId} /> */}
             </article>
         </section>
     )

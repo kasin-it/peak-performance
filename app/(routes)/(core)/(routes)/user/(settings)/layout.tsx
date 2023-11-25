@@ -1,11 +1,23 @@
 import { cookies } from "next/headers"
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
+import { createServerClient } from "@supabase/ssr"
 
 import { Database } from "@/types/database"
 import { SidebarNav } from "@/components/ui/sidebar-nav"
 
 async function UserSettingsLayout({ children }: { children: React.ReactNode }) {
-    const supabase = createServerComponentClient<Database>({ cookies })
+    const cookieStore = cookies()
+
+    const supabase = createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        {
+            cookies: {
+                get(name: string) {
+                    return cookieStore.get(name)?.value
+                },
+            },
+        }
+    )
 
     const {
         data: { user },
