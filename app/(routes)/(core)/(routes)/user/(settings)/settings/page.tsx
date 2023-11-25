@@ -1,8 +1,7 @@
-import Link from "next/link"
-
 import ChangeEmailForm from "../forms/change-email-form"
 import ChangePasswordForm from "../forms/change-password-form"
 import ChangeUsernameForm from "../forms/change-username-form"
+import SignOutForm from "../forms/sign-out-form"
 
 function ProfilePage() {
     return (
@@ -17,11 +16,7 @@ function ProfilePage() {
                 <div className="space-y-2">
                     <ChangePasswordForm />
                 </div>
-                <Link href={"/auth/sign-out"}>
-                    <p className="mt-4 w-full rounded-md bg-red-500 py-2 text-center font-medium text-white">
-                        Sign Out
-                    </p>
-                </Link>
+                <SignOutForm />
             </div>
         </div>
     )

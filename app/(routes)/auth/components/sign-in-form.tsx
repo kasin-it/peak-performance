@@ -66,7 +66,7 @@ export function SignInForm({ className, ...props }: SignInFormProps) {
         }
         toast.success("Login has been successfull!")
 
-        router.push("/")
+        window.location.href = "/"
     }
 
     return (
