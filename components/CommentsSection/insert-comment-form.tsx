@@ -67,10 +67,7 @@ export function InsertCommentForm({
         <>
             {currentUser ? (
                 <div
-                    className={cn(
-                        "flex w-full flex-col rounded-xl border-t border-gray-100 p-4 shadow-md sm:w-[600px]",
-                        className
-                    )}
+                    className={cn("flex w-full flex-col", className)}
                     {...props}
                 >
                     <form
@@ -88,7 +85,7 @@ export function InsertCommentForm({
                             <div className="relative">
                                 <Textarea
                                     id="comment"
-                                    placeholder="andrew@mail.com"
+                                    placeholder="Enter your comment"
                                     autoCapitalize="none"
                                     autoCorrect="off"
                                     disabled={isSubmitting}
@@ -120,14 +117,14 @@ export function InsertCommentForm({
                         </div>
 
                         <Button
-                            className="w-[160px]"
+                            className="w-full"
                             disabled={isSubmitting}
-                            variant={"secondary"}
+                            variant={"default"}
                         >
                             {isSubmitting && (
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                             )}
-                            <p className="px-5">Comment</p>
+                            <p className="px-5">Post Comment</p>
                         </Button>
                     </form>
                 </div>

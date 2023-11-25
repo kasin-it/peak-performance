@@ -81,8 +81,8 @@ function ExerciseEditDialog(exercise: Exercise) {
     return (
         <Dialog>
             <DialogTrigger>
-                <Button>
-                    <Edit />
+                <Button size="sm" variant="outline">
+                    Edit
                 </Button>
             </DialogTrigger>
             <DialogContent>
@@ -92,9 +92,7 @@ function ExerciseEditDialog(exercise: Exercise) {
                     className="space-y-3"
                 >
                     <DialogHeader>
-                        <DialogTitle>
-                            Create your very own exercise!
-                        </DialogTitle>
+                        <DialogTitle>Edit exercise</DialogTitle>
                     </DialogHeader>
                     <div className="relative">
                         <Label>Name</Label>
@@ -226,7 +224,7 @@ function ExerciseEditDialog(exercise: Exercise) {
 
                     <DialogFooter>
                         <Button type="submit" disabled={isSubmitting}>
-                            Create
+                            Save
                         </Button>
                     </DialogFooter>
                 </form>

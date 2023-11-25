@@ -2,8 +2,6 @@ import { NextResponse } from "next/server"
 import axios from "axios"
 import { createClient } from "contentful"
 
-import { Label } from "@/components/ui/label"
-
 interface QueryParams {
     skip?: number
     query?: string
@@ -18,31 +16,32 @@ const contentfulClient = createClient({
 
 export const GET = async (req: Request) => {
     try {
-        const { searchParams } = new URL(req.url)
-        const skip = searchParams.get("skip")
-        const query = searchParams.get("query")
+        // const { searchParams } = new URL(req.url)
 
-        const queryParams: QueryParams = {}
+        // const skip = searchParams.get("skip")
+        // const query = searchParams.get("query")
 
-        if (skip !== null && skip != "undefined")
-            queryParams.skip = parseInt(skip)
-        if (query !== null && query != "undefined") queryParams.query = query
+        // const queryParams: QueryParams = {}
+
+        // if (skip !== null && skip != "undefined")
+        //     queryParams.skip = parseInt(skip)
+        // if (query !== null && query != "undefined") queryParams.query = query
 
         try {
             const res = await contentfulClient.getEntries({
                 content_type: "article",
                 limit: 10,
-                query: queryParams.query ? queryParams.query : "",
-                skip: queryParams.skip ? queryParams.skip : 0,
+                // query: queryParams.query ? queryParams.query : "",
+                // skip: queryParams.skip ? queryParams.skip : 0,
             })
 
             return NextResponse.json(res)
         } catch (error) {
-            console.error("[EXERCISES_GET] Axios Error:", error)
+            console.error("[ARTICLES_GET] Axios Error:", error)
             return new NextResponse("Internal error", { status: 500 })
         }
     } catch (error) {
-        console.error("[EXERCISES_GET] Request Parsing Error:", error)
+        console.error("[ARTICLES_GET] Request Parsing Error:", error)
         return new NextResponse("Bad Request", { status: 400 })
     }
 }

@@ -3,12 +3,15 @@
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
 import { Workout } from "@/types/types"
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardTitle } from "@/components/ui/card"
 
+import WorkoutFullDescriptionDialog from "../../workouts/workout-full-description-dialog"
+
 function WorkoutItem({ workout, day }: { workout: Workout; day: string }) {
     const onSubmit = async () => {
-        const supabase = await createClientComponentClient()
+        const supabase = createClientComponentClient()
 
         const { data: _, error } = await supabase.rpc(
             "append_to_training_plan_column",
@@ -28,9 +31,18 @@ function WorkoutItem({ workout, day }: { workout: Workout; day: string }) {
                     {workout.name}
                 </CardTitle>
 
-                <div className="mt-4">
-                    <p>{workout.desc && workout.desc}</p>
-                </div>
+                <p
+                    className={cn(
+                        workout.desc.length > 100
+                            ? "line-clamp-[2] overflow-hidden bg-gradient-to-b from-primary bg-clip-text text-transparent"
+                            : null
+                    )}
+                >
+                    {workout.desc}
+                </p>
+                {workout.desc.length > 100 ? (
+                    <WorkoutFullDescriptionDialog desc={workout.desc!} />
+                ) : null}
                 <div className="mt-4">
                     <Button onClick={onSubmit}>Add to {day}</Button>
                 </div>

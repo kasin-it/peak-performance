@@ -9,7 +9,6 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { z } from "zod"
 
-import { Database } from "@/types/database"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -27,7 +26,7 @@ const formSchema = z.object({
 })
 
 function ChangeEmailForm() {
-    const supabase = createClientComponentClient<Database>()
+    const supabase = createClientComponentClient()
     const router = useRouter()
     const {
         register,

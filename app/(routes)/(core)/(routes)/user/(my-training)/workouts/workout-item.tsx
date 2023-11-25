@@ -1,9 +1,10 @@
 import { cookies } from "next/headers"
 import Link from "next/link"
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
+import { createServerClient } from "@supabase/ssr"
 import { Edit, PlusCircle } from "lucide-react"
 
 import { Exercise, Workout } from "@/types/types"
+import { cn } from "@/lib/utils"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Card, CardTitle } from "@/components/ui/card"
@@ -11,9 +12,22 @@ import { Card, CardTitle } from "@/components/ui/card"
 import ExerciseItem from "./exercise-item"
 import WorkoutDeleteDialog from "./workout-delete-dialog"
 import WorkoutEditDialog from "./workout-edit-dialog"
+import WorkoutFullDescriptionDialog from "./workout-full-description-dialog"
 
 async function WorkoutItem({ workout }: { workout: Workout }) {
-    const supabase = createServerComponentClient({ cookies })
+    const cookieStore = cookies()
+
+    const supabase = createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        {
+            cookies: {
+                get(name: string) {
+                    return cookieStore.get(name)?.value
+                },
+            },
+        }
+    )
 
     if (!workout.exercises || workout.exercises.length === 0) {
         return (
@@ -29,9 +43,9 @@ async function WorkoutItem({ workout }: { workout: Workout }) {
                         </div>
                     </div>
 
-                    <div className="mt-4 break-words pr-2 text-muted-foreground">
-                        <p>{workout.desc && workout.desc}</p>
-                    </div>
+                    <p className="mt-4 break-words pr-2 text-muted-foreground">
+                        {workout.desc && workout.desc}
+                    </p>
 
                     <div className="mt-4">
                         <Alert>
@@ -47,12 +61,6 @@ async function WorkoutItem({ workout }: { workout: Workout }) {
                             </Link>
                         </Alert>
                     </div>
-                </div>
-
-                <div>
-                    {workout.exercises?.length === 0 && (
-                        <Button>Add to plan</Button>
-                    )}
                 </div>
             </Card>
         )
@@ -86,9 +94,18 @@ async function WorkoutItem({ workout }: { workout: Workout }) {
                     </div>
                 </div>
 
-                <div className="mt-4 text-muted-foreground">
-                    <p>{workout.desc && workout.desc}</p>
-                </div>
+                <p
+                    className={cn(
+                        workout.desc.length > 100
+                            ? "line-clamp-[2] overflow-hidden bg-gradient-to-b from-primary bg-clip-text text-transparent"
+                            : null
+                    )}
+                >
+                    {workout.desc}
+                </p>
+                {workout.desc.length > 100 ? (
+                    <WorkoutFullDescriptionDialog desc={workout.desc!} />
+                ) : null}
 
                 <div className="mt-4">
                     <p className="font-bold italic">Exercises:</p>
@@ -120,12 +137,6 @@ async function WorkoutItem({ workout }: { workout: Workout }) {
                         </Link>
                     </div>
                 </div>
-            </div>
-
-            <div>
-                {exercises.every((exercise) => exercise === null) && (
-                    <Button>Add to plan</Button>
-                )}
             </div>
         </Card>
     )

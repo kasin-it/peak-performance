@@ -16,6 +16,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
 
 function ExerciseDeleteDialog({ exerciseId }: { exerciseId: string }) {
     const supabase = createClientComponentClient()
@@ -28,7 +29,7 @@ function ExerciseDeleteDialog({ exerciseId }: { exerciseId: string }) {
             .eq("id", exerciseId)
 
         if (error) {
-            toast.error("exercise has not been deleted.")
+            toast.error("Exercise has not been deleted.")
             return
         }
         toast.success("exercise has been created successfully!")
@@ -44,10 +45,10 @@ function ExerciseDeleteDialog({ exerciseId }: { exerciseId: string }) {
 
     return (
         <AlertDialog>
-            <AlertDialogTrigger asChild>
-                <div className="cursor-pointer rounded-md bg-red-500 p-2 text-white hover:opacity-70">
-                    <Trash className="h-4 w-4" />
-                </div>
+            <AlertDialogTrigger>
+                <Button size="sm" variant="destructive">
+                    Delete
+                </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
@@ -56,8 +57,7 @@ function ExerciseDeleteDialog({ exerciseId }: { exerciseId: string }) {
                     </AlertDialogTitle>
                     <AlertDialogDescription>
                         This action cannot be undone. This will permanently
-                        delete your account and remove your data from our
-                        servers.
+                        delete your exercise.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

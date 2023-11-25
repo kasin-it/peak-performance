@@ -1,5 +1,5 @@
 import { cookies } from "next/headers"
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
+import { createServerClient } from "@supabase/ssr"
 
 import { Workout } from "@/types/types"
 
@@ -13,13 +13,24 @@ async function TrainingPlanWorkouts({
     name: string
 }) {
     if (workoutsId === null || workoutsId.length === 0) {
-        return null // Returning null when there are no workouts
+        return null
     }
 
-    const supabase = createServerComponentClient({ cookies })
+    const cookieStore = cookies()
+
+    const supabase = createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        {
+            cookies: {
+                get(name: string) {
+                    return cookieStore.get(name)?.value
+                },
+            },
+        }
+    )
 
     const getWorkouts = async () => {
-        // Use Promise.all to fetch all workouts asynchronously
         const workoutsPromises = workoutsId.map(async (id) => {
             const { data } = await supabase
                 .from("user_workouts")
@@ -30,7 +41,7 @@ async function TrainingPlanWorkouts({
                 return
             }
 
-            return data[0] // Assuming the query returns an array, and you want the first element
+            return data[0]
         })
 
         return Promise.all(workoutsPromises)

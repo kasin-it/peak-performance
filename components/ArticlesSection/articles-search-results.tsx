@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import axios from "axios"
 
 import ArticlePreview from "@/components/ui/article-preview"
@@ -19,37 +19,40 @@ function ArticlesSearchResults({ query, sort }: ArticlesSearchResults) {
     const [skip, setSkip] = useState(0)
     const [emptyResponse, setEmptyResponse] = useState(false)
 
-    const fetchArticles = async (hardRefresh?: boolean) => {
-        try {
-            setIsLoading(true)
-            const response = await axios.get("/api/articles", {
-                params: {
-                    query: query,
-                },
-            })
-
-            if (response.data.items.length > 0) {
-                setArticles((prevArticles: any) => {
-                    if (!hardRefresh) {
-                        return [...prevArticles, ...response.data.items]
-                    } else {
-                        return [...response.data.items]
-                    }
+    const fetchArticles = useCallback(
+        async (hardRefresh?: boolean) => {
+            try {
+                setIsLoading(true)
+                const response = await axios.get("/api/articles", {
+                    params: {
+                        query: query,
+                    },
                 })
-                if (response.data.items.length < 10) {
+
+                if (response.data.items.length > 0) {
+                    setArticles((prevArticles: any) => {
+                        if (!hardRefresh) {
+                            return [...prevArticles, ...response.data.items]
+                        } else {
+                            return [...response.data.items]
+                        }
+                    })
+                    if (response.data.items.length < 10) {
+                        setEmptyResponse(true)
+                    }
+                } else {
+                    setArticles([])
                     setEmptyResponse(true)
                 }
-            } else {
-                setArticles([])
-                setEmptyResponse(true)
+            } catch (error) {
+                setError("An error occurred while fetching data.")
+            } finally {
+                setIsLoading(false)
+                setIsFetchingMore(false)
             }
-        } catch (error) {
-            setError("An error occurred while fetching data.")
-        } finally {
-            setIsLoading(false)
-            setIsFetchingMore(false)
-        }
-    }
+        },
+        [query]
+    )
 
     const fetchMoreArticles = async (skipValue: number) => {
         try {
@@ -80,10 +83,10 @@ function ArticlesSearchResults({ query, sort }: ArticlesSearchResults) {
         const newSkip = skip + 6
         setIsFetchingMore(true)
         fetchMoreArticles(newSkip)
-        setSkip(newSkip) // Update skip for the next load more
+        setSkip(newSkip)
     }
 
-    const handleSortChange = () => {
+    const handleSortChange = useCallback(() => {
         if (sort === "asc") {
             setArticles((prevArticles: any[]) =>
                 prevArticles
@@ -101,14 +104,14 @@ function ArticlesSearchResults({ query, sort }: ArticlesSearchResults) {
                     : prevArticles
             )
         }
-    }
+    }, [sort])
 
-    useEffect(() => handleSortChange(), [sort])
+    useEffect(() => handleSortChange(), [sort, handleSortChange])
 
     useEffect(() => {
         fetchArticles(true)
         console.log("hard refresh!")
-    }, [query])
+    }, [query, fetchArticles])
 
     const generateLoadingSkeletons = () =>
         Array.from({ length: 10 }).map((_, index) => (

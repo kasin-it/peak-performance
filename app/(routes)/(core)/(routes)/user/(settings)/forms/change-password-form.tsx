@@ -5,11 +5,10 @@ import { useRouter } from "next/navigation"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import toast from "react-hot-toast"
 
-import { Database } from "@/types/database"
 import { Button } from "@/components/ui/button"
 
 function ChangePasswordForm() {
-    const supabase = createClientComponentClient<Database>()
+    const supabase = createClientComponentClient()
     const router = useRouter()
 
     const onSubmit: React.MouseEventHandler = async () => {
