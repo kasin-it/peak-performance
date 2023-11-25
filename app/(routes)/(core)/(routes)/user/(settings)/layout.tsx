@@ -23,7 +23,11 @@ async function UserSettingsLayout({ children }: { children: React.ReactNode }) {
         data: { user },
     } = await supabase.auth.getUser()
 
-    const { data } = await supabase.from("profiles").select().eq("id", user!.id)
+    if (!user) {
+        return null
+    }
+
+    const { data } = await supabase.from("profiles").select().eq("id", user.id)
 
     const sidebarNavItems = [
         {

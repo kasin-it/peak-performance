@@ -15,6 +15,7 @@ const contentfulClient = createClient({
 })
 
 export const revalidate = 600
+export const dynamic = "force-static"
 
 export async function generateStaticParams() {
     const res = await contentfulClient.getEntries({
@@ -75,7 +76,7 @@ async function ArticlePage({ params }: { params: { articleId: string } }) {
                     <ArticleRichText document={article.fields.content} />
                 </main>
 
-                {/* <CommentsSection articleId={params.articleId} /> */}
+                <CommentsSection articleId={params.articleId} />
             </article>
         </section>
     )
