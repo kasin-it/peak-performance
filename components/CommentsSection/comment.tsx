@@ -1,11 +1,9 @@
-import { count, error } from "console"
+"use client"
+
 import { useEffect, useState } from "react"
-import { useRouter } from "next/router"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-import { Heart, Trash } from "lucide-react"
+import { createBrowserClient } from "@supabase/ssr"
 import toast from "react-hot-toast"
 
-import { Database } from "@/types/database"
 import { Comment as CommentType } from "@/types/types"
 import {
     AlertDialog,
@@ -20,10 +18,8 @@ import {
 } from "@/components/ui/alert-dialog"
 import {
     Dialog,
-    DialogClose,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -31,26 +27,21 @@ import {
 
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Button } from "../ui/button"
-import { Input } from "../ui/input"
-import { Textarea } from "../ui/textarea"
-import { InsertCommentForm } from "./insert-comment-form"
 import { UpdateCommentForm } from "./update-comment-form"
 
 interface CommentProps {
     comment: CommentType
-    currentUser: any
 }
 
-const handleSupabaseError = (error: any) => {
-    console.error(error)
-    toast.error("Something went wrong.")
-}
+function Comment({ comment }: CommentProps) {
+    const supabase = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+    const [user, setUser] = useState<null | any>(null)
+    const [username, setUsername] = useState<string | null>(null)
 
-function Comment({ comment, currentUser }: CommentProps) {
-    const supabase = createClientComponentClient<Database>()
-
-    const [username, setUsername] = useState<any>(null)
-
+    // Function to handle comment removal
     const handleRemove = async (commentId: string) => {
         try {
             const { data, error } = await supabase
@@ -60,72 +51,92 @@ function Comment({ comment, currentUser }: CommentProps) {
                 .eq("user_id", comment.user_id)
 
             if (error) {
-                handleSupabaseError(error)
+                toast.error("Something went wrong.")
+                console.error(error)
             } else {
                 toast.success("Comment removed.")
             }
         } catch (error) {
-            handleSupabaseError(error)
+            toast.error("Something went wrong.")
+            console.error(error)
         }
 
+        // Reload the page after comment removal
         window.location.reload()
     }
 
+    // Effect to fetch username on component mount
     useEffect(() => {
-        const getUsername = async () => {
+        const fetchData = async () => {
             try {
+                const {
+                    data: { user },
+                } = await supabase.auth.getUser()
+                setUser(user)
+
                 const { data, error } = await supabase
                     .from("profiles")
                     .select("username")
                     .eq("id", comment.user_id)
 
                 if (error) {
-                    handleSupabaseError(error)
+                    toast.error("Something went wrong.")
+                    console.error(error)
                 }
 
                 setUsername(data?.[0]?.username || "Can not get username")
             } catch (error) {
-                handleSupabaseError(error)
+                toast.error("Something went wrong.")
+                console.error(error)
             }
         }
 
-        getUsername()
+        fetchData()
     }, [comment, supabase])
 
-    return (
-        // <article
-        //     className="relative flex w-full justify-between rounded-sm border-t border-gray-100 px-5 pb-10 pt-5 shadow-md lg:w-[600px]"
-        //     key={comment.id}
-        // >
-        //     <div className="flex space-x-3">
-        //         <Avatar>
-        //             <div className="h-[50px] w-[50px] bg-blue-50" />
-        //         </Avatar>
-        //         <div className="flex flex-wrap space-x-2">
-        //             <h1 className="font-bold text-blue-500">{username}</h1>
-        //             <p className=" max-w-[450px] break-words text-muted-foreground">
-        //                 {comment.comment}
-        //             </p>
-        //         </div>
-        //     </div>
+    const timeDifference =
+        new Date().getTime() - new Date(comment.created_at).getTime()
 
-        // </article>
+    // Convert the time difference to seconds
+    const secondsDifference = Math.floor(timeDifference / 1000)
+
+    // Convert seconds to a more readable format (hours, minutes, seconds)
+    const hours = Math.floor(secondsDifference / 3600)
+    const minutes = Math.floor((secondsDifference % 3600) / 60)
+    const seconds = secondsDifference % 60
+
+    // Create a string representing the time difference
+    const timeAgoString =
+        hours > 0
+            ? `${hours} ${hours === 1 ? "hour" : "hours"} ago`
+            : minutes > 0
+            ? `${minutes} ${minutes === 1 ? "minute" : "minutes"} ago`
+            : `${seconds} ${seconds === 1 ? "second" : "seconds"} ago`
+
+    return (
         <div className="flex items-start gap-4 text-sm">
+            {/* User Avatar */}
             <Avatar className="h-10 w-10 border">
                 <AvatarImage alt="User Avatar" src="/placeholder-user.jpg" />
-                <AvatarFallback>AC</AvatarFallback>
+                <AvatarFallback>
+                    {username?.charAt(0).toUpperCase()}
+                </AvatarFallback>
             </Avatar>
+
+            {/* Comment Details */}
             <div className="grid gap-1.5">
                 <div className="flex items-center justify-between gap-2">
+                    {/* User Information */}
                     <div className="flex items-center gap-2">
-                        <div className="font-semibold">John Doe</div>
-                        <div className="text-xs text-zinc-500 dark:text-zinc-400">
-                            3 hours ago
-                        </div>
+                        <div className="font-semibold">{username}</div>
+                        <p>{timeAgoString}</p>
                     </div>
+
+                    {/* Edit and Delete Buttons */}
                     <div className="flex items-center space-x-2">
-                        {currentUser.id == comment.user_id ? (
+                        {user?.id === comment.user_id && (
                             <>
+                                {/* Edit Comment Dialog */}
                                 <Dialog>
                                     <DialogTrigger>
                                         <Button
@@ -146,17 +157,18 @@ function Comment({ comment, currentUser }: CommentProps) {
                                             </DialogDescription>
                                         </DialogHeader>
 
+                                        {/* Update Comment Form */}
                                         <UpdateCommentForm
                                             commentId={comment.id}
-                                            userId={currentUser.id}
+                                            userId={user.id}
                                             content={comment.comment}
                                         />
                                     </DialogContent>
                                 </Dialog>
 
+                                {/* Delete Comment AlertDialog */}
                                 <AlertDialog>
                                     <AlertDialogTrigger>
-                                        {" "}
                                         <Button
                                             className="text-xs"
                                             variant="destructive"
@@ -188,12 +200,15 @@ function Comment({ comment, currentUser }: CommentProps) {
                                     </AlertDialogContent>
                                 </AlertDialog>
                             </>
-                        ) : null}
+                        )}
                     </div>
                 </div>
-                <div>This is a comment from John Doe.</div>
+
+                {/* Comment Content */}
+                <div>{comment.comment}</div>
             </div>
         </div>
     )
 }
+
 export default Comment

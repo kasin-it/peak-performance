@@ -4,7 +4,6 @@ import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { createBrowserClient } from "@supabase/ssr"
 import { AlertCircle, Loader2 } from "lucide-react"
 import { SubmitHandler, useForm } from "react-hook-form"
@@ -52,8 +51,6 @@ export function SignInForm({ className, ...props }: SignInFormProps) {
             process.env.NEXT_PUBLIC_SUPABASE_URL!,
             process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
         )
-
-        // const supabase = createClientComponentClient()
 
         const { data: _, error } = await supabase.auth.signInWithPassword({
             email: formData.email,

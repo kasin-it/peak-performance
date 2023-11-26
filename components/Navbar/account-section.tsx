@@ -1,28 +1,35 @@
-import { cookies } from "next/headers"
+"use client"
+
+import { useCallback, useEffect, useState } from "react"
 import Link from "next/link"
-import { createServerClient } from "@supabase/ssr"
+import { createBrowserClient } from "@supabase/ssr"
 import { User2 } from "lucide-react"
 
 import { Button } from "../ui/button"
 
-async function AccountSection() {
-    const cookieStore = cookies()
+function AccountSection() {
+    const [user, setUser] = useState(false)
 
-    const supabase = createServerClient(
+    const supabase = createBrowserClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        {
-            cookies: {
-                get(name: string) {
-                    return cookieStore.get(name)?.value
-                },
-            },
-        }
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     )
 
-    const {
-        data: { user },
-    } = await supabase.auth.getUser()
+    const getUser = useCallback(async () => {
+        const {
+            data: { user },
+        } = await supabase.auth.getUser()
+
+        if (user) {
+            setUser(true)
+        }
+
+        return user
+    }, [supabase, setUser])
+
+    useEffect(() => {
+        getUser()
+    }, [getUser])
 
     if (user) {
         return (

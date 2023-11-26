@@ -1,13 +1,11 @@
 "use client"
 
-import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { createBrowserClient } from "@supabase/ssr"
 import { AlertCircle, Loader2 } from "lucide-react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
-import { Database } from "@/types/database"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
@@ -22,7 +20,6 @@ import { Textarea } from "../ui/textarea"
 
 interface InsertCommentFormProps extends React.HTMLAttributes<HTMLDivElement> {
     articleId: string
-    currentUser: boolean
 }
 
 type FormData = z.infer<typeof formSchema>
@@ -37,10 +34,12 @@ const formSchema = z.object({
 export function InsertCommentForm({
     className,
     articleId,
-    currentUser,
     ...props
 }: InsertCommentFormProps) {
-    const supabase = createClientComponentClient<Database>()
+    const supabase = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
     const {
         register,
         handleSubmit,
@@ -65,74 +64,63 @@ export function InsertCommentForm({
 
     return (
         <>
-            {currentUser ? (
-                <div
-                    className={cn("flex w-full flex-col", className)}
-                    {...props}
+            <div className={cn("flex w-full flex-col", className)} {...props}>
+                <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    noValidate
+                    className="space-y-3"
                 >
-                    <form
-                        onSubmit={handleSubmit(onSubmit)}
-                        noValidate
-                        className="space-y-3"
-                    >
-                        <div>
-                            <Label
-                                className="text-muted-foreground"
-                                htmlFor="comment"
-                            >
-                                Comment
-                            </Label>
-                            <div className="relative">
-                                <Textarea
-                                    id="comment"
-                                    placeholder="Enter your comment"
-                                    autoCapitalize="none"
-                                    autoCorrect="off"
-                                    disabled={isSubmitting}
-                                    {...register("comment")}
-                                    className={`${
-                                        errors.comment
-                                            ? "border border-red-500 pr-10"
-                                            : ""
-                                    }`}
-                                    rows={10}
-                                />
-                                {errors.comment && (
-                                    <div className="-translate-y-2/5 absolute right-3 top-1/4 text-red-500">
-                                        <TooltipProvider delayDuration={100}>
-                                            <Tooltip>
-                                                <TooltipTrigger>
-                                                    <AlertCircle size={18} />
-                                                </TooltipTrigger>
-                                                <TooltipContent>
-                                                    <p>
-                                                        {errors.comment.message}
-                                                    </p>
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-
-                        <Button
-                            className="w-full"
-                            disabled={isSubmitting}
-                            variant={"default"}
+                    <div>
+                        <Label
+                            className="text-muted-foreground"
+                            htmlFor="comment"
                         >
-                            {isSubmitting && (
-                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Comment
+                        </Label>
+                        <div className="relative">
+                            <Textarea
+                                id="comment"
+                                placeholder="Enter your comment"
+                                autoCapitalize="none"
+                                autoCorrect="off"
+                                disabled={isSubmitting}
+                                {...register("comment")}
+                                className={`${
+                                    errors.comment
+                                        ? "border border-red-500 pr-10"
+                                        : ""
+                                }`}
+                                rows={10}
+                            />
+                            {errors.comment && (
+                                <div className="-translate-y-2/5 absolute right-3 top-1/4 text-red-500">
+                                    <TooltipProvider delayDuration={100}>
+                                        <Tooltip>
+                                            <TooltipTrigger>
+                                                <AlertCircle size={18} />
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                <p>{errors.comment.message}</p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
+                                </div>
                             )}
-                            <p className="px-5">Post Comment</p>
-                        </Button>
-                    </form>
-                </div>
-            ) : (
-                <div className="rounded-xl border-t border-gray-100 p-5 shadow-lg">
-                    <h1>Sign in to comment</h1>
-                </div>
-            )}
+                        </div>
+                    </div>
+
+                    <Button
+                        className="w-full"
+                        disabled={isSubmitting}
+                        variant={"default"}
+                    >
+                        {isSubmitting && (
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        )}
+                        <p className="px-5">Post Comment</p>
+                    </Button>
+                </form>
+            </div>
         </>
     )
 }

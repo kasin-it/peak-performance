@@ -3,7 +3,6 @@
 import * as React from "react"
 import Link from "next/link"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { createBrowserClient } from "@supabase/ssr"
 import { AlertCircle, Loader2 } from "lucide-react"
 import { SubmitHandler, useForm } from "react-hook-form"
@@ -52,7 +51,6 @@ const formSchema = z
     })
 
 export function SignUpForm({ className, ...props }: SignUpFormProps) {
-    // const supabase = createClientComponentClient()
     const supabase = createBrowserClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!

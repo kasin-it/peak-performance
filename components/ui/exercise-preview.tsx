@@ -14,16 +14,24 @@ function ExercisePreview({ exercise }: { exercise: Exercise }) {
     const supabase = createClientComponentClient()
 
     const onExerciseAdd = async () => {
-        const { data: _, error } = await supabase
-            .from("user_exercises")
-            .insert({
-                name: exercise.name,
-                instructions: exercise.instructions,
-                sets: 1,
-                repetitions: 1,
-            })
+        const {
+            data: { user },
+        } = await supabase.auth.getUser()
 
-        toast.success("Workout has been created successfully!")
+        if (!user) {
+            window.location.href = "/auth/sign-in"
+        } else {
+            const { data: _, error } = await supabase
+                .from("user_exercises")
+                .insert({
+                    name: exercise.name,
+                    instructions: exercise.instructions,
+                    sets: 1,
+                    repetitions: 1,
+                })
+
+            toast.success("Workout has been created successfully!")
+        }
     }
 
     return (

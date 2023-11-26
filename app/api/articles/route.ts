@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server"
-import axios from "axios"
 import { createClient } from "contentful"
 
 interface QueryParams {
@@ -14,25 +13,27 @@ const contentfulClient = createClient({
     space: space ? space : "",
 })
 
+export const dynamic = "force-dynamic"
+
 export const GET = async (req: Request) => {
     try {
-        // const { searchParams } = new URL(req.url)
+        const { searchParams } = new URL(req.url)
 
-        // const skip = searchParams.get("skip")
-        // const query = searchParams.get("query")
+        const skip = searchParams.get("skip")
+        const query = searchParams.get("query")
 
-        // const queryParams: QueryParams = {}
+        const queryParams: QueryParams = {}
 
-        // if (skip !== null && skip != "undefined")
-        //     queryParams.skip = parseInt(skip)
-        // if (query !== null && query != "undefined") queryParams.query = query
+        if (skip !== null && skip != "undefined")
+            queryParams.skip = parseInt(skip)
+        if (query !== null && query != "undefined") queryParams.query = query
 
         try {
             const res = await contentfulClient.getEntries({
                 content_type: "article",
                 limit: 10,
-                // query: queryParams.query ? queryParams.query : "",
-                // skip: queryParams.skip ? queryParams.skip : 0,
+                query: queryParams.query ? queryParams.query : "",
+                skip: queryParams.skip ? queryParams.skip : 0,
             })
 
             return NextResponse.json(res)

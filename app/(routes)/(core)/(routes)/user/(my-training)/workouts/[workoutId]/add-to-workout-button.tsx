@@ -1,7 +1,8 @@
 "use client"
 
+import { createBrowserClient } from "@supabase/ssr"
+
 import { Button } from "@/components/ui/button"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
 function AddToWorkoutButton({
     workoutId,
@@ -10,12 +11,12 @@ function AddToWorkoutButton({
     workoutId: string
     exerciseId: string
 }) {
-    
-    const supabase = createClientComponentClient()
+    const supabase = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
 
     const onSubmit = async () => {
-        
-
         const { data: _, error } = await supabase.rpc(
             "append_exercise_to_workout",
             {

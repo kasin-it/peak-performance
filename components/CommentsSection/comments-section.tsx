@@ -1,68 +1,36 @@
-"use client"
-
-import { useEffect, useState } from "react"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { cookies } from "next/headers"
+import { createServerClient } from "@supabase/ssr"
 
 import { Comment as CommentType } from "@/types/types"
 
-import { Skeleton } from "../ui/skeleton"
 import Comment from "./comment"
 import { InsertCommentForm } from "./insert-comment-form"
 
-function CommentsSection({ articleId }: { articleId: string }) {
-    const supabase = createClientComponentClient()
-    const [comments, setComments] = useState<any | null>(null)
-    const [isLoading, setLoading] = useState(true)
-    const [currentUser, setCurrentUser] = useState<any | null>(null)
+export const dynamic = "force-dynamic"
 
-    useEffect(() => {
-        const getUser = async () => {
-            try {
-                const { data, error } = await supabase.auth.getUser()
-
-                if (error) {
-                    console.log(error)
-                }
-
-                if (data?.user) {
-                    setCurrentUser(data.user)
-                } else {
-                    // Handle case where the token is not available or expired
-                    // You might want to redirect the user to the login page or refresh the token
-                    console.log("User not authenticated or token expired")
-                }
-            } catch (error) {
-                console.log(error)
-            }
+async function CommentsSection({ articleId }: { articleId: string }) {
+    const cookieStore = cookies()
+    const supabase = createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        {
+            cookies: {
+                get(name: string) {
+                    return cookieStore.get(name)?.value
+                },
+            },
         }
+    )
 
-        const getComments = async () => {
-            try {
-                const { data, error } = await supabase
-                    .from("comments")
-                    .select()
-                    .eq("slug", articleId)
-                    .order("created_at")
+    const { data, error } = await supabase
+        .from("comments")
+        .select()
+        .eq("slug", articleId)
+        .order("created_at")
 
-                if (error) {
-                    console.error(error)
-                    setComments("error")
-                } else {
-                    setComments(data)
-                    console.log(data)
-                }
+    console.log(error)
 
-                setLoading(false)
-            } catch (error) {
-                console.error(error)
-                setComments("error")
-                setLoading(false)
-            }
-        }
-
-        getComments()
-        getUser()
-    }, [articleId, supabase])
+    const comments = data
 
     return (
         <section
@@ -77,43 +45,25 @@ function CommentsSection({ articleId }: { articleId: string }) {
                     Share your thoughts about this article.
                 </p>
             </div>
-            <section className="lg:justify-left  flex flex-col items-center space-x-0 space-y-10 lg:flex-row lg:items-start lg:space-x-10 lg:space-y-0">
-                <section className="flex w-full flex-col  items-center lg:items-start lg:justify-start">
-                    <InsertCommentForm
-                        articleId={articleId}
-                        currentUser={currentUser}
-                    />
+            <section className="lg:justify-left flex flex-col items-center space-x-0 space-y-10 lg:flex-row lg:items-start lg:space-x-10 lg:space-y-0">
+                <section className="flex w-full flex-col items-center lg:items-start lg:justify-start">
+                    {/* Insert Comment Form */}
+                    <InsertCommentForm articleId={articleId} />
 
-                    {isLoading ? (
-                        Array.from({ length: 4 }, (value, index) => (
-                            <article
-                                className="flex max-w-[500px] flex-wrap"
-                                key={index}
-                            >
-                                <Skeleton className="h-[100px] w-[100px] rounded-full" />
-                            </article>
-                        ))
-                    ) : (
+                    {comments && (
+                        // Render comments or error message
                         <div className="w-full">
-                            {comments === "error" ? (
-                                <p>Error fetching comments</p>
-                            ) : (
-                                <div className="w-full  space-y-6">
-                                    {comments.length > 0 ? (
-                                        comments.map((comment: CommentType) => (
-                                            <Comment
-                                                comment={comment}
-                                                currentUser={currentUser}
-                                                key={comment.id}
-                                            />
-                                        ))
-                                    ) : (
-                                        <div>ther is not comments</div>
-                                    )}
-                                </div>
-                            )}
+                            <div className="w-full space-y-6">
+                                {comments.map((comment: CommentType) => (
+                                    <Comment
+                                        comment={comment}
+                                        key={comment.id}
+                                    />
+                                ))}
+                            </div>
                         </div>
                     )}
+                    {error && <p>erorr</p>}
                 </section>
             </section>
         </section>
