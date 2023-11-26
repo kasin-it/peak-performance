@@ -3,8 +3,6 @@ import Link from "next/link"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { User2 } from "lucide-react"
 
-import { Button } from "../ui/button"
-
 async function AccountSectionMobile() {
     const cookieStore = cookies()
 

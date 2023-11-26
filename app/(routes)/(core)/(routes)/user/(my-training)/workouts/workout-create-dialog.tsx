@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { createBrowserClient } from "@supabase/ssr"
 import { AlertCircle } from "lucide-react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import toast from "react-hot-toast"
@@ -36,7 +36,6 @@ const schema = z.object({
 })
 
 function WorkoutCreateDialog() {
-    const supabase = createClientComponentClient()
     const [isMounted, setIsMounted] = useState(false)
     const {
         register,
@@ -50,6 +49,11 @@ function WorkoutCreateDialog() {
     })
 
     const onSubmit: SubmitHandler<FormData> = async (formData: FormData) => {
+        const supabase = createBrowserClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        )
+
         const { data: _, error } = await supabase.from("user_workouts").insert({
             name: formData.name,
             desc: formData.desc,

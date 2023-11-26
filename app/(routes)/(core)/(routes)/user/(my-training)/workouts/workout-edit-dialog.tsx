@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { AlertCircle, Edit } from "lucide-react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import toast from "react-hot-toast"
@@ -28,6 +27,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { createBrowserClient } from "@supabase/ssr"
 
 type FormData = z.infer<typeof schema>
 
@@ -37,7 +37,10 @@ const schema = z.object({
 })
 
 function WorkoutEditDialog(workout: Workout) {
-    const supabase = createClientComponentClient()
+    const supabase = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
     const [isMounted, setIsMounted] = useState(false)
     const {
         register,

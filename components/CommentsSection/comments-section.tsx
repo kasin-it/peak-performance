@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { createBrowserClient } from "@supabase/ssr"
 
 import { Comment as CommentType } from "@/types/types"
 
@@ -10,8 +10,14 @@ import Comment from "./comment"
 import { InsertCommentForm } from "./insert-comment-form"
 
 function CommentsSection({ articleId }: { articleId: string }) {
-    const supabase = createClientComponentClient()
-    const [comments, setComments] = useState<any | null>(null)
+    const supabase = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+
+    const [comments, setComments] = useState<CommentType[] | "error" | null>(
+        null
+    )
     const [isLoading, setLoading] = useState(true)
     const [currentUser, setCurrentUser] = useState<any | null>(null)
 
@@ -21,21 +27,20 @@ function CommentsSection({ articleId }: { articleId: string }) {
                 const { data, error } = await supabase.auth.getUser()
 
                 if (error) {
-                    console.log(error)
+                    console.error("Error fetching user:", error)
                 }
 
                 if (data?.user) {
                     setCurrentUser(data.user)
                 } else {
-                    // Handle case where the token is not available or expired
-                    // You might want to redirect the user to the login page or refresh the token
                     console.log("User not authenticated or token expired")
                 }
             } catch (error) {
-                console.log(error)
+                console.error("Error fetching user:", error)
             }
         }
 
+        // Function to fetch comments for the specified article
         const getComments = async () => {
             try {
                 const { data, error } = await supabase
@@ -45,16 +50,15 @@ function CommentsSection({ articleId }: { articleId: string }) {
                     .order("created_at")
 
                 if (error) {
-                    console.error(error)
+                    console.error("Error fetching comments:", error)
                     setComments("error")
                 } else {
                     setComments(data)
-                    console.log(data)
                 }
 
                 setLoading(false)
             } catch (error) {
-                console.error(error)
+                console.error("Error fetching comments:", error)
                 setComments("error")
                 setLoading(false)
             }
@@ -79,13 +83,16 @@ function CommentsSection({ articleId }: { articleId: string }) {
             </div>
             <section className="lg:justify-left  flex flex-col items-center space-x-0 space-y-10 lg:flex-row lg:items-start lg:space-x-10 lg:space-y-0">
                 <section className="flex w-full flex-col  items-center lg:items-start lg:justify-start">
+                    {/* Insert Comment Form */}
                     <InsertCommentForm
                         articleId={articleId}
                         currentUser={currentUser}
                     />
 
+                    {/* Display skeleton loading or comments */}
                     {isLoading ? (
-                        Array.from({ length: 4 }, (value, index) => (
+                        // Skeleton loading
+                        Array.from({ length: 4 }, (_, index) => (
                             <article
                                 className="flex max-w-[500px] flex-wrap"
                                 key={index}
@@ -94,12 +101,16 @@ function CommentsSection({ articleId }: { articleId: string }) {
                             </article>
                         ))
                     ) : (
+                        // Render comments or error message
                         <div className="w-full">
                             {comments === "error" ? (
+                                // Display error message
                                 <p>Error fetching comments</p>
                             ) : (
+                                // Display comments or no comments message
                                 <div className="w-full  space-y-6">
-                                    {comments.length > 0 ? (
+                                    {comments && comments.length > 0 ? (
+                                        // Render each comment
                                         comments.map((comment: CommentType) => (
                                             <Comment
                                                 comment={comment}
@@ -108,7 +119,8 @@ function CommentsSection({ articleId }: { articleId: string }) {
                                             />
                                         ))
                                     ) : (
-                                        <div>ther is not comments</div>
+                                        // No comments message
+                                        <div>No comments available</div>
                                     )}
                                 </div>
                             )}

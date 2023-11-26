@@ -1,6 +1,6 @@
 "use client"
 
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { createBrowserClient } from "@supabase/ssr"
 
 import { Workout } from "@/types/types"
 import { cn } from "@/lib/utils"
@@ -11,7 +11,10 @@ import WorkoutFullDescriptionDialog from "../../workouts/workout-full-descriptio
 
 function WorkoutItem({ workout, day }: { workout: Workout; day: string }) {
     const onSubmit = async () => {
-        const supabase = createClientComponentClient()
+        const supabase = createBrowserClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        )
 
         const { data: _, error } = await supabase.rpc(
             "append_to_training_plan_column",

@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Trash } from "lucide-react"
 import toast from "react-hot-toast"
 
@@ -11,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 
 import MoreInfoDialog from "./more-info-dialog"
+import { createBrowserClient } from "@supabase/ssr"
 
 function WorkoutItem({
     workout,
@@ -21,7 +21,10 @@ function WorkoutItem({
     name: string
     workoutId: string
 }) {
-    const supabase = createClientComponentClient()
+    const supabase = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
 
     const [isDeleted, setIsDeleted] = useState(false)
 

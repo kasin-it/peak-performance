@@ -2,9 +2,10 @@
 
 import { useCallback, useEffect, useState } from "react"
 import Link from "next/link"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { createBrowserClient } from "@supabase/ssr"
 
 import { Exercise } from "@/types/types"
+import { Skeleton } from "@/components/ui/skeleton"
 
 import ExerciseCreateDialog from "./exercise-create-dialog"
 import ExerciseItem from "./exercise-item"
@@ -14,7 +15,10 @@ function MyExercisesPage() {
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
-    const supabase = createClientComponentClient()
+    const supabase = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
 
     const fetchExercises = useCallback(async () => {
         try {
@@ -41,8 +45,16 @@ function MyExercisesPage() {
         fetchExercises()
     }, [fetchExercises])
 
+    const generateLoadingSkeletons = () =>
+        Array.from({ length: 10 }).map((_, index) => (
+            <Skeleton
+                key={index}
+                className="m-3 mx-auto h-[255px] w-[388px] max-w-md overflow-hidden "
+            ></Skeleton>
+        ))
+
     return (
-        <section className="w-full py-6 sm:py-12 md:py-24 lg:py-32">
+        <section className="py-26 w-full py-6">
             <div className="container mx-auto grid max-w-7xl gap-4 px-2 sm:gap-6 sm:px-4 md:px-6 lg:px-8 xl:px-10 2xl:px-12">
                 <div className="flex justify-between">
                     <h1 className="text-4xl font-bold">My Exercises</h1>
@@ -52,9 +64,11 @@ function MyExercisesPage() {
                     </div>
                 </div>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-                    {isLoading && <p>Loading...</p>}
                     {error && <p>Error: {error}</p>}
-                    {!isLoading && !exercises && <p>No exercises found.</p>}
+                    {isLoading && generateLoadingSkeletons()}
+                    {!isLoading && !exercises?.length && (
+                        <p>No exercises found.</p>
+                    )}
                     {!isLoading && exercises && exercises.length > 0 && (
                         <>
                             {exercises.map((exercise, index) => (

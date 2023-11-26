@@ -1,6 +1,9 @@
+"use client"
+
+import { useState } from "react"
+
 import { Exercise } from "@/types/types"
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
 import {
     Card,
     CardContent,
@@ -13,8 +16,10 @@ import ExerciseDeleteDialog from "./exercise-delete-dialog"
 import ExerciseEditDialog from "./exercise-edit-dialog"
 
 function ExerciseItem({ exercise }: { exercise: Exercise }) {
+    const [isDeleted, setIsDeleted] = useState(false)
+
     return (
-        <Card className="py-5">
+        <Card className={cn("py-5", isDeleted ? "hidden" : null)}>
             <CardContent className="flex flex-col items-start space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
                 <div className="flex-1 space-y-2">
                     <CardTitle>{exercise.name}</CardTitle>
@@ -36,9 +41,12 @@ function ExerciseItem({ exercise }: { exercise: Exercise }) {
                         {exercise.sets} x {exercise.repetitions}
                     </p>
                 </div>
-                <div className="space-x-2 sm:space-x-4">
+                <div className="space-x-2">
                     <ExerciseEditDialog {...exercise} />
-                    <ExerciseDeleteDialog exerciseId={exercise.id} />
+                    <ExerciseDeleteDialog
+                        exerciseId={exercise.id}
+                        setIsDeleted={setIsDeleted}
+                    />
                 </div>
             </CardContent>
         </Card>

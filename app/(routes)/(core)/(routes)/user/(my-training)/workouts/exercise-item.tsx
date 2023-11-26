@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { createBrowserClient } from "@supabase/ssr"
 import { Trash } from "lucide-react"
 import toast from "react-hot-toast"
 
@@ -20,11 +20,15 @@ function ExerciseItem({
     workoutId: string
     exerciseId: string
 }) {
-    const supabase = createClientComponentClient()
     const [isDeleted, setIsDeleted] = useState(false)
 
     const handleDelete = async (workoutId: string, exerciseId: string) => {
         try {
+            const supabase = createBrowserClient(
+                process.env.NEXT_PUBLIC_SUPABASE_URL!,
+                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+            )
+
             const { data: _, error } = await supabase.rpc(
                 "delete_exercise_from_workout",
                 {
