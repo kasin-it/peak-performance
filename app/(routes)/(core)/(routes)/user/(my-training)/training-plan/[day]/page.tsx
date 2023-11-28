@@ -39,7 +39,7 @@ async function AddWorkoutPage({ params }: AddWorkoutPageProps) {
                 {data?.length === 0 && (
                     <div className="flex flex-col space-y-2">
                         <p>
-                            You currently don't have any workouts. Please create
+                            You currently dont have any workouts. Please create
                             one!
                         </p>
                         <Link href={"/user/workouts"}>Create workut</Link>

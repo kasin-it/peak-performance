@@ -35,8 +35,8 @@ async function AddExercisePage({ params }: AddExercisePageProps) {
                 {data?.length === 0 && (
                     <div className="flex flex-col space-y-2">
                         <p>
-                            You currently don't have any exercises. Please
-                            create one or import an existing one!
+                            You currently dont have any exercises. Please create
+                            one or import an existing one!
                         </p>
                         <Link href={"/user/exercises"}>Create exercise</Link>
                     </div>

@@ -67,8 +67,8 @@ function MyExercisesPage() {
                 {isLoading && generateLoadingSkeletons()}
                 {!isLoading && !exercises?.length && (
                     <p>
-                        You currently don't have any exercises. Please create
-                        one or import an existing one!
+                        You currently dont have any exercises. Please create one
+                        or import an existing one!
                     </p>
                 )}
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">

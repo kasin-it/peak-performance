@@ -46,8 +46,7 @@ async function MyWorkoutsPage() {
                     ))}
                 {workouts?.length === 0 && (
                     <p>
-                        You currently don't have any workouts. Please create
-                        one!
+                        You currently dont have any workouts. Please create one!
                     </p>
                 )}
             </div>
