@@ -144,7 +144,7 @@ function ExercisesSearchResults({
 
     return (
         <>
-            <article className="grid max-w-[1500px] grid-cols-1 gap-5 lg:grid-cols-2 2xl:grid-cols-3">
+            <article className="grid max-w-[1500px] grid-cols-1 gap-5 py-10 lg:grid-cols-2 2xl:grid-cols-3">
                 {error && <div>{error}</div>}
 
                 {exercises.length === 0 && !isLoading && !error && (

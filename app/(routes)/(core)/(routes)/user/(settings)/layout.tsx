@@ -1,7 +1,6 @@
 import { cookies } from "next/headers"
 import { createServerClient } from "@supabase/ssr"
 
-import { Database } from "@/types/database"
 import { SidebarNav } from "@/components/ui/sidebar-nav"
 
 async function UserSettingsLayout({ children }: { children: React.ReactNode }) {
@@ -32,7 +31,7 @@ async function UserSettingsLayout({ children }: { children: React.ReactNode }) {
     const sidebarNavItems = [
         {
             title: "Profile",
-            href: "/user/",
+            href: "/user",
         },
         {
             title: "Settings",

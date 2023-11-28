@@ -1,36 +1,62 @@
-import { cookies } from "next/headers"
-import { createServerClient } from "@supabase/ssr"
+"use client"
+
+import { useEffect, useState } from "react"
+import { createBrowserClient } from "@supabase/ssr"
+import { Sunset } from "lucide-react"
 
 import { Comment as CommentType } from "@/types/types"
 
 import Comment from "./comment"
 import { InsertCommentForm } from "./insert-comment-form"
 
-export const dynamic = "force-dynamic"
+function CommentsSection({ articleId }: { articleId: string }) {
+    const [comments, setComments] = useState<CommentType[]>([])
+    const [error, setError] = useState<string | null>(null)
+    const [session, setSession] = useState<any>(null)
 
-async function CommentsSection({ articleId }: { articleId: string }) {
-    const cookieStore = cookies()
-    const supabase = createServerClient(
+    const supabase = createBrowserClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        {
-            cookies: {
-                get(name: string) {
-                    return cookieStore.get(name)?.value
-                },
-            },
-        }
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     )
 
-    const { data, error } = await supabase
-        .from("comments")
-        .select()
-        .eq("slug", articleId)
-        .order("created_at")
+    useEffect(() => {
+        const getUser = async () => {
+            try {
+                const { data, error } = await supabase.auth.getSession()
 
-    console.log(error)
+                if (error) {
+                    console.log(error)
+                } else {
+                    setSession(data)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
 
-    const comments = data
+        const fetchData = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from("comments")
+                    .select()
+                    .eq("slug", articleId)
+                    .order("created_at")
+
+                if (error) {
+                    console.log(error)
+                    setError(error.message || "An error occurred")
+                } else {
+                    setComments(data || [])
+                }
+            } catch (error) {
+                console.log(error)
+                setError("An error occurred while fetching data")
+            }
+        }
+
+        fetchData()
+        getUser()
+    }, [articleId, supabase])
 
     return (
         <section
@@ -46,25 +72,31 @@ async function CommentsSection({ articleId }: { articleId: string }) {
                 </p>
             </div>
             <section className="lg:justify-left flex flex-col items-center space-x-0 space-y-10 lg:flex-row lg:items-start lg:space-x-10 lg:space-y-0">
-                <section className="flex w-full flex-col items-center lg:items-start lg:justify-start">
-                    {/* Insert Comment Form */}
-                    <InsertCommentForm articleId={articleId} />
+                {session ? (
+                    <section className="flex w-full flex-col items-center lg:items-start lg:justify-start">
+                        {/* Insert Comment Form */}
+                        <InsertCommentForm articleId={articleId} />
 
-                    {comments && (
-                        // Render comments or error message
-                        <div className="w-full">
-                            <div className="w-full space-y-6">
-                                {comments.map((comment: CommentType) => (
-                                    <Comment
-                                        comment={comment}
-                                        key={comment.id}
-                                    />
-                                ))}
+                        {comments && (
+                            // Render comments or error message
+                            <div className="w-full py-10">
+                                <div className="w-full space-y-6">
+                                    {comments.map((comment: CommentType) => (
+                                        <Comment
+                                            comment={comment}
+                                            key={comment.id}
+                                        />
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                    )}
-                    {error && <p>erorr</p>}
-                </section>
+                        )}
+                        {error && error}
+                    </section>
+                ) : (
+                    <section className="rounded-sm border border-blue-300 px-4 py-3">
+                        Sign in to see comments
+                    </section>
+                )}
             </section>
         </section>
     )

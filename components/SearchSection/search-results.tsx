@@ -106,6 +106,7 @@ function SearchResults({ query, reset }: SearchResultsProps) {
                     )}
                 </>
             ))}
+            {results.length === 0 && <p>No results found. </p>}
         </div>
     )
 }
