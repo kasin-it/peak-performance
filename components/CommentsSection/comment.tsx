@@ -44,7 +44,7 @@ function Comment({ comment }: CommentProps) {
     // Function to handle comment removal
     const handleRemove = async (commentId: string) => {
         try {
-            const { data, error } = await supabase
+            const { error } = await supabase
                 .from("comments")
                 .delete()
                 .eq("id", commentId)
@@ -205,7 +205,9 @@ function Comment({ comment }: CommentProps) {
                 </div>
 
                 {/* Comment Content */}
-                <div>{comment.comment}</div>
+                <p className="max-w-[500px] break-words leading-7">
+                    {comment.comment}
+                </p>
             </div>
         </div>
     )

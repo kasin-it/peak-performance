@@ -54,8 +54,8 @@ function MyExercisesPage() {
         ))
 
     return (
-        <section className="py-26 w-full py-6">
-            <div className="container mx-auto grid max-w-7xl gap-4 px-2 sm:gap-6 sm:px-4 md:px-6 lg:px-8 xl:px-10 2xl:px-12">
+        <section className="py-26 w-full">
+            <div className="space-y-6">
                 <div className="flex justify-between">
                     <h1 className="text-4xl font-bold">My Exercises</h1>
                     <div className="space-x-5">
@@ -63,12 +63,15 @@ function MyExercisesPage() {
                         <Link href={"/exercises"}>Import exercise</Link>
                     </div>
                 </div>
+                {error && <p>Error: {error}</p>}
+                {isLoading && generateLoadingSkeletons()}
+                {!isLoading && !exercises?.length && (
+                    <p>
+                        You currently dont have any exercises. Please create one
+                        or import an existing one!
+                    </p>
+                )}
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-                    {error && <p>Error: {error}</p>}
-                    {isLoading && generateLoadingSkeletons()}
-                    {!isLoading && !exercises?.length && (
-                        <p>No exercises found.</p>
-                    )}
                     {!isLoading && exercises && exercises.length > 0 && (
                         <>
                             {exercises.map((exercise, index) => (

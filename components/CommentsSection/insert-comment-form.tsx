@@ -64,7 +64,10 @@ export function InsertCommentForm({
 
     return (
         <>
-            <div className={cn("flex w-full flex-col", className)} {...props}>
+            <div
+                className={cn("flex w-full max-w-[600px] flex-col", className)}
+                {...props}
+            >
                 <form
                     onSubmit={handleSubmit(onSubmit)}
                     noValidate

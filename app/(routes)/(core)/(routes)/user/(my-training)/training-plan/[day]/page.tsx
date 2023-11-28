@@ -35,10 +35,13 @@ async function AddWorkoutPage({ params }: AddWorkoutPageProps) {
                 </h1>
             </div>
             <div className="grid w-full max-w-[1500px] gap-5 lg:grid-cols-2 xl:grid-cols-3">
-                {error && <p>Fetchning data wnet wrong</p>}
+                {error && <p>Fetchning data went wrong</p>}
                 {data?.length === 0 && (
                     <div className="flex flex-col space-y-2">
-                        <p>No workouts</p>
+                        <p>
+                            You currently dont have any workouts. Please create
+                            one!
+                        </p>
                         <Link href={"/user/workouts"}>Create workut</Link>
                     </div>
                 )}

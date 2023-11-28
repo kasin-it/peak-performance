@@ -30,7 +30,8 @@ async function TrainingPlanPage() {
     }
 
     return (
-        <div className="h-full w-full p-4">
+        <div className="p- h-full w-full space-y-6">
+            <h1 className="text-4xl font-bold">My Training Plan</h1>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 <TrainingPlanItem
                     key={"monday"}

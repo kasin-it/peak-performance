@@ -34,7 +34,10 @@ async function AddExercisePage({ params }: AddExercisePageProps) {
                 {error && <p>Fetchning data wnet wrong</p>}
                 {data?.length === 0 && (
                     <div className="flex flex-col space-y-2">
-                        <p>No exercises</p>
+                        <p>
+                            You currently dont have any exercises. Please create
+                            one or import an existing one!
+                        </p>
                         <Link href={"/user/exercises"}>Create exercise</Link>
                     </div>
                 )}
