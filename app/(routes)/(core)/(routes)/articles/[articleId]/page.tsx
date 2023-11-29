@@ -3,7 +3,6 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { createClient } from "contentful"
 
-import ArticleNotFound from "@/components/ArticlesSection/article-not-found"
 import ArticleRichText from "@/components/ArticlesSection/article-rich-text"
 import CommentsSection from "@/components/CommentsSection/comments-section"
 
