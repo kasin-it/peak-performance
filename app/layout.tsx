@@ -3,7 +3,7 @@ import { Roboto_Condensed } from "next/font/google"
 
 import "@/app/globals.css"
 
-import { ToastProvider } from "../providers/toast-provider"
+import { ToastProvider } from "./providers/toast-provider"
 
 const font = Roboto_Condensed({ subsets: ["latin"] })
 

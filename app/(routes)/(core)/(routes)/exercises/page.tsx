@@ -56,8 +56,8 @@ function ExercisesPage() {
 
     return (
         <div className="relative flex flex-col items-center px-4">
-            <div className="flex w-full flex-col items-center space-y-10 px-4 pb-20 pt-52 text-center text-7xl font-bold">
-                <p>Exercises:</p>
+            <div className="flex w-full flex-col items-center space-y-10 px-4 pb-20 pt-48 text-center">
+                <h1 className="text-6xl font-bold">Exercises:</h1>
                 <div className="flex flex-wrap justify-center gap-4">
                     <div
                         className={

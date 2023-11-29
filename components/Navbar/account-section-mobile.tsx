@@ -45,10 +45,10 @@ function AccountSectionMobile() {
     return (
         <>
             <Link
-                href="/auth"
+                href="/user"
                 className="p-2 text-blue-300 hover:text-blue-500"
             >
-                <User2 className=" h-9 w-9" />
+                <User2 strokeWidth={"1px"} className=" h-9 w-9" />
             </Link>
         </>
     )

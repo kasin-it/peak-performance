@@ -1,5 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
+import { notFound } from "next/navigation"
 import { createClient } from "contentful"
 
 import ArticleNotFound from "@/components/ArticlesSection/article-not-found"
@@ -34,7 +35,7 @@ async function ArticlePage({ params }: { params: { articleId: string } }) {
     })
 
     if (!res.total) {
-        return <ArticleNotFound articleId={params.articleId} />
+        return notFound()
     }
 
     const article = res.items[0]
@@ -69,8 +70,9 @@ async function ArticlePage({ params }: { params: { articleId: string } }) {
                     height={0}
                     alt={"dsf"}
                     className="w-full max-w-full object-cover "
-                    loading="lazy"
+                    loading="eager"
                     style={{ height: "auto" }}
+                    priority={true}
                 />
                 <main className=" text-black/80">
                     <ArticleRichText document={article.fields.content} />

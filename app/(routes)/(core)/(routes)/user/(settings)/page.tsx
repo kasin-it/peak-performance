@@ -28,18 +28,18 @@ async function ProfilePage() {
         .eq("id", user?.id)
 
     return (
-        <section className="py-26 flex flex-wrap space-x-4">
+        <section className="flex flex-col flex-wrap space-y-4 py-12">
             <div>
-                <Label>Username: </Label>
-                <p>{data![0].username}</p>
+                <Label className="text-xl">Username: </Label>
+                <p className="text-xl ">{data![0].username}</p>
             </div>
             <div>
-                <Label>Email: </Label>
-                <p>{user!.email}</p>
+                <Label className="text-xl">Email: </Label>
+                <p className="text-xl ">{user!.email}</p>
             </div>
             <div>
-                <Label>Joined at: </Label>
-                <p>{user!.created_at}</p>
+                <Label className="text-xl">Joined at: </Label>
+                <p className="text-xl ">{user!.created_at}</p>
             </div>
         </section>
     )
