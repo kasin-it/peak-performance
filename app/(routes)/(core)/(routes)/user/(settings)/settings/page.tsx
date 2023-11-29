@@ -5,7 +5,7 @@ import SignOutForm from "../forms/sign-out-form"
 
 function ProfilePage() {
     return (
-        <div className="mx-auto max-w-md space-y-6 pt-12">
+        <div className=" max-w-[400px] py-12">
             <div className="space-y-4">
                 <div className="space-y-2">
                     <ChangeEmailForm />

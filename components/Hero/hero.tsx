@@ -1,7 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import { redirect, useRouter } from "next/navigation"
-import hero_img from "@/public/hero.png"
+import hero_img from "@/public/hero.webp"
 
 import { Button } from "../ui/button"
 
@@ -40,6 +39,8 @@ function Hero() {
                     width={hero_img.width / 2}
                     height={hero_img.height / 2}
                     alt="hero image"
+                    priority={true}
+                    loading="eager"
                 />
             </article>
         </section>
