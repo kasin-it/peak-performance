@@ -69,7 +69,7 @@ export function SignInForm({ className, ...props }: SignInFormProps) {
     return (
         <div
             className={cn(
-                "flex w-full flex-col px-4 sm:w-[400px] sm:px-0",
+                "flex w-full flex-col overflow-hidden px-4 sm:w-[400px] sm:px-0",
                 className
             )}
             {...props}
@@ -180,7 +180,7 @@ export function SignInForm({ className, ...props }: SignInFormProps) {
                         Back to home
                     </Link>
                 </p>
-                <div className="absolute -right-10 top-2 w-full text-left text-muted-foreground">
+                <div className="absolute left-3 top-2 text-left text-muted-foreground">
                     <p>Demo Account:</p>
                     <p className="pl-5">Email: andrew@mail.com</p>
                     <p className="pl-5">Password: andrewspassword</p>
