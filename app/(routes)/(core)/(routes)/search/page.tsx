@@ -33,14 +33,18 @@ function SearchPage() {
             <div className="flex flex-col items-center space-y-5">
                 <h1 className="pb-8 pt-48 text-4xl font-bold">Search:</h1>
                 <div className="flex justify-center space-x-4 pb-12">
-                    <div className={"relative flex w-full items-center"}>
+                    <div
+                        className={
+                            "relative flex w-[300px] items-center sm:w-[400px] lg:w-[600px]"
+                        }
+                    >
                         <Input
                             type="search"
                             placeholder="What are you looking for?"
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
                             onKeyDown={handleKeyDown}
-                            className="w-[500px] rounded-lg pr-10"
+                            className="w-full rounded-lg pr-10"
                         />
                         <button
                             type="button"
