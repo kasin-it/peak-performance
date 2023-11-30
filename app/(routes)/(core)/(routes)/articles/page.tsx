@@ -38,7 +38,7 @@ function Articles() {
         <section className="flex w-full flex-col items-center px-3 pb-10">
             <div className="flex flex-col items-center space-y-5">
                 <h1 className="pt-48 text-6xl font-bold">Articles:</h1>
-                <div className="flex justify-center space-x-4 pb-12">
+                <div className="flex flex-col justify-center space-y-3 pb-12 sm:flex-row sm:space-x-4 sm:space-y-0">
                     <div className={"relative flex w-full items-center"}>
                         <Input
                             type="search"
@@ -57,7 +57,7 @@ function Articles() {
                         </button>
                     </div>
                     <Select onValueChange={(value) => setSort(value)}>
-                        <SelectTrigger className="w-[180px]">
+                        <SelectTrigger className="w-full sm:w-[180px]">
                             <SelectValue placeholder="Sort by" />
                         </SelectTrigger>
                         <SelectContent>
