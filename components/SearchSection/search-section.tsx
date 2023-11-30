@@ -57,7 +57,7 @@ function SearchSection() {
                     "flex w-full max-w-[1500px] flex-col space-y-4 px-10 text-center md:text-left"
                 }
             >
-                <h1 className="text-7xl font-black text-blue-500">EXERCISES</h1>
+                <h1 className="text-6xl font-black text-blue-500">EXERCISES</h1>
 
                 <section className="flex flex-wrap items-center justify-around gap-y-7 space-x-4 pb-6">
                     {routes.map((route, index) => (
