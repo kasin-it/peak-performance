@@ -15,11 +15,10 @@ const SearchBar = ({
     value?: string
 }) => {
     const [query, setQuery] = useState(value)
-
     const router = useRouter()
+
     const handleSearch = () => {
         router.push(`/search?query=${query}`)
-        window.location.reload()
     }
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {

@@ -21,7 +21,7 @@ export default function Error({
 
     return (
         <div className="flex w-full flex-col items-center justify-center space-y-4 pt-20">
-            <h2 className="text-7xl font-bold uppercase text-blue-700">
+            <h2 className="text-center text-7xl font-bold uppercase text-blue-700">
                 Something went wrong!
             </h2>
 

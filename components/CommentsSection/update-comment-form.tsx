@@ -113,23 +113,22 @@ export function UpdateCommentForm({
                         )}
                     </div>
                 </div>
-                <DialogFooter className="sm:justify-end">
+                <DialogFooter className="gap-2 sm:justify-end">
+                    <DialogClose asChild>
+                        <Button type="button" variant="secondary">
+                            Close
+                        </Button>
+                    </DialogClose>
                     <Button
-                        className="w-[160px]"
+                        className="w-full"
                         disabled={isSubmitting}
                         variant={"secondaryOutline"}
                     >
                         {isSubmitting && (
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         )}
-                        <p className="px-5">Comment</p>
+                        <p className="px-5">Save changes</p>
                     </Button>
-
-                    <DialogClose asChild>
-                        <Button type="button" variant="secondary">
-                            Close
-                        </Button>
-                    </DialogClose>
                 </DialogFooter>
             </form>
         </>

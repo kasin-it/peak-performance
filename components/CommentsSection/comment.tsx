@@ -124,8 +124,8 @@ function Comment({ comment }: CommentProps) {
             </Avatar>
 
             {/* Comment Details */}
-            <div className="grid gap-1.5">
-                <div className="flex items-center justify-between gap-2">
+            <div className="grid gap-1.5 px-1">
+                <div className="flex flex-col items-start justify-start gap-2 md:flex-row md:items-start">
                     {/* User Information */}
                     <div className="flex items-center gap-2">
                         <div className="font-semibold">{username}</div>
@@ -148,13 +148,7 @@ function Comment({ comment }: CommentProps) {
                                     </DialogTrigger>
                                     <DialogContent className="sm:max-w-md">
                                         <DialogHeader>
-                                            <DialogTitle>
-                                                Share link
-                                            </DialogTitle>
-                                            <DialogDescription>
-                                                Anyone who has this link will be
-                                                able to view this.
-                                            </DialogDescription>
+                                            <DialogTitle>Edit</DialogTitle>
                                         </DialogHeader>
 
                                         {/* Update Comment Form */}
@@ -205,7 +199,7 @@ function Comment({ comment }: CommentProps) {
                 </div>
 
                 {/* Comment Content */}
-                <p className="max-w-[500px] break-words leading-7">
+                <p className="w-full max-w-[600px] break-words pr-2 leading-7">
                     {comment.comment}
                 </p>
             </div>

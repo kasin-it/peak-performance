@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Link from "next/link"
 import { createBrowserClient } from "@supabase/ssr"
 import { Sunset } from "lucide-react"
 
@@ -12,7 +13,7 @@ import { InsertCommentForm } from "./insert-comment-form"
 function CommentsSection({ articleId }: { articleId: string }) {
     const [comments, setComments] = useState<CommentType[]>([])
     const [error, setError] = useState<string | null>(null)
-    const [session, setSession] = useState<any>(null)
+    const [user, setUser] = useState<any>(null)
 
     const supabase = createBrowserClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -22,12 +23,12 @@ function CommentsSection({ articleId }: { articleId: string }) {
     useEffect(() => {
         const getUser = async () => {
             try {
-                const { data, error } = await supabase.auth.getSession()
+                const { data, error } = await supabase.auth.getUser()
 
                 if (error) {
                     console.log(error)
                 } else {
-                    setSession(data)
+                    setUser(data)
                 }
             } catch (error) {
                 console.log(error)
@@ -71,8 +72,8 @@ function CommentsSection({ articleId }: { articleId: string }) {
                     Share your thoughts about this article.
                 </p>
             </div>
-            <section className="lg:justify-left flex flex-col items-center space-x-0 space-y-10 lg:flex-row lg:items-start lg:space-x-10 lg:space-y-0">
-                {session ? (
+            <section className="lg:justify-left flex flex-col items-start space-x-0 space-y-10 lg:flex-row lg:items-start lg:space-x-10 lg:space-y-0">
+                {user ? (
                     <section className="flex w-full flex-col items-center lg:items-start lg:justify-start">
                         {/* Insert Comment Form */}
                         <InsertCommentForm articleId={articleId} />
@@ -94,7 +95,10 @@ function CommentsSection({ articleId }: { articleId: string }) {
                     </section>
                 ) : (
                     <section className="rounded-sm border border-blue-300 px-4 py-3">
-                        Sign in to see comments
+                        <Link href={"/auth/sign-in"} className="text-blue-500 ">
+                            Sign in{" "}
+                        </Link>
+                        to see comments
                     </section>
                 )}
             </section>
