@@ -1,7 +1,6 @@
 import ChangeEmailForm from "../forms/change-email-form"
 import ChangePasswordForm from "../forms/change-password-form"
 import ChangeUsernameForm from "../forms/change-username-form"
-import SignOutForm from "../forms/sign-out-form"
 
 function ProfilePage() {
     return (
@@ -16,7 +15,6 @@ function ProfilePage() {
                 <div className="space-y-2">
                     <ChangePasswordForm />
                 </div>
-                <SignOutForm />
             </div>
         </div>
     )
