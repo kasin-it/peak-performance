@@ -139,7 +139,7 @@ function ExercisesSearchResults({
             <Skeleton
                 key={index}
                 className="m-3 mx-auto h-[415px] w-[448px] max-w-md overflow-hidden rounded-xl shadow-md md:max-w-2xl"
-            ></Skeleton>
+            />
         ))
 
     return (

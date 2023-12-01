@@ -49,7 +49,7 @@ function MyExercisesPage() {
         Array.from({ length: 10 }).map((_, index) => (
             <Skeleton
                 key={index}
-                className="m-3 mx-auto h-[255px] w-[388px] max-w-md overflow-hidden "
+                className="m-3 mx-auto h-[225px] w-full max-w-md overflow-hidden "
             ></Skeleton>
         ))
 
@@ -64,7 +64,6 @@ function MyExercisesPage() {
                     </div>
                 </div>
                 {error && <p>Error: {error}</p>}
-                {isLoading && generateLoadingSkeletons()}
                 {!isLoading && !exercises?.length && (
                     <p>
                         You currently dont have any exercises. Please create one
@@ -72,6 +71,7 @@ function MyExercisesPage() {
                     </p>
                 )}
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+                    {isLoading && generateLoadingSkeletons()}
                     {!isLoading && exercises && exercises.length > 0 && (
                         <>
                             {exercises.map((exercise, index) => (

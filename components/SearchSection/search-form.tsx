@@ -27,7 +27,6 @@ function SearchForm() {
             queryParams.set("exercise_type", exerciseType)
 
         router.push(`/exercises?${queryParams.toString()}`)
-        window.location.reload()
     }
 
     return (

@@ -3,6 +3,8 @@ import { createServerClient } from "@supabase/ssr"
 
 import { Label } from "@/components/ui/label"
 
+import SignOutForm from "./forms/sign-out-form"
+
 async function ProfilePage() {
     const cookieStore = cookies()
 
@@ -41,6 +43,7 @@ async function ProfilePage() {
                 <Label className="text-xl">Joined at: </Label>
                 <p className="text-xl ">{user!.created_at}</p>
             </div>
+            <SignOutForm />
         </section>
     )
 }

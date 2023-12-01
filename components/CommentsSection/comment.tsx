@@ -79,11 +79,6 @@ function Comment({ comment }: CommentProps) {
                     .select("username")
                     .eq("id", comment.user_id)
 
-                if (error) {
-                    toast.error("Something went wrong.")
-                    console.error(error)
-                }
-
                 setUsername(data?.[0]?.username || "Can not get username")
             } catch (error) {
                 toast.error("Something went wrong.")
