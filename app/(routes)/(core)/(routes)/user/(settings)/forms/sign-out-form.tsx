@@ -15,6 +15,10 @@ function SignOutForm() {
         window.location.reload()
     }
 
-    return <Button onClick={onSubmit}>Sign Out</Button>
+    return (
+        <Button onClick={onSubmit} className="w-[200px]">
+            Sign Out
+        </Button>
+    )
 }
 export default SignOutForm

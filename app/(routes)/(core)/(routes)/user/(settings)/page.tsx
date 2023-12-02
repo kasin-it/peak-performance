@@ -30,7 +30,7 @@ async function ProfilePage() {
         .eq("id", user?.id)
 
     return (
-        <section className="flex flex-col flex-wrap space-y-4 py-12">
+        <section className="flex flex-col flex-wrap space-y-10 py-12">
             <div>
                 <Label className="text-xl">Username: </Label>
                 <p className="text-xl ">{data![0].username}</p>

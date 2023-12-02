@@ -4,17 +4,19 @@ This project employs Next.js and Contentful to build a high-performance web app.
 
 ### 🚀 Features
 
+-   💪 **Exercise Import (external API)**
+
+-   📁 **Articles (Contentful)**
+
 -   💬 **Comments**
 
 -   📅 **Traning Planning**
 
--   💪 **Exercise Import (external API)**
-
 -   🔍 **Search**
 
--   📁 **Articles (Contentful)**
-
 -   👤 **Auth**
+
+-   📨 **Newsletter**
 
 -   📱 **Responsive Design**
 

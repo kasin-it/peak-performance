@@ -5,7 +5,7 @@ import ChangeUsernameForm from "../forms/change-username-form"
 function ProfilePage() {
     return (
         <div className=" max-w-[400px] py-12">
-            <div className="space-y-4">
+            <div className="space-y-20">
                 <div className="space-y-2">
                     <ChangeEmailForm />
                 </div>
