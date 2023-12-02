@@ -15,8 +15,6 @@ function SearchResults({ query, reset }: SearchResultsProps) {
     const [results, setResults] = useState<any[]>([])
     const [isLoading, setIsLoading] = useState(false)
 
-    console.log(query)
-
     const fetchResults = useCallback(async () => {
         try {
             setIsLoading(true)
@@ -69,9 +67,7 @@ function SearchResults({ query, reset }: SearchResultsProps) {
         }
     }, [query])
     useEffect(() => {
-        console.log("init")
         if (query != "") {
-            console.log("fetch")
             setIsLoading(true)
             fetchResults()
         } else {

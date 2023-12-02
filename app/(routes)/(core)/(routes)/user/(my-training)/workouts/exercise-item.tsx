@@ -39,7 +39,6 @@ function ExerciseItem({
 
             if (error) {
                 toast.error("Failed to delete exercise. Please try again.")
-                console.log(error)
                 return
             }
 

@@ -76,7 +76,6 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
 
         if (signUpResponse.error) {
             setError("email", { message: signUpResponse.error.message })
-            console.log(signUpResponse.error)
             return
         }
 
@@ -88,10 +87,6 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
             .eq("id", signUpResponse.data.user!.id)
 
         if (updateUsernameResponse.error) {
-            console.error(
-                "Error updating profiles:",
-                JSON.stringify(updateUsernameResponse.error)
-            )
             return
         }
 

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { createBrowserClient } from "@supabase/ssr"
 import { Trash } from "lucide-react"
 import toast from "react-hot-toast"
 
@@ -10,7 +11,6 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 
 import MoreInfoDialog from "./more-info-dialog"
-import { createBrowserClient } from "@supabase/ssr"
 
 function WorkoutItem({
     workout,
@@ -40,7 +40,6 @@ function WorkoutItem({
 
             if (error) {
                 toast.error("Failed to delete workout. Please try again.")
-                console.log(error)
             }
         } catch (error) {
             toast.error("Failed to delete workout. Please try again.")

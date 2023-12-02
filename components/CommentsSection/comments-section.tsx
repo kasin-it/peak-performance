@@ -25,13 +25,11 @@ function CommentsSection({ articleId }: { articleId: string }) {
             try {
                 const { data, error } = await supabase.auth.getUser()
 
-                if (error) {
-                    console.log(error)
-                } else {
+                if (!error) {
                     setUser(data)
                 }
             } catch (error) {
-                console.log(error)
+                return
             }
         }
 
@@ -44,13 +42,11 @@ function CommentsSection({ articleId }: { articleId: string }) {
                     .order("created_at")
 
                 if (error) {
-                    console.log(error)
                     setError(error.message || "An error occurred")
                 } else {
                     setComments(data || [])
                 }
             } catch (error) {
-                console.log(error)
                 setError("An error occurred while fetching data")
             }
         }
