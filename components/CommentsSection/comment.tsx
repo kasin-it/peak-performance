@@ -52,13 +52,11 @@ function Comment({ comment }: CommentProps) {
 
             if (error) {
                 toast.error("Something went wrong.")
-                console.error(error)
             } else {
                 toast.success("Comment removed.")
             }
         } catch (error) {
             toast.error("Something went wrong.")
-            console.error(error)
         }
 
         // Reload the page after comment removal
@@ -82,7 +80,6 @@ function Comment({ comment }: CommentProps) {
                 setUsername(data?.[0]?.username || "Can not get username")
             } catch (error) {
                 toast.error("Something went wrong.")
-                console.error(error)
             }
         }
 

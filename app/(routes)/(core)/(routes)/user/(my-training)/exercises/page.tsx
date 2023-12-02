@@ -35,7 +35,6 @@ function MyExercisesPage() {
             setExercises(data || [])
         } catch (error) {
             setError("Something went wrong.")
-            console.log(error)
         } finally {
             setIsLoading(false)
         }

@@ -89,7 +89,6 @@ function ExercisesSearchResults({
                 setEmptyResponse(true)
             }
         } catch (error) {
-            console.log(error)
             setError("An error occurred while fetching data.")
         } finally {
             setIsLoading(false)

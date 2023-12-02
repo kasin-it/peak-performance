@@ -110,7 +110,6 @@ function ArticlesSearchResults({ query, sort }: ArticlesSearchResults) {
 
     useEffect(() => {
         fetchArticles(true)
-        console.log("hard refresh!")
     }, [query, fetchArticles])
 
     const generateLoadingSkeletons = () =>
