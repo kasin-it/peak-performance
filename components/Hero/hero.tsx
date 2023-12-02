@@ -23,7 +23,7 @@ function Hero() {
                         stronger you with us today!
                     </p>
                     <div>
-                        <Link href={"/workouts"}>
+                        <Link href={"/user/training-plan"}>
                             <Button
                                 variant={"secondary"}
                                 className="p-7 text-xl font-black italic"
