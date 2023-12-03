@@ -2,10 +2,9 @@
 
 import React, { useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { Search } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import SearchBar2 from "@/components/ui/search-bar-2"
 import {
     Select,
     SelectContent,
@@ -14,15 +13,17 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
-
-import ExercisesSearchResults from "./exercises-search-results"
+import ExercisesSearchResults from "@/components/exercises-search-results"
 
 function ExercisesPage() {
     const searchParams = useSearchParams()
+    const router = useRouter()
+
     const queryParam = searchParams.get("q") ?? ""
     const muscleParam = searchParams.get("muscle") ?? ""
     const skillLevelParam = searchParams.get("skill_level") ?? ""
     const exerciseTypeParam = searchParams.get("exercise_type") ?? ""
+
     const [query, setQuery] = useState<string>(queryParam)
     const [search, setSearch] = useState<string>(queryParam)
     const [muscle, setMuscle] = useState(muscleParam)
@@ -30,8 +31,6 @@ function ExercisesPage() {
     const [exerciseType, setExerciseType] = useState(exerciseTypeParam)
     const [sort, setSort] = useState<string>("")
     const [reset, setReset] = useState(false)
-
-    const router = useRouter()
 
     const handleSearch = () => {
         const queryParams = new URLSearchParams()
@@ -48,10 +47,20 @@ function ExercisesPage() {
         setReset((prev) => !prev)
     }
 
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === "Enter") {
-            handleSearch()
-        }
+    const handleMuscleChange = (value: React.SetStateAction<string>) => {
+        value != "all" ? setMuscle(value) : setMuscle("")
+    }
+
+    const handleExerciseTypeChange = (value: React.SetStateAction<string>) => {
+        value != "all" ? setExerciseType(value) : setExerciseType("")
+    }
+
+    const handleSkillLevelChange = (value: React.SetStateAction<string>) => {
+        value != "all" ? setSkillLevel(value) : setSkillLevel("")
+    }
+
+    const handleSortChange = (value: React.SetStateAction<string>) => {
+        setSort(value)
     }
 
     return (
@@ -59,30 +68,18 @@ function ExercisesPage() {
             <div className="flex w-full flex-col items-center space-y-10 px-4 pb-20 pt-48 text-center">
                 <h1 className="text-6xl font-bold">Exercises:</h1>
                 <div className="flex flex-col gap-4">
-                    <div className={"relative flex w-full items-center"}>
-                        <Input
-                            type="search"
-                            placeholder="What are you looking for?"
-                            value={query}
-                            onChange={(e) => setQuery(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                            className="w-full rounded-lg pr-10"
-                        />
-                        <button
-                            type="button"
-                            onClick={handleSearch}
-                            className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-primary"
-                        >
-                            <Search size={16} />
-                        </button>
-                    </div>
+                    <SearchBar2
+                        setQuery={setQuery}
+                        setSearch={setSearch}
+                        search={search}
+                        query={query}
+                        className="relative flex w-full items-center"
+                        path="exercises"
+                        handleSearch={handleSearch}
+                    />
                     <div className="flex flex-wrap gap-3">
                         <Select
-                            onValueChange={(value) =>
-                                value != "all"
-                                    ? setMuscle(value)
-                                    : setMuscle("")
-                            }
+                            onValueChange={(value) => handleMuscleChange(value)}
                             defaultValue={muscle || undefined}
                             value={muscle || undefined}
                         >
@@ -120,11 +117,10 @@ function ExercisesPage() {
                                 <SelectItem value="triceps">triceps</SelectItem>
                             </SelectContent>
                         </Select>
+
                         <Select
                             onValueChange={(value) => {
-                                value != "all"
-                                    ? setSkillLevel(value)
-                                    : setSkillLevel("")
+                                handleSkillLevelChange(value)
                             }}
                             defaultValue={skillLevel || undefined}
                             value={skillLevel || undefined}
@@ -146,9 +142,7 @@ function ExercisesPage() {
 
                         <Select
                             onValueChange={(value) =>
-                                value != "all"
-                                    ? setExerciseType(value)
-                                    : setExerciseType("")
+                                handleExerciseTypeChange(value)
                             }
                             defaultValue={exerciseType || undefined}
                             value={exerciseType || undefined}
@@ -179,7 +173,10 @@ function ExercisesPage() {
                                 </SelectItem>
                             </SelectContent>
                         </Select>
-                        <Select onValueChange={(value) => setSort(value)}>
+
+                        <Select
+                            onValueChange={(value) => handleSortChange(value)}
+                        >
                             <SelectTrigger className="lg:w-[180px]">
                                 <SelectValue placeholder="Sort by" />
                             </SelectTrigger>

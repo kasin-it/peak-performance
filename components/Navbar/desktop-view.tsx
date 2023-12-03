@@ -1,6 +1,6 @@
 import Link from "next/link"
 
-import SearchBar from "../ui/search-bar"
+import SearchBar1 from "../ui/search-bar-1"
 import AccountSection from "./account-section"
 import SearchSheet from "./search-sheet"
 
@@ -52,7 +52,7 @@ function DesktopView() {
             </div>
             <div className="flex items-center space-x-2">
                 <div className="hidden xl:block">
-                    <SearchBar className="w-[400px]" />
+                    <SearchBar1 className="w-[400px]" />
                 </div>
                 <div className="xl:hidden">
                     <SearchSheet />
