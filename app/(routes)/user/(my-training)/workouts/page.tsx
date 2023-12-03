@@ -2,10 +2,14 @@ import dynamic from "next/dynamic"
 import { cookies } from "next/headers"
 import { createServerClient } from "@supabase/ssr"
 
-import WorkoutItem from "./workout-item"
-
 const DynamicWorkoutCreateDialog = dynamic(
     () => import("./workout-create-dialog").then((mod) => mod.default),
+    {
+        ssr: false,
+    }
+)
+const DynamicWorkoutItem = dynamic(
+    () => import("./workout-item").then((mod) => mod.default),
     {
         ssr: false,
     }
@@ -41,7 +45,7 @@ async function MyWorkoutsPage() {
             <div className="grid w-full max-w-[1500px] gap-5 lg:grid-cols-2 xl:grid-cols-3">
                 {workouts &&
                     workouts.map((workout, index) => (
-                        <WorkoutItem
+                        <DynamicWorkoutItem
                             workout={{
                                 id: workout.id,
                                 name: workout.name,
