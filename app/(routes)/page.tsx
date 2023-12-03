@@ -1,19 +1,23 @@
 import dynamic from "next/dynamic"
 
+// import ArticlesSection from "@/components/ArticlesSection/articles-section"
+// import Hero from "@/components/Hero/hero"
+// import SearchSection from "@/components/SearchSection/search-section"
+
 const DynamicArticlesSection = dynamic(
     () =>
         import("@/components/ArticlesSection/articles-section").then(
             (mod) => mod.default
         ),
     {
-        ssr: false,
+        ssr: true,
     }
 )
 
 const DynamicHero = dynamic(
     () => import("@/components/Hero/hero").then((mod) => mod.default),
     {
-        ssr: false,
+        ssr: true,
     }
 )
 
@@ -23,7 +27,7 @@ const DynamicSearchSection = dynamic(
             (mod) => mod.default
         ),
     {
-        ssr: false,
+        ssr: true,
     }
 )
 
@@ -33,6 +37,9 @@ function HomePage() {
             <DynamicHero />
             <DynamicSearchSection />
             <DynamicArticlesSection />
+            {/* <Hero />
+            <SearchSection />
+            <ArticlesSection /> */}
         </>
     )
 }
