@@ -1,8 +1,6 @@
 import { cookies } from "next/headers"
 import { createServerClient } from "@supabase/ssr"
 
-import { Workout } from "@/types/types"
-
 import WorkoutItem from "./workout-item"
 
 async function TrainingPlanWorkouts({
@@ -47,7 +45,6 @@ async function TrainingPlanWorkouts({
         return Promise.all(workoutsPromises)
     }
 
-    // Call the asynchronous function
     const workouts = await getWorkouts()
 
     return (

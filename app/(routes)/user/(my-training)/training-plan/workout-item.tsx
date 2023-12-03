@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { createBrowserClient } from "@supabase/ssr"
-import { Trash } from "lucide-react"
 import toast from "react-hot-toast"
 
 import { Workout } from "@/types/types"

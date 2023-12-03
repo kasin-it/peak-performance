@@ -1,9 +1,15 @@
+import dynamic from "next/dynamic"
 import { cookies } from "next/headers"
 import { createServerClient } from "@supabase/ssr"
 
 import { Label } from "@/components/ui/label"
 
-import SignOutForm from "./forms/sign-out-form"
+const DynamicSignOutForm = dynamic(
+    () => import("./forms/sign-out-form").then((mod) => mod.default),
+    {
+        ssr: false,
+    }
+)
 
 async function ProfilePage() {
     const cookieStore = cookies()
@@ -43,7 +49,7 @@ async function ProfilePage() {
                 <Label className="text-xl">Joined at: </Label>
                 <p className="text-xl ">{user!.created_at}</p>
             </div>
-            <SignOutForm />
+            <DynamicSignOutForm />
         </section>
     )
 }

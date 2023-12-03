@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 
 import SearchBar3 from "@/components/ui/search-bar-3"
 import { Separator } from "@/components/ui/separator"

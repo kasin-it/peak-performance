@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic"
 import { cookies } from "next/headers"
 import Link from "next/link"
 import { createServerClient } from "@supabase/ssr"
@@ -9,10 +10,31 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Card, CardTitle } from "@/components/ui/card"
 
-import ExerciseItem from "./exercise-item"
-import WorkoutDeleteDialog from "./workout-delete-dialog"
-import WorkoutEditDialog from "./workout-edit-dialog"
-import WorkoutFullDescriptionDialog from "./workout-full-description-dialog"
+const DynamicExerciseItem = dynamic(
+    () => import("./exercise-item").then((mod) => mod.default),
+    {
+        ssr: false,
+    }
+)
+const DynamicWorkoutDeleteDialog = dynamic(
+    () => import("./workout-delete-dialog").then((mod) => mod.default),
+    {
+        ssr: false,
+    }
+)
+const DynamicWorkoutEditDialog = dynamic(
+    () => import("./workout-edit-dialog").then((mod) => mod.default),
+    {
+        ssr: false,
+    }
+)
+const DynamicWorkoutFullDescriptionDialog = dynamic(
+    () =>
+        import("./workout-full-description-dialog").then((mod) => mod.default),
+    {
+        ssr: false,
+    }
+)
 
 async function WorkoutItem({ workout }: { workout: Workout }) {
     const cookieStore = cookies()
@@ -38,8 +60,10 @@ async function WorkoutItem({ workout }: { workout: Workout }) {
                             {workout.name}
                         </CardTitle>
                         <div className="right-0 top-0 flex items-start space-x-2">
-                            <WorkoutEditDialog {...workout} />
-                            <WorkoutDeleteDialog workoutId={workout.id} />
+                            <DynamicWorkoutEditDialog {...workout} />
+                            <DynamicWorkoutDeleteDialog
+                                workoutId={workout.id}
+                            />
                         </div>
                     </div>
 
@@ -89,8 +113,8 @@ async function WorkoutItem({ workout }: { workout: Workout }) {
                         {workout.name}
                     </CardTitle>
                     <div className="flex space-x-2">
-                        <WorkoutEditDialog {...workout} />
-                        <WorkoutDeleteDialog workoutId={workout.id} />
+                        <DynamicWorkoutEditDialog {...workout} />
+                        <DynamicWorkoutDeleteDialog workoutId={workout.id} />
                     </div>
                 </div>
 
@@ -104,7 +128,7 @@ async function WorkoutItem({ workout }: { workout: Workout }) {
                     {workout.desc}
                 </p>
                 {workout.desc.length > 100 ? (
-                    <WorkoutFullDescriptionDialog desc={workout.desc!} />
+                    <DynamicWorkoutFullDescriptionDialog desc={workout.desc!} />
                 ) : null}
 
                 <div className="mt-4">
@@ -113,7 +137,7 @@ async function WorkoutItem({ workout }: { workout: Workout }) {
                         {exercises.length != 0 ? (
                             exercises.map((exercise, index) =>
                                 exercise !== null ? (
-                                    <ExerciseItem
+                                    <DynamicExerciseItem
                                         key={index}
                                         exercise={exercise}
                                         workoutId={workout.id}

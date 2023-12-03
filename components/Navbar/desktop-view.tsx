@@ -1,8 +1,20 @@
+import dynamic from "next/dynamic"
 import Link from "next/link"
 
 import SearchBar1 from "../ui/search-bar-1"
-import AccountSection from "./account-section"
-import SearchSheet from "./search-sheet"
+
+const DynamicSearchSheet = dynamic(
+    () => import("./search-sheet").then((mod) => mod.default),
+    {
+        ssr: false,
+    }
+)
+const DynamicAccountSection = dynamic(
+    () => import("./account-section").then((mod) => mod.default),
+    {
+        ssr: false,
+    }
+)
 
 function DesktopView() {
     return (
@@ -15,7 +27,6 @@ function DesktopView() {
                     PEAK<span className="text-blue-500">PERFORMANCE</span>
                 </Link>
                 <ul className="flex items-center space-x-8 text-xl font-extrabold italic text-blue-300">
-                    {/* <li>SHOP</li> */}
                     <li>
                         <Link
                             href={"/user/training-plan/"}
@@ -40,14 +51,6 @@ function DesktopView() {
                             EXERCISES
                         </Link>
                     </li>
-                    {/* <li>
-                        <Link
-                            href={"/forum"}
-                            className="border-orange-500 hover:border-b-[3px] hover:text-blue-500"
-                        >
-                            FORUM
-                        </Link>
-                    </li> */}
                 </ul>
             </div>
             <div className="flex items-center space-x-2">
@@ -55,9 +58,9 @@ function DesktopView() {
                     <SearchBar1 className="w-[400px]" />
                 </div>
                 <div className="xl:hidden">
-                    <SearchSheet />
+                    <DynamicSearchSheet />
                 </div>
-                <AccountSection />
+                <DynamicAccountSection />
             </div>
         </div>
     )
