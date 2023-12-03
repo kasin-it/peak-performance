@@ -3,19 +3,19 @@ import dynamic from "next/dynamic"
 const DynamicChangeEmailForm = dynamic(
     () => import("../forms/change-email-form").then((mod) => mod.default),
     {
-        ssr: false,
+        ssr: true,
     }
 )
 const DynamicChangePasswordForm = dynamic(
     () => import("../forms/change-password-form").then((mod) => mod.default),
     {
-        ssr: false,
+        ssr: true,
     }
 )
 const DynamicChangeUsernameForm = dynamic(
     () => import("../forms/change-username-form").then((mod) => mod.default),
     {
-        ssr: false,
+        ssr: true,
     }
 )
 

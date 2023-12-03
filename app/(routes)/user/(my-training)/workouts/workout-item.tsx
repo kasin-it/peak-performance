@@ -7,32 +7,31 @@ import { Edit, PlusCircle } from "lucide-react"
 import { Exercise, Workout } from "@/types/types"
 import { cn } from "@/lib/utils"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Button } from "@/components/ui/button"
 import { Card, CardTitle } from "@/components/ui/card"
 
 const DynamicExerciseItem = dynamic(
     () => import("./exercise-item").then((mod) => mod.default),
     {
-        ssr: false,
+        ssr: true,
     }
 )
 const DynamicWorkoutDeleteDialog = dynamic(
     () => import("./workout-delete-dialog").then((mod) => mod.default),
     {
-        ssr: false,
+        ssr: true,
     }
 )
 const DynamicWorkoutEditDialog = dynamic(
     () => import("./workout-edit-dialog").then((mod) => mod.default),
     {
-        ssr: false,
+        ssr: true,
     }
 )
 const DynamicWorkoutFullDescriptionDialog = dynamic(
     () =>
         import("./workout-full-description-dialog").then((mod) => mod.default),
     {
-        ssr: false,
+        ssr: true,
     }
 )
 
