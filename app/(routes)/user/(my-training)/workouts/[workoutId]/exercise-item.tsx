@@ -15,13 +15,13 @@ const DynamicExerciseFullDescriptionDialog = dynamic(
             (mod) => mod.default
         ),
     {
-        ssr: false,
+        ssr: true,
     }
 )
 const DynamicAddToWorkoutButton = dynamic(
     () => import("./add-to-workout-button").then((mod) => mod.default),
     {
-        ssr: false,
+        ssr: true,
     }
 )
 

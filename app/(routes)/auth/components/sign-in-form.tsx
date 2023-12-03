@@ -180,7 +180,7 @@ export function SignInForm({ className, ...props }: SignInFormProps) {
                         Back to home
                     </Link>
                 </p>
-                <div className="absolute left-3 top-2 text-left text-muted-foreground">
+                <div className=" bottom-5 left-3 text-left text-muted-foreground">
                     <p>Demo Account:</p>
                     <p className="pl-5">Email: andrew@mail.com</p>
                     <p className="pl-5">Password: andrewspassword</p>

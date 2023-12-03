@@ -5,13 +5,13 @@ import { createServerClient } from "@supabase/ssr"
 const DynamicWorkoutCreateDialog = dynamic(
     () => import("./workout-create-dialog").then((mod) => mod.default),
     {
-        ssr: false,
+        ssr: true,
     }
 )
 const DynamicWorkoutItem = dynamic(
     () => import("./workout-item").then((mod) => mod.default),
     {
-        ssr: false,
+        ssr: true,
     }
 )
 

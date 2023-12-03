@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label"
 const DynamicSignOutForm = dynamic(
     () => import("./forms/sign-out-form").then((mod) => mod.default),
     {
-        ssr: false,
+        ssr: true,
     }
 )
 
