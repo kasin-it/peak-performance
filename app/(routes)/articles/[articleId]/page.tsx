@@ -1,10 +1,27 @@
+import dynamicLoad from "next/dynamic"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { createClient } from "contentful"
 
-import ArticleRichText from "@/components/ArticlesSection/article-rich-text"
-import CommentsSection from "@/components/CommentsSection/comments-section"
+const DynamicCommentsSection = dynamicLoad(
+    () =>
+        import("@/components/CommentsSection/comments-section").then(
+            (mod) => mod.default
+        ),
+    {
+        ssr: false,
+    }
+)
+const DynamicArticleRichText = dynamicLoad(
+    () =>
+        import("@/components/ArticlesSection/article-rich-text").then(
+            (mod) => mod.default
+        ),
+    {
+        ssr: false,
+    }
+)
 
 const accessToken = process.env.CONTENTFUL_ACCESS_KEY
 const space = process.env.CONTENTFUL_SPACE_ID
@@ -74,10 +91,10 @@ async function ArticlePage({ params }: { params: { articleId: string } }) {
                     priority={true}
                 />
                 <main className=" text-black/80">
-                    <ArticleRichText document={article.fields.content} />
+                    <DynamicArticleRichText document={article.fields.content} />
                 </main>
 
-                <CommentsSection articleId={params.articleId} />
+                <DynamicCommentsSection articleId={params.articleId} />
             </article>
         </section>
     )

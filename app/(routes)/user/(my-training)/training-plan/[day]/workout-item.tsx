@@ -1,5 +1,6 @@
 "use client"
 
+import dynamic from "next/dynamic"
 import { createBrowserClient } from "@supabase/ssr"
 
 import { Workout } from "@/types/types"
@@ -7,7 +8,15 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardTitle } from "@/components/ui/card"
 
-import WorkoutFullDescriptionDialog from "../../workouts/workout-full-description-dialog"
+const DynamicWorkoutFullDescriptionDialog = dynamic(
+    () =>
+        import("../../workouts/workout-full-description-dialog").then(
+            (mod) => mod.default
+        ),
+    {
+        ssr: false,
+    }
+)
 
 function WorkoutItem({ workout, day }: { workout: Workout; day: string }) {
     const onSubmit = async () => {
@@ -44,7 +53,7 @@ function WorkoutItem({ workout, day }: { workout: Workout; day: string }) {
                     {workout.desc}
                 </p>
                 {workout.desc.length > 100 ? (
-                    <WorkoutFullDescriptionDialog desc={workout.desc!} />
+                    <DynamicWorkoutFullDescriptionDialog desc={workout.desc!} />
                 ) : null}
                 <div className="mt-4">
                     <Button onClick={onSubmit}>Add to {day}</Button>

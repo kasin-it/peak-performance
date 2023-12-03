@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic"
 import Image from "next/image"
 import Link from "next/link"
 import abs_image from "@/public/body-part-abs.png"
@@ -9,7 +10,13 @@ import legs_image from "@/public/body-part-legs.png"
 import shoulders_image from "@/public/body-part-shoulders.png"
 
 import { Separator } from "../ui/separator"
-import SearchForm from "./search-form"
+
+const DynamicSearchForm = dynamic(
+    () => import("./search-form").then((mod) => mod.default),
+    {
+        ssr: false,
+    }
+)
 
 function SearchSection() {
     const routes = [
@@ -82,7 +89,7 @@ function SearchSection() {
                     ))}
                 </section>
                 <Separator className="bg-blue-300" />
-                <SearchForm />
+                <DynamicSearchForm />
             </article>
         </section>
     )

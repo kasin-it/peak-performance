@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import dynamic from "next/dynamic"
 
 import { Exercise } from "@/types/types"
 import { cn } from "@/lib/utils"
@@ -10,10 +11,28 @@ import {
     CardDescription,
     CardTitle,
 } from "@/components/ui/card"
-import ExerciseFullDescriptionDialog from "@/components/ui/exercise-full-desctiption-dialog"
 
-import ExerciseDeleteDialog from "./exercise-delete-dialog"
-import ExerciseEditDialog from "./exercise-edit-dialog"
+const DynamicExerciseDeleteDialog = dynamic(
+    () => import("./exercise-delete-dialog").then((mod) => mod.default),
+    {
+        ssr: false,
+    }
+)
+const DynamicExerciseEditDialog = dynamic(
+    () => import("./exercise-edit-dialog").then((mod) => mod.default),
+    {
+        ssr: false,
+    }
+)
+const DynamicExerciseFullDescriptionDialog = dynamic(
+    () =>
+        import("@/components/ui/exercise-full-desctiption-dialog").then(
+            (mod) => mod.default
+        ),
+    {
+        ssr: false,
+    }
+)
 
 function ExerciseItem({ exercise }: { exercise: Exercise }) {
     const [isDeleted, setIsDeleted] = useState(false)
@@ -33,7 +52,7 @@ function ExerciseItem({ exercise }: { exercise: Exercise }) {
                         {exercise.instructions}
                     </CardDescription>
                     {exercise.instructions?.length! > 100 ? (
-                        <ExerciseFullDescriptionDialog
+                        <DynamicExerciseFullDescriptionDialog
                             instructions={exercise.instructions!}
                         />
                     ) : null}
@@ -42,8 +61,8 @@ function ExerciseItem({ exercise }: { exercise: Exercise }) {
                     </p>
                 </div>
                 <div className="space-x-2">
-                    <ExerciseEditDialog {...exercise} />
-                    <ExerciseDeleteDialog
+                    <DynamicExerciseEditDialog {...exercise} />
+                    <DynamicExerciseDeleteDialog
                         exerciseId={exercise.id}
                         setIsDeleted={setIsDeleted}
                     />

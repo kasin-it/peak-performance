@@ -1,10 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
-import { Search } from "lucide-react"
+import { useSearchParams } from "next/navigation"
 
-import { Input } from "@/components/ui/input"
+import SearchBar3 from "@/components/ui/search-bar-3"
 import {
     Select,
     SelectContent,
@@ -21,41 +20,20 @@ function Articles() {
     const [query, setQuery] = useState<string>(queryParam)
     const [search, setSearch] = useState<string>(queryParam)
     const [sort, setSort] = useState<string>("")
-    const router = useRouter()
-
-    const handleSearch = () => {
-        router.push(`/articles?q=${query}`)
-        setSearch(query)
-    }
-
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === "Enter") {
-            handleSearch()
-        }
-    }
 
     return (
         <section className="flex w-full flex-col items-center px-3 pb-10">
             <div className="flex flex-col items-center space-y-5">
                 <h1 className="pt-48 text-6xl font-bold">Articles:</h1>
                 <div className="flex flex-col justify-center space-y-3 pb-12 sm:flex-row sm:space-x-4 sm:space-y-0">
-                    <div className={"relative flex w-full items-center"}>
-                        <Input
-                            type="search"
-                            placeholder="What are you looking for?"
-                            value={query}
-                            onChange={(e) => setQuery(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                            className="w-full rounded-lg pr-10"
-                        />
-                        <button
-                            type="button"
-                            onClick={handleSearch}
-                            className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-primary"
-                        >
-                            <Search size={16} />
-                        </button>
-                    </div>
+                    <SearchBar3
+                        className="relative flex w-full items-center"
+                        query={query}
+                        search={search}
+                        setQuery={setQuery}
+                        setSearch={setSearch}
+                        path={"articles"}
+                    />
                     <Select onValueChange={(value) => setSort(value)}>
                         <SelectTrigger className="w-full sm:w-[180px]">
                             <SelectValue placeholder="Sort by" />

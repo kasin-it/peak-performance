@@ -1,8 +1,15 @@
+import dynamic from "next/dynamic"
 import { cookies } from "next/headers"
 import { createServerClient } from "@supabase/ssr"
 
-import WorkoutCreateDialog from "./workout-create-dialog"
 import WorkoutItem from "./workout-item"
+
+const DynamicWorkoutCreateDialog = dynamic(
+    () => import("./workout-create-dialog").then((mod) => mod.default),
+    {
+        ssr: false,
+    }
+)
 
 async function MyWorkoutsPage() {
     const cookieStore = cookies()
@@ -28,7 +35,7 @@ async function MyWorkoutsPage() {
             <div className="relative w-full max-w-[1500px] text-left">
                 <h1 className="text-4xl font-bold">My Workouts</h1>
                 <div className="absolute right-0 top-0">
-                    <WorkoutCreateDialog />
+                    <DynamicWorkoutCreateDialog />
                 </div>
             </div>
             <div className="grid w-full max-w-[1500px] gap-5 lg:grid-cols-2 xl:grid-cols-3">

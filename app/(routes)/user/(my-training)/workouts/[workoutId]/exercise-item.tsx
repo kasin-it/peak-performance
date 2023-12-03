@@ -1,15 +1,29 @@
+import dynamic from "next/dynamic"
+
 import { Exercise } from "@/types/types"
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
 import {
     Card,
     CardContent,
     CardDescription,
     CardTitle,
 } from "@/components/ui/card"
-import ExerciseFullDescriptionDialog from "@/components/ui/exercise-full-desctiption-dialog"
 
-import AddToWorkoutButton from "./add-to-workout-button"
+const DynamicExerciseFullDescriptionDialog = dynamic(
+    () =>
+        import("@/components/ui/exercise-full-desctiption-dialog").then(
+            (mod) => mod.default
+        ),
+    {
+        ssr: false,
+    }
+)
+const DynamicAddToWorkoutButton = dynamic(
+    () => import("./add-to-workout-button").then((mod) => mod.default),
+    {
+        ssr: false,
+    }
+)
 
 function ExerciseItem({
     exercise,
@@ -35,7 +49,7 @@ function ExerciseItem({
                             : "There are no insstructions included."}
                     </CardDescription>
                     {exercise.instructions?.length! > 100 ? (
-                        <ExerciseFullDescriptionDialog
+                        <DynamicExerciseFullDescriptionDialog
                             instructions={exercise.instructions!}
                         />
                     ) : null}
@@ -44,7 +58,7 @@ function ExerciseItem({
                     </p>
                 </div>
                 <div className="mt-4">
-                    <AddToWorkoutButton
+                    <DynamicAddToWorkoutButton
                         workoutId={workoutId}
                         exerciseId={exercise.id}
                     />

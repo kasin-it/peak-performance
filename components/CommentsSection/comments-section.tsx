@@ -1,14 +1,20 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import dynamic from "next/dynamic"
 import Link from "next/link"
 import { createBrowserClient } from "@supabase/ssr"
-import { Sunset } from "lucide-react"
 
 import { Comment as CommentType } from "@/types/types"
 
 import Comment from "./comment"
-import { InsertCommentForm } from "./insert-comment-form"
+
+const DynamicInsertCommentForm = dynamic(
+    () => import("./insert-comment-form").then((mod) => mod.InsertCommentForm),
+    {
+        ssr: false,
+    }
+)
 
 function CommentsSection({ articleId }: { articleId: string }) {
     const [comments, setComments] = useState<CommentType[]>([])
@@ -72,7 +78,7 @@ function CommentsSection({ articleId }: { articleId: string }) {
                 {user ? (
                     <section className="flex w-full flex-col items-center lg:items-start lg:justify-start">
                         {/* Insert Comment Form */}
-                        <InsertCommentForm articleId={articleId} />
+                        <DynamicInsertCommentForm articleId={articleId} />
 
                         {comments && (
                             // Render comments or error message
