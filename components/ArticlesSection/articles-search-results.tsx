@@ -2,22 +2,19 @@ import { useCallback, useEffect, useState } from "react"
 import axios from "axios"
 
 import ArticlePreview from "@/components/ui/article-preview"
+import { useArticlesSearch } from "@/app/hooks/useArticlesSearch"
 
 import { Button } from "../ui/button"
 import { Skeleton } from "../ui/skeleton"
 
-interface ArticlesSearchResults {
-    query: string
-    sort: string
-}
-
-function ArticlesSearchResults({ query, sort }: ArticlesSearchResults) {
+function ArticlesSearchResults() {
     const [articles, setArticles] = useState<any>([])
     const [error, setError] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(true)
     const [isFetchingMore, setIsFetchingMore] = useState(false)
     const [skip, setSkip] = useState(0)
     const [emptyResponse, setEmptyResponse] = useState(false)
+    const articlesSearch = useArticlesSearch()
 
     const fetchArticles = useCallback(
         async (hardRefresh?: boolean) => {
@@ -25,7 +22,7 @@ function ArticlesSearchResults({ query, sort }: ArticlesSearchResults) {
                 setIsLoading(true)
                 const response = await axios.get("/api/articles", {
                     params: {
-                        query: query,
+                        query: articlesSearch.search,
                     },
                 })
 
@@ -51,7 +48,7 @@ function ArticlesSearchResults({ query, sort }: ArticlesSearchResults) {
                 setIsFetchingMore(false)
             }
         },
-        [query]
+        [articlesSearch.search]
     )
 
     const fetchMoreArticles = async (skipValue: number) => {
@@ -60,7 +57,7 @@ function ArticlesSearchResults({ query, sort }: ArticlesSearchResults) {
             const response = await axios.get("/api/articles", {
                 params: {
                     skip: skipValue,
-                    query: query,
+                    query: articlesSearch.search,
                 },
             })
 
@@ -87,7 +84,7 @@ function ArticlesSearchResults({ query, sort }: ArticlesSearchResults) {
     }
 
     const handleSortChange = useCallback(() => {
-        if (sort === "asc") {
+        if (articlesSearch.sort === "asc") {
             setArticles((prevArticles: any[]) =>
                 prevArticles
                     ? [...prevArticles].sort((a, b) =>
@@ -95,7 +92,7 @@ function ArticlesSearchResults({ query, sort }: ArticlesSearchResults) {
                       )
                     : prevArticles
             )
-        } else if (sort === "desc") {
+        } else if (articlesSearch.sort === "desc") {
             setArticles((prevArticles: any) =>
                 prevArticles
                     ? [...prevArticles].sort((a, b) =>
@@ -104,13 +101,13 @@ function ArticlesSearchResults({ query, sort }: ArticlesSearchResults) {
                     : prevArticles
             )
         }
-    }, [sort])
+    }, [articlesSearch.sort])
 
-    useEffect(() => handleSortChange(), [sort, handleSortChange])
+    useEffect(() => handleSortChange(), [articlesSearch.sort, handleSortChange])
 
     useEffect(() => {
         fetchArticles(true)
-    }, [query, fetchArticles])
+    }, [articlesSearch.search, fetchArticles])
 
     const generateLoadingSkeletons = () =>
         Array.from({ length: 10 }).map((_, index) => (

@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Search } from "lucide-react"
 
@@ -8,19 +9,16 @@ import { Input } from "@/components/ui/input"
 
 const SearchBar3 = ({
     className,
-    query,
     search,
     setSearch,
-    setQuery,
     path,
 }: {
     className?: string
-    query: string
     search: string
     path: string
     setSearch: (value: string) => void
-    setQuery: (value: string) => void
 }) => {
+    const [query, setQuery] = useState(search ?? "")
     const router = useRouter()
 
     let localSearch = search
@@ -30,7 +28,7 @@ const SearchBar3 = ({
 
         if (localSearch !== "") queryParams.set("query", localSearch)
 
-        router.push(`/${path}?query=${queryParams.toString()}`)
+        router.push(`/${path}?${queryParams.toString()}`)
     }
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {

@@ -1,3 +1,5 @@
+"use client"
+
 import { useCallback, useEffect, useState } from "react"
 import axios from "axios"
 
@@ -5,24 +7,9 @@ import { Exercise } from "@/types/types"
 import { Button } from "@/components/ui/button"
 import ExercisePreview from "@/components/ui/exercise-preview"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useExercisesSearch } from "@/app/hooks/useExercisesSearch"
 
-interface ExercisesSearchResultsProps {
-    query: string
-    sort: string
-    muscle: string
-    skillLevel: string
-    exerciseType: string
-    reset: boolean
-}
-
-function ExercisesSearchResults({
-    query,
-    sort,
-    skillLevel,
-    exerciseType,
-    muscle,
-    reset,
-}: ExercisesSearchResultsProps) {
+function ExercisesSearchResults() {
     const [offset, setOffset] = useState(0)
     const [exercises, setExercises] = useState<Exercise[]>([])
     const [error, setError] = useState<string | null>(null)
@@ -30,16 +17,18 @@ function ExercisesSearchResults({
     const [isFetchingMore, setIsFetchingMore] = useState(false)
     const [emptyResponse, setEmptyResponse] = useState(false)
 
+    const exercisesSearch = useExercisesSearch()
+
     const fetchExercises = useCallback(
         async (hardRefresh?: boolean) => {
             try {
                 setIsLoading(true)
                 const response = await axios.get("/api/exercises", {
                     params: {
-                        query: query,
-                        muscle: muscle,
-                        skill_level: skillLevel,
-                        exercise_type: exerciseType,
+                        query: exercisesSearch.search,
+                        muscle: exercisesSearch.muscle,
+                        skill_level: exercisesSearch.skillLevel,
+                        exercise_type: exercisesSearch.exerciseType,
                     },
                 })
 
@@ -65,7 +54,7 @@ function ExercisesSearchResults({
                 setIsFetchingMore(false)
             }
         },
-        [exerciseType, muscle, query, skillLevel]
+        [exercisesSearch]
     )
 
     const fetchMoreExercises = async (offset: number) => {
@@ -74,10 +63,10 @@ function ExercisesSearchResults({
             const response = await axios.get("/api/exercises", {
                 params: {
                     offset: offset,
-                    query: query,
-                    muscle: muscle || "",
-                    skill_level: skillLevel || "",
-                    exercise_type: exerciseType || "",
+                    query: exercisesSearch.search,
+                    muscle: exercisesSearch.muscle || "",
+                    skill_level: exercisesSearch.skillLevel || "",
+                    exercise_type: exercisesSearch.exerciseType || "",
                 },
             })
 
@@ -104,7 +93,7 @@ function ExercisesSearchResults({
     }
 
     const handleSortChange = useCallback(() => {
-        if (sort === "asc") {
+        if (exercisesSearch.sort === "asc") {
             setExercises((prevExercises: any) =>
                 prevExercises
                     ? [...prevExercises].sort((a, b) =>
@@ -112,7 +101,7 @@ function ExercisesSearchResults({
                       )
                     : prevExercises
             )
-        } else if (sort === "desc") {
+        } else if (exercisesSearch.sort === "desc") {
             setExercises((prevExercises: any) =>
                 prevExercises
                     ? [...prevExercises].sort((a, b) =>
@@ -121,17 +110,15 @@ function ExercisesSearchResults({
                     : prevExercises
             )
         }
-    }, [sort])
+    }, [exercisesSearch.sort])
 
-    useEffect(() => handleSortChange(), [sort, handleSortChange])
+    useEffect(() => {
+        handleSortChange()
+    }, [exercisesSearch.sort, handleSortChange])
 
     useEffect(() => {
         fetchExercises(true)
-    }, [query, reset, fetchExercises])
-
-    useEffect(() => {
-        fetchExercises(true)
-    }, [fetchExercises])
+    }, [exercisesSearch.search, exercisesSearch.reset, fetchExercises])
 
     const generateLoadingSkeletons = () =>
         Array.from({ length: 10 }).map((_, index) => (
