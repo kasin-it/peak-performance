@@ -1,31 +1,31 @@
+"use client"
+
 import { useCallback, useEffect, useState } from "react"
 import axios from "axios"
+
+import { useSearchSearch } from "@/app/hooks/useSearchSearch"
 
 import ArticlePreview from "../ui/article-preview"
 import ExercisePreview from "../ui/exercise-preview"
 import { Skeleton } from "../ui/skeleton"
 
-interface SearchResultsProps {
-    query: string
-    reset: boolean
-}
-
-function SearchResults({ query, reset }: SearchResultsProps) {
+function SearchResults() {
     const [error, setError] = useState("")
     const [results, setResults] = useState<any[]>([])
     const [isLoading, setIsLoading] = useState(false)
+    const searchSearch = useSearchSearch()
 
     const fetchResults = useCallback(async () => {
         try {
             setIsLoading(true)
             const exercisesResponse = await axios.get("/api/exercises", {
                 params: {
-                    query: query,
+                    query: searchSearch.search,
                 },
             })
             const articlesResponse = await axios.get("/api/articles", {
                 params: {
-                    query: query,
+                    query: searchSearch.search,
                 },
             })
 
@@ -65,23 +65,23 @@ function SearchResults({ query, reset }: SearchResultsProps) {
         } finally {
             setIsLoading(false)
         }
-    }, [query])
+    }, [searchSearch.search])
     useEffect(() => {
-        if (query != "") {
+        if (searchSearch.search != "") {
             setIsLoading(true)
             fetchResults()
         } else {
             setIsLoading(false)
         }
-    }, [fetchResults, query])
+    }, [fetchResults, searchSearch.search])
 
     useEffect(() => {
-        if (query != "") {
+        if (searchSearch.search != "") {
             fetchResults()
         } else {
             setResults([])
         }
-    }, [query, reset, fetchResults])
+    }, [searchSearch.search, searchSearch.reset, fetchResults])
     return (
         <div className="flex max-w-[1500px] flex-wrap gap-10 ">
             {error && <div>{error}</div>}
