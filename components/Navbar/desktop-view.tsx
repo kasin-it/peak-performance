@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic"
 import Link from "next/link"
 
-import SearchBar1 from "../ui/search-bar-1"
+import SearchSearchPanel from "../SearchSection/search-search-panel"
 
 const DynamicSearchSheet = dynamic(
     () => import("./search-sheet").then((mod) => mod.default),
@@ -55,7 +55,7 @@ function DesktopView() {
             </div>
             <div className="flex items-center space-x-2">
                 <div className="hidden xl:block">
-                    <SearchBar1 className="w-[400px]" />
+                    <SearchSearchPanel />
                 </div>
                 <div className="xl:hidden">
                     <DynamicSearchSheet />

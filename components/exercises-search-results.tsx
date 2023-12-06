@@ -54,7 +54,12 @@ function ExercisesSearchResults() {
                 setIsFetchingMore(false)
             }
         },
-        [exercisesSearch]
+        [
+            exercisesSearch.search,
+            exercisesSearch.muscle,
+            exercisesSearch.skillLevel,
+            exercisesSearch.exerciseType,
+        ]
     )
 
     const fetchMoreExercises = async (offset: number) => {

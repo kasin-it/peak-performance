@@ -1,3 +1,5 @@
+import { Suspense } from "react"
+
 import { Separator } from "@/components/ui/separator"
 import SearchResults from "@/components/SearchSection/search-results"
 import SearchSearchPanel from "@/components/SearchSection/search-search-panel"
@@ -8,12 +10,16 @@ function SearchPage() {
             <div className="flex flex-col items-center space-y-5">
                 <h1 className="pb-8 pt-48 text-4xl font-bold">Search:</h1>
                 <div className="flex justify-center space-x-4 pb-12">
-                    <SearchSearchPanel />
+                    <Suspense>
+                        <SearchSearchPanel />
+                    </Suspense>
                 </div>
             </div>
             <Separator />
             <article className="w-full max-w-[1500px]">
-                <SearchResults />
+                <Suspense>
+                    <SearchResults />
+                </Suspense>
             </article>
         </section>
     )

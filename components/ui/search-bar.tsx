@@ -1,30 +1,52 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Search } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
+import { useSearchSearch } from "@/app/hooks/useSearchSearch"
 
-const SearchBar2 = ({
+const SearchBar = ({
     className,
-    handleSearch,
-    setSearch,
     search,
+    setSearch,
+    path,
+    onReset,
 }: {
     className?: string
-    search: string
-    setSearch: (value: string) => void
-    handleSearch: () => void
+    search?: string
+    path: string
+    setSearch?: (value: string) => void
+    onReset: () => void
 }) => {
-    const [query, setQuery] = useState(search ?? "")
+    const router = useRouter()
+    const [query, setQuery] = useState(search !== undefined ? search : "")
+    const searchSearch = useSearchSearch()
+
+    const handleSearch = () => {
+        const queryParams = new URLSearchParams()
+
+        if (search !== "") queryParams.set("query", query || "")
+        if (onReset) {
+            onReset()
+        } else {
+            searchSearch.onReset()
+        }
+
+        router.push(`/${path}?${queryParams.toString()}`)
+    }
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
-            setSearch(query)
+            if (setSearch) {
+                setSearch(query)
+            }
             handleSearch()
         }
     }
+
     return (
         <div className={cn("relative flex w-full items-center", className)}>
             <Input
@@ -46,4 +68,4 @@ const SearchBar2 = ({
     )
 }
 
-export default SearchBar2
+export default SearchBar

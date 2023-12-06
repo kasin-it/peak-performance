@@ -1,10 +1,10 @@
 "use client"
 
-import { useEffect } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useCallback, useEffect, useRef } from "react"
+import { useSearchParams } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
-import SearchBar2 from "@/components/ui/search-bar-2"
+import SearchBar from "@/components/ui/search-bar"
 import {
     Select,
     SelectContent,
@@ -16,8 +16,9 @@ import { useExercisesSearch } from "@/app/hooks/useExercisesSearch"
 
 function ExercisesSearchPanel() {
     const exercisesSearch = useExercisesSearch()
-    const router = useRouter()
     const searchParams = useSearchParams()
+
+    const exercisesSearchRef = useRef(exercisesSearch)
 
     useEffect(() => {
         const queryParam = searchParams.get("q") ?? ""
@@ -25,33 +26,12 @@ function ExercisesSearchPanel() {
         const skillLevelParam = searchParams.get("skill_level") ?? ""
         const exerciseTypeParam = searchParams.get("exercise_type") ?? ""
 
-        exercisesSearch.setSearch(queryParam)
-        exercisesSearch.setMuscle(muscleParam)
-        exercisesSearch.setSkillLevel(skillLevelParam)
-        exercisesSearch.setExerciseType(exerciseTypeParam)
-    }, [])
-
-    const handleSearch = () => {
-        const queryParams = new URLSearchParams()
-
-        if (
-            exercisesSearch.skillLevel !== "" &&
-            exercisesSearch.skillLevel != "all"
-        )
-            queryParams.set("skill_level", exercisesSearch.skillLevel)
-        if (
-            exercisesSearch.exerciseType !== "" &&
-            exercisesSearch.exerciseType != "all"
-        )
-            queryParams.set("exercise_type", exercisesSearch.exerciseType)
-        if (exercisesSearch.muscle !== "" && exercisesSearch.muscle != "all")
-            queryParams.set("muscle", exercisesSearch.muscle)
-        if (exercisesSearch.search !== "")
-            queryParams.set("query", exercisesSearch.search)
-
-        router.push(`/exercises?${queryParams.toString()}`)
-        exercisesSearch.onReset()
-    }
+        // Update exercisesSearch using the ref
+        exercisesSearchRef.current.setSearch(queryParam)
+        exercisesSearchRef.current.setMuscle(muscleParam)
+        exercisesSearchRef.current.setSkillLevel(skillLevelParam)
+        exercisesSearchRef.current.setExerciseType(exerciseTypeParam)
+    }, [searchParams, exercisesSearchRef])
 
     const handleMuscleChange = (value: string) => {
         exercisesSearch.setMuscle(value !== "all" ? value : "")
@@ -70,11 +50,12 @@ function ExercisesSearchPanel() {
     }
     return (
         <>
-            <SearchBar2
+            <SearchBar
                 setSearch={exercisesSearch.setSearch}
                 search={exercisesSearch.search}
+                onReset={exercisesSearch.onReset}
                 className="relative flex w-full items-center"
-                handleSearch={handleSearch}
+                path={"exercises"}
             />
             <div className="flex flex-wrap gap-3">
                 <Select
@@ -163,7 +144,7 @@ function ExercisesSearchPanel() {
                     </SelectContent>
                 </Select>
             </div>
-            <Button onClick={handleSearch}>Search</Button>
+            <Button onClick={exercisesSearch.onReset}>Search</Button>
         </>
     )
 }

@@ -1,3 +1,5 @@
+"use client"
+
 import { useCallback, useEffect, useState } from "react"
 import axios from "axios"
 
@@ -107,7 +109,7 @@ function ArticlesSearchResults() {
 
     useEffect(() => {
         fetchArticles(true)
-    }, [articlesSearch.search, fetchArticles])
+    }, [articlesSearch.search, articlesSearch.reset, fetchArticles])
 
     const generateLoadingSkeletons = () =>
         Array.from({ length: 10 }).map((_, index) => (

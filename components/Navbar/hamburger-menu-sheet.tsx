@@ -10,7 +10,8 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 
-import SearchBar1 from "../ui/search-bar-1"
+import SearchSearchPanel from "../SearchSection/search-search-panel"
+import SearchBar from "../ui/search-bar"
 
 function HamburgerMenuSheet() {
     return (
@@ -19,7 +20,7 @@ function HamburgerMenuSheet() {
                 <Menu className="h-8 w-8" strokeWidth={"2px"} />
             </SheetTrigger>
             <SheetContent side={"left"}>
-                <SearchBar1 className={"mt-16 w-full"} />
+                <SearchSearchPanel />
                 <ul className="mt-10 flex flex-col items-center text-left text-xl font-extrabold italic text-blue-300">
                     <SheetClose asChild>
                         <li className="w-full border-y border-blue-500 pl-10">
