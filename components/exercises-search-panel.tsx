@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useCallback, useEffect, useRef } from "react"
 import { useSearchParams } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
@@ -18,17 +18,20 @@ function ExercisesSearchPanel() {
     const exercisesSearch = useExercisesSearch()
     const searchParams = useSearchParams()
 
+    const exercisesSearchRef = useRef(exercisesSearch)
+
     useEffect(() => {
         const queryParam = searchParams.get("q") ?? ""
         const muscleParam = searchParams.get("muscle") ?? ""
         const skillLevelParam = searchParams.get("skill_level") ?? ""
         const exerciseTypeParam = searchParams.get("exercise_type") ?? ""
 
-        exercisesSearch.setSearch(queryParam)
-        exercisesSearch.setMuscle(muscleParam)
-        exercisesSearch.setSkillLevel(skillLevelParam)
-        exercisesSearch.setExerciseType(exerciseTypeParam)
-    }, [])
+        // Update exercisesSearch using the ref
+        exercisesSearchRef.current.setSearch(queryParam)
+        exercisesSearchRef.current.setMuscle(muscleParam)
+        exercisesSearchRef.current.setSkillLevel(skillLevelParam)
+        exercisesSearchRef.current.setExerciseType(exerciseTypeParam)
+    }, [searchParams, exercisesSearchRef])
 
     const handleMuscleChange = (value: string) => {
         exercisesSearch.setMuscle(value !== "all" ? value : "")

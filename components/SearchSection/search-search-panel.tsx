@@ -9,7 +9,7 @@ function SearchSearchPanel() {
 
     return (
         <SearchBar
-            className="relative flex w-[300px] items-center sm:w-[400px] lg:w-[600px]"
+            className="relative flex w-[300px] items-center sm:w-[400px]"
             search={searchSearch.search}
             path={"search"}
             setSearch={() => {}}

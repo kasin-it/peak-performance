@@ -4,6 +4,7 @@ import { Search } from "lucide-react"
 
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
+import SearchSearchPanel from "../SearchSection/search-search-panel"
 import SearchBar from "../ui/search-bar"
 
 function SearchSheet() {
@@ -16,7 +17,7 @@ function SearchSheet() {
                 side={"top"}
                 className="flex h-72 items-center justify-center px-28"
             >
-                <SearchBar path={"search"} />
+                <SearchSearchPanel />
             </SheetContent>
         </Sheet>
     )

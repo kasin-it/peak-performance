@@ -72,7 +72,7 @@ function SearchResults() {
     useEffect(() => {
         const queryParam = searchParams.get("query") ?? ""
         fetchResults(queryParam)
-    }, [fetchResults, searchSearch.reset])
+    }, [fetchResults, searchSearch.reset, searchParams])
 
     return (
         <div className="flex max-w-[1500px] flex-wrap gap-10 ">

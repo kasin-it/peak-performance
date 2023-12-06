@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useCallback, useEffect, useRef } from "react"
 import { useSearchParams } from "next/navigation"
 
 import {
@@ -18,11 +18,18 @@ function ArticlesSearchPanel() {
     const articlesSearch = useArticlesSearch()
     const searchParams = useSearchParams()
 
+    const setSearchRef = useRef(articlesSearch.setSearch)
+
+    const setSearchCallback = useCallback(
+        (value: string) => setSearchRef.current(value),
+        []
+    )
+
     useEffect(() => {
         const queryParam = searchParams.get("q") ?? ""
 
-        articlesSearch.setSearch(queryParam)
-    }, [])
+        setSearchCallback(queryParam)
+    }, [searchParams, setSearchCallback])
 
     const handleSortChange = (value: string) => {
         articlesSearch.setSort(value)

@@ -1,3 +1,5 @@
+import { Suspense } from "react"
+
 import { Separator } from "@/components/ui/separator"
 import ArticlesSearchPanel from "@/components/ArticlesSection/articles-search-panel"
 import ArticlesSearchResults from "@/components/ArticlesSection/articles-search-results"
@@ -8,11 +10,15 @@ function Articles() {
             <div className="flex flex-col items-center space-y-5">
                 <h1 className="pt-48 text-6xl font-bold">Articles:</h1>
                 <div className="flex flex-col justify-center space-y-3 pb-12 sm:flex-row sm:space-x-4 sm:space-y-0">
-                    <ArticlesSearchPanel />
+                    <Suspense>
+                        <ArticlesSearchPanel />
+                    </Suspense>
                 </div>
             </div>
             <Separator className="mb-10" />
-            <ArticlesSearchResults />
+            <Suspense>
+                <ArticlesSearchResults />
+            </Suspense>
         </section>
     )
 }
