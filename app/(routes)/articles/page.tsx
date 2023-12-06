@@ -1,19 +1,8 @@
-"use client"
-
-import { useState } from "react"
-import { useSearchParams } from "next/navigation"
-
 import { Separator } from "@/components/ui/separator"
 import ArticlesSearchPanel from "@/components/ArticlesSection/articles-search-panel"
 import ArticlesSearchResults from "@/components/ArticlesSection/articles-search-results"
 
 function Articles() {
-    const searchParams = useSearchParams()
-    const queryParam = searchParams.get("q") ?? ""
-    const [query, setQuery] = useState<string>(queryParam)
-    const [search, setSearch] = useState<string>(queryParam)
-    const [sort, setSort] = useState<string>("")
-
     return (
         <section className="flex w-full flex-col items-center px-3 pb-10">
             <div className="flex flex-col items-center space-y-5">

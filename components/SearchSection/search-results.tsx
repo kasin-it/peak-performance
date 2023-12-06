@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useState } from "react"
+import { useSearchParams } from "next/navigation"
 import axios from "axios"
 
 import { useSearchSearch } from "@/app/hooks/useSearchSearch"
@@ -14,18 +15,19 @@ function SearchResults() {
     const [results, setResults] = useState<any[]>([])
     const [isLoading, setIsLoading] = useState(false)
     const searchSearch = useSearchSearch()
+    const searchParams = useSearchParams()
 
-    const fetchResults = useCallback(async () => {
+    const fetchResults = useCallback(async (query: string) => {
         try {
             setIsLoading(true)
             const exercisesResponse = await axios.get("/api/exercises", {
                 params: {
-                    query: searchSearch.search,
+                    query: query,
                 },
             })
             const articlesResponse = await axios.get("/api/articles", {
                 params: {
-                    query: searchSearch.search,
+                    query: query,
                 },
             })
 
@@ -65,23 +67,13 @@ function SearchResults() {
         } finally {
             setIsLoading(false)
         }
-    }, [searchSearch.search])
-    useEffect(() => {
-        if (searchSearch.search != "") {
-            setIsLoading(true)
-            fetchResults()
-        } else {
-            setIsLoading(false)
-        }
-    }, [fetchResults, searchSearch.search])
+    }, [])
 
     useEffect(() => {
-        if (searchSearch.search != "") {
-            fetchResults()
-        } else {
-            setResults([])
-        }
-    }, [searchSearch.search, searchSearch.reset, fetchResults])
+        const queryParam = searchParams.get("query") ?? ""
+        fetchResults(queryParam)
+    }, [fetchResults, searchSearch.reset])
+
     return (
         <div className="flex max-w-[1500px] flex-wrap gap-10 ">
             {error && <div>{error}</div>}
