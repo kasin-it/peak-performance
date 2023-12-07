@@ -1,5 +1,10 @@
 import dynamic from "next/dynamic"
 
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+
 const DynamicChangeEmailForm = dynamic(
     () => import("../forms/change-email-form").then((mod) => mod.default),
     {
@@ -21,18 +26,19 @@ const DynamicChangeUsernameForm = dynamic(
 
 function ProfilePage() {
     return (
-        <div className=" max-w-[400px] py-12">
-            <div className="space-y-20">
-                <div className="space-y-2">
-                    <DynamicChangeEmailForm />
-                </div>
-                <div className="space-y-2">
+        <div className="grid grid-cols-1 gap-6 p-6">
+            <Card className="w-full">
+                <CardHeader>
+                    <h2 className="text-2xl font-bold">Account Settings</h2>
+                </CardHeader>
+                <CardContent className="space-y-6">
                     <DynamicChangeUsernameForm />
-                </div>
-                <div className="space-y-2">
-                    <DynamicChangePasswordForm />
-                </div>
-            </div>
+                    <DynamicChangeEmailForm />
+                    <div className="pt-10">
+                        <DynamicChangePasswordForm />
+                    </div>
+                </CardContent>
+            </Card>
         </div>
     )
 }
