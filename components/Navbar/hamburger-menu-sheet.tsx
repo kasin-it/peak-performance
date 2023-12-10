@@ -20,6 +20,7 @@ function HamburgerMenuSheet() {
                 <Menu className="h-8 w-8" strokeWidth={"2px"} />
             </SheetTrigger>
             <SheetContent side={"left"}>
+                <div className="pb-10" />
                 <SearchSearchPanel />
                 <ul className="mt-10 flex flex-col items-center text-left text-xl font-extrabold italic text-blue-300">
                     <SheetClose asChild>
