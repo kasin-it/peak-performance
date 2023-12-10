@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { createBrowserClient } from "@supabase/ssr"
 import { User2 } from "lucide-react"
 
@@ -9,6 +10,7 @@ import { Button } from "../ui/button"
 
 function AccountSection() {
     const [user, setUser] = useState(false)
+    const pathname = usePathname()
 
     const supabase = createBrowserClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -35,7 +37,7 @@ function AccountSection() {
         return (
             <>
                 <Link
-                    href="/user"
+                    href={pathname.startsWith("/user") ? "/" : "/user"}
                     className="p-2 text-blue-300 hover:text-blue-500"
                 >
                     <User2 className=" h-8 w-8" strokeWidth={"1px"} />
