@@ -37,7 +37,12 @@ function AccountSection() {
         return (
             <>
                 <Link
-                    href={pathname.startsWith("/user") ? "/" : "/user"}
+                    href={
+                        pathname.startsWith("/auth") ||
+                        pathname == "/user"
+                            ? "/"
+                            : "/user"
+                    }
                     className="p-2 text-blue-300 hover:text-blue-500"
                 >
                     <User2 className=" h-8 w-8" strokeWidth={"1px"} />

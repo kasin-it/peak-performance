@@ -10,8 +10,7 @@ function AccountSectionMobile() {
         <>
             <Link
                 href={
-                    pathname.startsWith("/auth/sign-in") ||
-                    pathname.startsWith("/user")
+                    pathname.startsWith("/auth") || pathname == "/user"
                         ? "/"
                         : "/user"
                 }
