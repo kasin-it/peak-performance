@@ -37,7 +37,7 @@ This project employs Next.js and Contentful to build a high-performance web app.
 2. Start Supabase:
 
     ```bash
-    supabase start
+    npx supabase start
     ```
 
 3. Run the project in preview mode:
